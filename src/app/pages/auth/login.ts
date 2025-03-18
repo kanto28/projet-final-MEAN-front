@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -22,23 +23,25 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
                             <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">LOGIN</div>
                             <span class="text-muted-color font-medium">Sign in to continue</span>
                         </div>
+                        <form (ngSubmit)="onSubmit()">
+                            <div>
+                                <label for="email" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
+                                <input pInputText id="email" name="email" type="email" placeholder="Email" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" required/>
 
-                        <div>
-                            <label for="email1" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                            <input pInputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" />
+                                <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Mot de passe</label>
+                                <p-password id="password" name="password" [(ngModel)]="password" placeholder="Mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" required></p-password>
 
-                            <label for="password1" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
-                            <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false"></p-password>
-
-                            <div class="flex items-center justify-between mt-2 mb-8 gap-8">
-                                <div class="flex items-center">
-                                    <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
-                                    <label for="rememberme1">Remember me</label>
+                                <div class="flex items-center justify-between mt-2 mb-8 gap-8">
+                                    <div class="flex items-center">
+                                        <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
+                                        <label for="rememberme1">Remember me</label>
+                                    </div>
+                                    <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
                                 </div>
-                                <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
+                                <p-button label="Se connecter" styleClass="w-full" type="submit" ></p-button>
                             </div>
-                            <p-button label="Sign In" styleClass="w-full" routerLink="/dashboard"></p-button>
-                        </div>
+                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -47,8 +50,28 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
 })
 export class Login {
     email: string = '';
-
     password: string = '';
-
     checked: boolean = false;
+  
+    constructor(private authService: AuthService, private router: Router) {}
+  
+    onSubmit() {
+        const loginData = {
+          email: this.email,
+          password: this.password
+        };
+      
+        console.log('Données envoyées :', loginData);
+      
+        this.authService.login(loginData).subscribe({
+          next: (response) => {
+            console.log('Connexion réussie', response);
+            this.router.navigate(['/dashboard']);
+          },
+          error: (err) => {
+            console.error('Erreur de connexion', err);
+            alert(err.error.erreur || 'Une erreur est survenue');
+          }
+        });
+      }
 }
