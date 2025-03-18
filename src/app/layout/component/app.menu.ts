@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-menu',
@@ -17,6 +18,18 @@ import { AppMenuitem } from './app.menuitem';
 })
 export class AppMenu {
     model: MenuItem[] = [];
+    menuItems: any[];
+
+    constructor(private authService: AuthService, private router: Router) {
+      this.menuItems = [
+        { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }
+      ];
+    }
+  
+    onLogout() {
+        this.authService.logout(); 
+        this.router.navigate(['/auth/login']); 
+      }
 
     ngOnInit() {
         this.model = [
@@ -73,8 +86,8 @@ export class AppMenu {
                                 routerLink: ['/pages/crud/typeVehicule']
                             }
                         ]
-                    }
-                    //{ label: 'Menu', icon: 'pi pi-fw pi-bars', routerLink: ['/uikit/menu'] }
+                    },
+                    { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }
                 ]
             }
            
