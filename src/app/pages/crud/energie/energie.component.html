@@ -10,84 +10,80 @@
 </p-toolbar>
 
 <div class="card">
-    <p-table [value]="products" responsiveLayout="scroll">
+    <p-table [value]="energies" responsiveLayout="scroll">
         <ng-template #caption>
             <div class="flex items-center justify-between">
                 <h5 class="m-0">Liste des Energies </h5>
             </div>
             <br>
         </ng-template>
-    <br>
+        <br>
 
         <ng-template #header>
             <tr>
-                <th style="width: 3rem">ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Reviews</th>
-                <th>Status</th>
+                <th>Nom</th>
                 <th>Action</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-energie >
             <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.reviews }}</td>
-                <td>{{ product.status }}</td>
+                <td>{{ energie.name }}</td>
                 <td>
-                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditEnergie()" />
-                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
+                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (click)="openEditEnergieDialog(energie)" />
+                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation(energie)" />
                 </td>
                 
             </tr>
         </ng-template>
     </p-table>
 
+    
+<!--Suppression modal-->
     <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
         <div class="flex items-center justify-center">
             <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
-            <span>Êtes-vous sûr de vouloir supprimer ?</span>
+            <span>Êtes-vous sûr de vouloir supprimer cette énergie ?</span>
         </div>
         <ng-template #footer>
             <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
-            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
+            <p-button label="Oui" icon="pi pi-check" (click)="onDeleteEnergie()" severity="danger" outlined autofocus />
         </ng-template>
     </p-dialog>
     
 </div>
 
+<!--AJOUT-->
 <p-dialog [(visible)]="ajoutEnergie" [style]="{ width: '450px' }" header="Ajout de la Energie" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
             <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <label for="energieName" class="block font-bold mb-3">Nom</label>
+                <input type="text" id="energieName" pInputText [(ngModel)]="energieName"  name="energieName" placeholder="Nom de l'énergie" required fluid />
             </div>
         </div>
     </ng-template>
 
     <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideAjoutEnergie()" />
+        <p-button label="Save" (click)="onCreateEnergie()" icon="pi pi-check"  />
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="editEnergie" [style]="{ width: '450px' }" header="Modifier la Energie" [modal]="true">
+<!--UPDATE-->
+<p-dialog [(visible)]="editEnergieDialog" [style]="{ width: '450px' }" header="Modifier l'Énergie" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
             <div>
                 <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedEnergie.name" required autofocus fluid/>
             </div>
         </div>
     </ng-template>
 
     <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideEditEnergieDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="onUpdateEnergie()" />
     </ng-template>
 </p-dialog>
+
+
