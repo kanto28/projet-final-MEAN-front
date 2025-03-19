@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
 })
 export class TypeVehiculeService {
 
-   private apiUrl = 'http://localhost:5001/api/typevehicule/typevehicules';
+   private apiUrl = 'http://localhost:5001/api/type-vehicule/typevehicules';
    
      constructor(private http: HttpClient) { }
    
-     //créer une nouvelle moteurs
+     //créer une nouvelle vehicule
      createMoteur(name: string): Observable<any> {
        const token = localStorage.getItem('token'); 
        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
