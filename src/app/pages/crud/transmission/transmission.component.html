@@ -1,3 +1,4 @@
+
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
         <p-button label="Ajout Transmission" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="ovrirNouveauTransmission()" />
@@ -9,83 +10,80 @@
 </p-toolbar>
 
 <div class="card">
-    <p-table [value]="products" responsiveLayout="scroll">
+    <p-table [value]="transmissions" responsiveLayout="scroll">
         <ng-template #caption>
             <div class="flex items-center justify-between">
                 <h5 class="m-0">Liste des Transmissions </h5>
             </div>
             <br>
         </ng-template>
-    <br>
+        <br>
+
         <ng-template #header>
             <tr>
-                <th style="width: 3rem">ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Reviews</th>
-                <th>Status</th>
+                <th>Nom</th>
                 <th>Action</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-transmission >
             <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.reviews }}</td>
-                <td>{{ product.status }}</td>
+                <td>{{ transmission.name }}</td>
                 <td>
-                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditTransmission()" />
-                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
+                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (click)="openEditTransmissionDialog(transmission)" />
+                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation(transmission)" />
                 </td>
                 
             </tr>
         </ng-template>
     </p-table>
 
+    
+<!--Suppression modal-->
     <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
         <div class="flex items-center justify-center">
             <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
-            <span>Êtes-vous sûr de vouloir supprimer ?</span>
+            <span>Êtes-vous sûr de vouloir supprimer cette Transmission ?</span>
         </div>
         <ng-template #footer>
             <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
-            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
+            <p-button label="Oui" icon="pi pi-check" (click)="onDeleteTransmission()" severity="danger" outlined autofocus />
         </ng-template>
     </p-dialog>
     
 </div>
 
+<!--AJOUT-->
 <p-dialog [(visible)]="ajoutTransmission" [style]="{ width: '450px' }" header="Ajout de la Transmission" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
             <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <label for="transmissionName" class="block font-bold mb-3">Nom</label>
+                <input type="text" id="transmissionName" pInputText [(ngModel)]="transmissionName"  name="transmissionName" placeholder="Nom de le Transmission" required fluid />
             </div>
         </div>
     </ng-template>
 
     <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideAjoutTransmission()" />
+        <p-button label="Save" (click)="onCreateTransmission()" icon="pi pi-check"  />
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="editTransmission" [style]="{ width: '450px' }" header="Modifier la Transmission" [modal]="true">
+<!--UPDATE-->
+<p-dialog [(visible)]="editTransmissionDialog" [style]="{ width: '450px' }" header="Modifier la Transmission" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
             <div>
                 <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedTransmission.name" required autofocus fluid/>
             </div>
         </div>
     </ng-template>
 
     <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideEditTransmissionDialog()" />
+        <p-button label="Save" icon="pi pi-check" (click)="onUpdateTransmission()" />
     </ng-template>
 </p-dialog>
+
+

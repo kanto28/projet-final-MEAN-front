@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TransmissionService } from '../../../services/crud/transmission/transmission.service';
 
 @Component({
   selector: 'app-transmission',
@@ -43,44 +44,113 @@ import { ToolbarModule } from 'primeng/toolbar';
   templateUrl: './transmission.component.html',
   styleUrl: './transmission.component.scss'
 })
-export class TransmissionComponent {
+export class TransmissionComponent implements OnInit{
+
+  transmissionName: string = '';
+  transmissions: any[] = [];
+  selectedTransmission: any = null; 
+  editTransmissionDialog: boolean = false; 
+  transmissionToDelete: any = null;
+
+  constructor(private transmissionService: TransmissionService) { }
+
+   // Creer une nouvelle Transmission
+   onCreateTransmission() {
+    this.transmissionService.createTransmission(this.transmissionName).subscribe(
+      response => {
+        console.log('Transmission  créée avec succès', response);
+      },
+      error => {
+        console.error('Erreur lors de la création du Transmission', error);
+      }
+    );
+  }
+
+  
+  ngOnInit(): void {
+    this.loadTransmission(); 
+  }
+
+  loadTransmission(): void {
+    this.transmissionService.getTransmissions().subscribe(
+      (data) => {
+        this.transmissions = data;
+        console.log('Transmission récupérées :', this.transmissions);  
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Transmission', error);
+      }
+    );
+  }
+
   ajoutTransmission: boolean = false;
-  editTransmission: boolean = false;
   submitted: boolean = false;
   displayConfirmation: boolean = false;
-  
-
-  products = [
-    { id: '01', name: 'Toyota', price: 20000, category: 'SUV', reviews: 4, status: 'Available' },
-    { id: '02', name: 'Ford', price: 25000, category: 'Truck', reviews: 5, status: 'Sold Out' },
-    { id: '03', name: 'BMW', price: 30000, category: 'Sedan', reviews: 4.5, status: 'Available' }
-  ];
 
   ovrirNouveauTransmission() {
     this.submitted = false;
     this.ajoutTransmission = true;
   }
 
-  hideDialog() {
+
+  hideAjoutTransmission() {
     this.ajoutTransmission = false;
-    this.submitted = false;
   }
 
-  ovrirEditTransmission() {
-    this.submitted = false;
-    this.editTransmission = true;
+  // open update
+  openEditTransmissionDialog(transmission: any) {
+    this.selectedTransmission = { ...transmission }; 
+    this.editTransmissionDialog = true;
+  }
+  
+  // close modal updaate
+  hideEditTransmissionDialog() {
+    this.editTransmissionDialog = false;
+    this.selectedTransmission = null;
+  }
+  
+  // modifier trabnsmission
+  onUpdateTransmission() {
+    if (this.selectedTransmission) {
+      this.transmissionService.updateTransmission(this.selectedTransmission._id, this.selectedTransmission.name).subscribe(
+        response => {
+          console.log('Transmission mise à jour avec succès', response);
+          this.loadTransmission(); 
+          this.hideAjoutTransmission(); 
+        },
+        error => {
+          console.error('Erreur lors de la mise à jour du transmission', error);
+        }
+      );
+    }
   }
 
-  hideEditTransmission() {
-    this.editTransmission = false;
-    this.submitted = false;
+  // modal supp
+  openConfirmation(transmission: any) {
+    this.transmissionToDelete = transmission; 
+    this.displayConfirmation = true; 
+  }
+  
+  // close modal supp
+  closeConfirmation() {
+    this.displayConfirmation = false;
+    this.transmissionToDelete = null; 
   }
 
-  openConfirmation() {
-    this.displayConfirmation = true;
-}
+  //supprimer l'Transmission
+  onDeleteTransmission() {
+    if (this.transmissionToDelete) {
+      this.transmissionService.deleteTransmission(this.transmissionToDelete._id).subscribe(
+        response => {
+          console.log('transmission supprimée avec succès', response);
+          this.loadTransmission(); 
+          this.closeConfirmation();
+        },
+        error => {
+          console.error('Erreur lors de la suppression de la Transmission', error);
+        }
+      );
+    }
+  }
 
-closeConfirmation() {
-  this.displayConfirmation = false;
-}
 }
