@@ -1,7 +1,7 @@
 
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="Ajout Model" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="ovrirNouveauModel()" />
+        <p-button label="Ajout Model" icon="pi pi-plus" severity="secondary" class="mr-2" (click)="openAddModelDialog()" />
     </ng-template>
 
     <ng-template #end>
@@ -10,7 +10,7 @@
 </p-toolbar>
 
 <div class="card">
-    <p-table [value]="products" responsiveLayout="scroll">
+    <p-table [value]="models" responsiveLayout="scroll">
         <ng-template #caption>
             <div class="flex items-center justify-between">
                 <h5 class="m-0">Liste des Models </h5>
@@ -20,28 +20,21 @@
     <br>
         <ng-template #header>
             <tr>
-                <th style="width: 3rem">ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-                <th>Reviews</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th>Nom</th>
+                <th>Marque</th>
+                <th>Type de véhicule</th>
+                <th>Actions</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-model>
             <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.category }}</td>
-                <td>{{ product.reviews }}</td>
-                <td>{{ product.status }}</td>
+                <td>{{ model.name }}</td>
+                <td>{{ model.marque.name }}</td>
+                <td>{{ model.typeVehicule.name }}</td>
                 <td>
-                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditModel()" />
-                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
+                    <p-button label="Modifier" icon="pi pi-pencil" severity="info"  [style]="{ width: 'auto', marginRight: '8px' }" (click)="openEditModelDialog(model)" />
+                    <p-button label="Supprimer" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation(model)" />
                 </td>
-                
             </tr>
         </ng-template>
     </p-table>
@@ -49,11 +42,11 @@
     <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
         <div class="flex items-center justify-center">
             <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
-            <span>Êtes-vous sûr de vouloir supprimer ?</span>
+            <span>Êtes-vous sûr de vouloir supprimer ce modèle ?</span>
         </div>
         <ng-template #footer>
-            <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
-            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
+            <p-button label="Non" icon="pi pi-times" (click)="displayConfirmation = false" text severity="secondary" />
+            <p-button label="Oui" icon="pi pi-check" (click)="onDeleteModel()" severity="danger" outlined autofocus />
         </ng-template>
     </p-dialog>
     
@@ -64,24 +57,20 @@
         <div class="flex flex-col gap-6">
             <div>
                 <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <input type="text" pInputText id="name" [(ngModel)]="modelName" name="modelName" required autofocus />
             </div>
             <div>
-                <label for="inventoryStatus" class="block font-bold mb-3">Marque</label>
-                <select id="marque" class="w-full p-2 border rounded">
+                <label for="marque" class="block font-bold mb-3">Marque</label>
+                <select id="marque" class="w-full p-2 border rounded" [(ngModel)]="selectedMarque" name="marque">
                     <option value="">Sélectionnez une marque</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
+                    <option *ngFor="let marque of marques" [value]="marque._id">{{ marque.name }}</option>
                 </select>
             </div>
             <div>
-                <label for="name" class="block font-bold mb-3">Type de Vehicule</label>
-                <select id="marque" class="w-full p-2 border rounded">
+                <label for="typeVehicule" class="block font-bold mb-3">Type de Vehicule</label>
+                <select id="typeVehicule" class="w-full p-2 border rounded" [(ngModel)]="selectedTypeVehicule" name="typeVehicule">
                     <option value="">Sélectionnez un type de vehicule</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
+                    <option *ngFor="let type of typeVehicules" [value]="type._id">{{ type.name }}</option>
                 </select>
             </div>
         </div>
@@ -89,22 +78,49 @@
 
     <ng-template #footer>
         <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Save" icon="pi pi-check" (click)="onCreateModel()" />
     </ng-template>
 </p-dialog>
 
-<p-dialog [(visible)]="editModel" [style]="{ width: '450px' }" header="Modifier la Model" [modal]="true">
+<p-dialog [(visible)]="editModelDialog" [style]="{ width: '450px' }" header="Modifier le Model" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
+            <!-- Nom du modèle -->
             <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
+                <label for="name">Nom</label>
+                <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedModel.name" required autofocus />
+            </div>
+
+            <!-- Marque -->
+            <div>
+                <label id="marqueLabel">Marque</label>
+                <p-dropdown
+                  [options]="marques"
+                  [(ngModel)]="selectedModel.marque"
+                  optionLabel="name"
+                  optionValue="_id"
+                  aria-labelledby="marqueLabel"
+                  placeholder="Sélectionnez une marque">
+                </p-dropdown>
+            </div>
+
+            <!-- Type de véhicule -->
+            <div>
+                <label id="typeVehiculeLabel">Type de véhicule</label>
+                <p-dropdown
+                  [options]="typeVehicules"
+                  [(ngModel)]="selectedModel.typeVehicule"
+                  optionLabel="name"
+                  optionValue="_id"
+                  aria-labelledby="typeVehiculeLabel"
+                  placeholder="Sélectionnez un type de véhicule">
+                </p-dropdown>
             </div>
         </div>
     </ng-template>
 
     <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
+        <p-button label="Cancel" icon="pi pi-times" text (click)="editModelDialog = false" />
+        <p-button label="Save" icon="pi pi-check" text (click)="onUpdateModel()" />
     </ng-template>
 </p-dialog>
