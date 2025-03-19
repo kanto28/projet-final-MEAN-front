@@ -20,9 +20,11 @@ export class TypeVehiculeService {
      
    
      // Récupérer toutes les type de vehicules
-     getTypeVehicules(): Observable<any> {
-       return this.http.get<any>(this.apiUrl);
-     }
+    getTypeVehicules(): Observable<any> {
+      const token = localStorage.getItem('token'); 
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+      return this.http.get<any>(this.apiUrl, { headers });
+    }
    
      // Mettre à jour une type de vehicules existante
    updateTypeVehicule(id: string, name: string): Observable<any> {
