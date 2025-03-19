@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MoteurService } from '../../../services/crud/moteur/moteur.service';
 
 @Component({
   selector: 'app-moteur',
@@ -43,44 +44,116 @@ import { ToolbarModule } from 'primeng/toolbar';
   templateUrl: './moteur.component.html',
   styleUrl: './moteur.component.scss'
 })
-export class MoteurComponent {
-  ajoutMoteur: boolean = false;
-  editMoteur: boolean = false;
-  submitted: boolean = false;
-  displayConfirmation: boolean = false;
+export class MoteurComponent implements OnInit{
+    moteurName: string = '';
+    moteurs: any[] = [];
+    selectedMoteur: any = null; 
+    editMoteurDialog: boolean = false; 
+    moteurToDelete: any = null; 
+    
   
-
-  products = [
-    { id: '01', name: 'Toyota', price: 20000, category: 'SUV', reviews: 4, status: 'Available' },
-    { id: '02', name: 'Ford', price: 25000, category: 'Truck', reviews: 5, status: 'Sold Out' },
-    { id: '03', name: 'BMW', price: 30000, category: 'Sedan', reviews: 4.5, status: 'Available' }
-  ];
-
-  ovrirNouveauMoteur() {
-    this.submitted = false;
-    this.ajoutMoteur = true;
+    constructor(private moteurService: MoteurService) { }
+  
+     // Creer une nouvelle moteur
+     onCreateMoteur() {
+      this.moteurService.createMoteur(this.moteurName).subscribe(
+        response => {
+          console.log('Moteur créée avec succès', response);
+        },
+        error => {
+          console.error('Erreur lors de la création du moteur', error);
+        }
+      );
+    }
+  
+    ngOnInit(): void {
+      this.loadMoteur(); 
+    }
+    
+    loadMoteur(): void {
+      this.moteurService.getMoteurs().subscribe(
+        (data) => {
+          this.moteurs = data;
+          console.log('Moteur récupérées :', this.moteurs);  
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des moteurs', error);
+        }
+      );
+    }
+    
+  
+    ajoutMoteur: boolean = false;
+    submitted: boolean = false;
+    displayConfirmation: boolean = false;
+    
+  
+    ovrirNouveauMoteur() {
+      this.submitted = false;
+      this.ajoutMoteur = true;
+    }
+  
+  
+    hideAjoutMoteur() {
+      this.ajoutMoteur = false;
+    }
+  
+  
+  // open update
+  openEditMoteurDialog(moteur: any) {
+    this.selectedMoteur = { ...moteur }; 
+    this.editMoteurDialog = true;
   }
-
-  hideDialog() {
-    this.ajoutMoteur = false;
-    this.submitted = false;
+  
+  // close modal updaate
+  hideEditMoteurDialog() {
+    this.editMoteurDialog = false;
+    this.selectedMoteur = null;
   }
-
-  ovrirEditMoteur() {
-    this.submitted = false;
-    this.editMoteur = true;
+  
+  // creer moteur
+  onUpdateMoteur() {
+    if (this.selectedMoteur) {
+      this.moteurService.updateMoteur(this.selectedMoteur._id, this.selectedMoteur.name).subscribe(
+        response => {
+          console.log('Moteur mise à jour avec succès', response);
+          this.loadMoteur(); 
+          this.hideEditMoteurDialog(); 
+        },
+        error => {
+          console.error('Erreur lors de la mise à jour du moteur', error);
+        }
+      );
+    }
   }
-
-  hideEditMoteur() {
-    this.editMoteur = false;
-    this.submitted = false;
+  
+  
+  
+  // modal supp
+  openConfirmation(moteur: any) {
+    this.moteurToDelete = moteur; 
+    this.displayConfirmation = true; 
   }
-
-  openConfirmation() {
-    this.displayConfirmation = true;
-}
-
-closeConfirmation() {
-  this.displayConfirmation = false;
-}
+  
+  // close modal supp
+  closeConfirmation() {
+    this.displayConfirmation = false;
+    this.moteurToDelete = null; 
+  }
+  
+  //supprimer l'énergie
+  onDeleteMoteur() {
+    if (this.moteurToDelete) {
+      this.moteurService.deleteMoteur(this.moteurToDelete._id).subscribe(
+        response => {
+          console.log('Moteur supprimée avec succès', response);
+          this.loadMoteur(); 
+          this.closeConfirmation();
+        },
+        error => {
+          console.error('Erreur lors de la suppression du moteur', error);
+        }
+      );
+    }
+  }
 }
