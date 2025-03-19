@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { MarqueService } from '../../../services/crud/marque/marque.service';
 
 @Component({
   selector: 'app-marque',
@@ -43,45 +44,119 @@ import { ToolbarModule } from 'primeng/toolbar';
   templateUrl: './marque.component.html',
   styleUrl: './marque.component.scss'
 })
-export class MarqueComponent {
+export class MarqueComponent implements OnInit{
+
+  marqueName: string = '';
+  marques: any[] = [];
+  selectedMarque: any = null; 
+  editMarqueDialog: boolean = false; 
+  marqueToDelete: any = null;
+
+  constructor(private marqueService: MarqueService) { }
+
+   // Creer une nouvelle Marque
+   onCreateMarque() {
+    this.marqueService.createMarque(this.marqueName).subscribe(
+      response => {
+        this.marques.push(response);
+        this.marqueName = '';
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  // Récupérer toutes les Marques
+  getMarques() {
+    this.marqueService.getMarques().subscribe(
+      response => {
+        this.marques = response;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  // Mettre à jour une Marque existante
+  onUpdateMarque() {
+    this.marqueService.updateMarque(this.selectedMarque._id, this.selectedMarque.name).subscribe(
+      response => {
+        const index = this.marques.findIndex(marque => marque._id === this.selectedMarque._id);
+        this.marques[index] = response;
+        this.editMarqueDialog = false;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  // Supprimer une Marque existante
+  onDeleteMarque() {
+    this.marqueService.deleteMarque(this.marqueToDelete._id).subscribe(
+      response => {
+        this.marques = this.marques.filter(marque => marque._id !== this.marqueToDelete._id);
+        this.marqueToDelete = null;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadMarque(); 
+  }
+
+  loadMarque(): void {
+    this.marqueService.getMarques().subscribe(
+      (data) => {
+        this.marques = data;
+        console.log('Marque récupérées :', this.marques);  
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Marques', error);
+      }
+    );
+  }
 
   ajoutMarque: boolean = false;
-  editMarque: boolean = false;
   submitted: boolean = false;
   displayConfirmation: boolean = false;
-  
-
-  products = [
-    { id: '01', name: 'Toyota', price: 20000, category: 'SUV', reviews: 4, status: 'Available' },
-    { id: '02', name: 'Ford', price: 25000, category: 'Truck', reviews: 5, status: 'Sold Out' },
-    { id: '03', name: 'BMW', price: 30000, category: 'Sedan', reviews: 4.5, status: 'Available' }
-  ];
 
   ovrirNouveauMarque() {
     this.submitted = false;
     this.ajoutMarque = true;
   }
 
-  hideDialog() {
+
+  hideAjoutMarque() {
     this.ajoutMarque = false;
-    this.submitted = false;
   }
 
-  ovrirEditMarque() {
-    this.submitted = false;
-    this.editMarque = true;
+  // open update
+  openEditMarqueDialog(marque: any) {
+    this.selectedMarque = { ...marque }; 
+    this.editMarqueDialog = true;
   }
 
-  hideEditMarque() {
-    this.editMarque = false;
-    this.submitted = false;
+  // close modal updaate
+  hideEditMarqueDialog() {
+    this.editMarqueDialog = false;
+    this.selectedMarque = null;
   }
 
-  openConfirmation() {
-    this.displayConfirmation = true;
-}
-
-closeConfirmation() {
-  this.displayConfirmation = false;
-}
+  // modal supp
+  openConfirmation(marque: any) {
+    this.marqueToDelete = marque; 
+    this.displayConfirmation = true; 
+  }
+  
+  // close modal supp
+  closeConfirmation() {
+    this.displayConfirmation = false;
+    this.marqueToDelete = null; 
+  }
 }
