@@ -16,12 +16,23 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   // Se Connecter
+  // login(credentials: { email: string, password: string }): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+  //     tap((response: any) => {
+  //       localStorage.setItem('token', response.message);
+  //       localStorage.setItem('role', response.role);
+  //       localStorage.setItem('username', response.username);
+  //     })
+  //   );
+  // }
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
-        localStorage.setItem('token', response.message);
-        localStorage.setItem('role', response.role);
-        localStorage.setItem('username', response.username);
+        // Stocker les informations de l'utilisateur dans le localStorage
+        localStorage.setItem('token', response.message); // Token d'authentification
+        localStorage.setItem('role', response.role); // Rôle de l'utilisateur
+        localStorage.setItem('username', response.username); // Nom d'utilisateur
+        localStorage.setItem('user', JSON.stringify({ _id: response._id })); // ID de l'utilisateur
       })
     );
   }
