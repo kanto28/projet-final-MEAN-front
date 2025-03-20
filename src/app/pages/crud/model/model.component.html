@@ -85,36 +85,35 @@
 <p-dialog [(visible)]="editModelDialog" [style]="{ width: '450px' }" header="Modifier le Model" [modal]="true">
     <ng-template #content>
         <div class="flex flex-col gap-6">
-            <!-- Nom du modèle -->
             <div>
                 <label for="name">Nom</label>
                 <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedModel.name" required autofocus />
             </div>
 
-            <!-- Marque -->
             <div>
                 <label id="marqueLabel">Marque</label>
-                <p-dropdown
-                  [options]="marques"
-                  [(ngModel)]="selectedModel.marque"
-                  optionLabel="name"
-                  optionValue="_id"
-                  aria-labelledby="marqueLabel"
-                  placeholder="Sélectionnez une marque">
-                </p-dropdown>
-            </div>
+                <p-select
+                [options]="marques"
+                [(ngModel)]="selectedModel.marque" 
+                optionLabel="name"
+                optionValue="_id"
+                aria-labelledby="marqueLabel"
+                placeholder="Sélectionnez une marque">
+            </p-select>
 
-            <!-- Type de véhicule -->
+            </div>
+            
             <div>
                 <label id="typeVehiculeLabel">Type de véhicule</label>
-                <p-dropdown
-                  [options]="typeVehicules"
-                  [(ngModel)]="selectedModel.typeVehicule"
-                  optionLabel="name"
-                  optionValue="_id"
-                  aria-labelledby="typeVehiculeLabel"
-                  placeholder="Sélectionnez un type de véhicule">
-                </p-dropdown>
+                <p-select
+                    [options]="typeVehicules"
+                    [(ngModel)]="selectedModel.typeVehicule"  
+                    optionLabel="name"
+                    optionValue="_id"
+                    aria-labelledby="typeVehiculeLabel"
+                    placeholder="Sélectionnez un type de véhicule">
+                </p-select>
+
             </div>
         </div>
     </ng-template>

@@ -26,13 +26,7 @@ export class ModelService {
     return this.http.get<any>(this.apiUrl, { headers });
   }
 
-  // Mettre à jour un modèle
-  // updateModel(id: string, name: string, marque: string, typeVehicule: string): Observable<any> {
-  //   const token = localStorage.getItem('token'); 
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-  //   const url = `${this.apiUrl}/${id}`; 
-  //   return this.http.put(url, { name, marque, typeVehicule }, { headers });
-  // }
+  // update un modèle
   updateModel(id: string, model: any): Observable<any> {
     const token = localStorage.getItem('token'); 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 

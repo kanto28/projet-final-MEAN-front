@@ -18,7 +18,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ModelService } from '../../../services/crud/model/model.service';
-import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-model',
@@ -41,7 +40,7 @@ import { DropdownModule } from 'primeng/dropdown';
     InputIconModule,
     IconFieldModule,
     ConfirmDialogModule,
-    DropdownModule
+    SelectModule
   ],
   templateUrl: './model.component.html',
   styleUrl: './model.component.scss'
@@ -129,7 +128,7 @@ export class ModelComponent {
     this.modelService.createModel(this.modelName, this.selectedMarque, this.selectedTypeVehicule).subscribe(
       (response) => {
         console.log('Modèle créé avec succès', response);
-        this.loadModels(); // Recharger la liste des modèles
+        this.loadModels(); 
         this.hideDialog();
       },
       (error) => {
@@ -138,41 +137,28 @@ export class ModelComponent {
     );
   }
 
-  // Ouvrir le dialogue de mise à jour
-  openEditModelDialog(model: any): void {
+  openEditModelDialog(model: any) {
     this.selectedModel = { ...model };
+    this.selectedModel.marque = this.marques.find(m => m._id === model.marque._id || m._id === model.marque) || null;
+    this.selectedModel.typeVehicule = this.typeVehicules.find(t => t._id === model.typeVehicule._id || t._id === model.typeVehicule) || null;
+    console.log('Modèle sélectionné pour édition:', this.selectedModel);
     this.editModelDialog = true;
   }
-
-  // Mettre à jour un modèle
-  // onUpdateModel(): void {
-  //   if (this.selectedModel) {
-  //     this.modelService.updateModel(this.selectedModel._id, this.selectedModel.name, this.selectedModel.marque, this.selectedModel.typeVehicule).subscribe(
-  //       (response) => {
-  //         console.log('Modèle mis à jour avec succès', response);
-  //         this.loadModels(); // Recharger la liste des modèles
-  //         this.editModelDialog = false; // Fermer le dialogue
-  //       },
-  //       (error) => {
-  //         console.error('Erreur lors de la mise à jour du modèle', error);
-  //       }
-  //     );
-  //   }
-  // }
+  
 
   onUpdateModel(): void {
     if (this.selectedModel) {
       const updatedModel = {
         name: this.selectedModel.name,
-        marque: this.selectedModel.marque._id, // ID de la marque sélectionnée
-        typeVehicule: this.selectedModel.typeVehicule._id // ID du type de véhicule sélectionné
+        marque: typeof this.selectedModel.marque === 'object' ? this.selectedModel.marque._id : this.selectedModel.marque,
+        typeVehicule: typeof this.selectedModel.typeVehicule === 'object' ? this.selectedModel.typeVehicule._id : this.selectedModel.typeVehicule
       };
   
       this.modelService.updateModel(this.selectedModel._id, updatedModel).subscribe(
         (response) => {
           console.log('Modèle mis à jour avec succès', response);
-          this.loadModels(); // Recharger la liste des modèles
-          this.editModelDialog = false; // Fermer le dialogue
+          this.loadModels(); 
+          this.editModelDialog = false; 
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du modèle', error);
@@ -193,8 +179,8 @@ export class ModelComponent {
       this.modelService.deleteModel(this.modelToDelete._id).subscribe(
         (response) => {
           console.log('Modèle supprimé avec succès', response);
-          this.loadModels(); // Recharger la liste des modèles
-          this.displayConfirmation = false; // Fermer le dialogue
+          this.loadModels(); 
+          this.displayConfirmation = false; 
         },
         (error) => {
           console.error('Erreur lors de la suppression du modèle', error);

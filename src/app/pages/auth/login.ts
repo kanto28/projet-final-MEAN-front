@@ -33,7 +33,7 @@ import { AuthService } from '../../services/auth.service';
 
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                     <div class="flex items-center">
-                                        <p-checkbox [(ngModel)]="checked" id="rememberme1" binary class="mr-2"></p-checkbox>
+                                        <p-checkbox [(ngModel)]="checked" id="rememberme1" name="rememberme1" binary class="mr-2"></p-checkbox>
                                         <label for="rememberme1">Remember me</label>
                                     </div>
                                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
