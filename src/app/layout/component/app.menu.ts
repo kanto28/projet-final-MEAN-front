@@ -34,26 +34,21 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Accueil',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] }]
             },
             {
-                label: 'UI Components',
+                label: 'Gestion du Garage',
                 items: [
                     { label: 'Page Test', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/test'] },
                     {
-                        label: 'CRUD',
+                        label: 'Gestion des Véhicules',
                         icon: 'pi pi-fw pi-pencil',
                         items: [
                             {
                                 label: 'Marque',
                                 icon: 'pi pi-fw pi-car',
                                 routerLink: ['/pages/crud/marque']
-                            },
-                            {
-                                label: 'Action',
-                                icon: 'pi pi-fw pi-cog',
-                                routerLink: ['/pages/crud/action']
                             },
                             {
                                 label: 'Energie',
@@ -83,6 +78,32 @@ export class AppMenu {
                             {
                                 label: 'Type de Vehicule',
                                 icon: 'pi pi-fw pi-truck',
+                                routerLink: ['/pages/crud/typeVehicule']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Gestion des Pièces',
+                        icon: 'pi pi-fw pi-box',
+                        items: [
+                            {
+                                label: 'Catalogue des Pièces',
+                                icon: 'pi pi-fw pi-cog',
+                                routerLink: ['/pages/test']
+                            },
+                            {
+                                label: 'Ajout de Pièces en Stock',
+                                icon: 'pi pi-fw pi-download',
+                                routerLink: ['/pages/test']
+                            },
+                            {
+                                label: 'Utilisation des Pièces', //prestation piece
+                                icon: 'pi pi-fw pi-wrench',
+                                routerLink: ['/pages/test']
+                            },
+                            {
+                                label: 'Tarification des Pièces',
+                                icon: 'pi pi-fw pi-dollar',
                                 routerLink: ['/pages/crud/typeVehicule']
                             }
                         ]
