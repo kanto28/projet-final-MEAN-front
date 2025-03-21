@@ -37,6 +37,10 @@ export class AuthService {
     );
   }
 
+  getUserId(): string {
+    return localStorage.getItem('userId') || ''; // Stocké après connexion
+  }
+
   // vérifier si l'utilisateur est connecté
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token'); 
