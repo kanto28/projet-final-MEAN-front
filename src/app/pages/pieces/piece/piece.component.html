@@ -1,0 +1,148 @@
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button label="Ajout de Piece" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="ovrirNouveauPrestation()" />
+    </ng-template>
+
+    <ng-template #end>
+        <p-button label="Export" icon="pi pi-upload" severity="secondary"/>
+    </ng-template>
+</p-toolbar>
+
+<div class="card">
+    <p-table [value]="products" responsiveLayout="scroll">
+        <ng-template #caption>
+            <div class="flex items-center justify-between">
+                <h5 class="m-0">Listes des Pieces</h5>
+                <p-iconfield>
+                    <p-inputicon styleClass="pi pi-search" />
+                    <input pInputText type="text"  placeholder="Rechercher..." />
+                </p-iconfield>
+            </div>
+        </ng-template>
+    <br>
+        <ng-template #header>
+            <tr>
+                <th style="width: 3rem">ID</th>
+                <th>Nom</th>
+                <th>Annee</th>
+                <th>Model</th>
+                <th>Prix Initial</th>
+                <th>Prestation associe</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.category }}</td>
+                <td>{{ product.reviews }}</td>
+                <td>{{ product.status }}</td>
+                <td>
+                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditPrestation()" />
+                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
+                </td>
+                
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
+        <div class="flex items-center justify-center">
+            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
+            <span>Êtes-vous sûr de vouloir supprimer ce piece?</span>
+        </div>
+        <ng-template #footer>
+            <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
+            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
+        </ng-template>
+    </p-dialog>
+    
+</div>
+
+<!--Ajout de oiece-->
+<p-dialog [(visible)]="ajoutPrestation" [style]="{ width: '450px' }" header="Ajout de la Piece" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="name" class="block font-bold mb-3">Nom</label>
+                <input type="text" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="name" class="block font-bold mb-3">Annee</label>
+                <input type="date" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="inventoryStatus" class="block font-bold mb-3">Model</label>
+                <select id="marque" class="w-full p-2 border rounded">
+                    <option value="">Sélectionnez un model</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Ford">Ford</option>
+                    <option value="BMW">BMW</option>
+                </select>
+            </div>
+            <div>
+                <label for="name" class="block font-bold mb-3">Prix de la piece</label>
+                <input type="number" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="inventoryStatus" class="block font-bold mb-3">Prestation associe</label>
+                <select id="marque" class="w-full p-2 border rounded">
+                    <option value="">Sélectionnez une prestation</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Ford">Ford</option>
+                    <option value="BMW">BMW</option>
+                </select>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check"  />
+    </ng-template>
+</p-dialog>
+
+<!--Update de piece-->
+<p-dialog [(visible)]="editPrestation" [style]="{ width: '450px' }" header="Modifier la Prestation" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="name" class="block font-bold mb-3">Nom</label>
+                <input type="text" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="name" class="block font-bold mb-3">Annee</label>
+                <input type="date" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="inventoryStatus" class="block font-bold mb-3">Model</label>
+                <select id="marque" class="w-full p-2 border rounded">
+                    <option value="">Sélectionnez un model</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Ford">Ford</option>
+                    <option value="BMW">BMW</option>
+                </select>
+            </div>
+            <div>
+                <label for="name" class="block font-bold mb-3">Prix de la piece</label>
+                <input type="number" pInputText id="name" required autofocus fluid />
+            </div>
+            <div>
+                <label for="inventoryStatus" class="block font-bold mb-3">Prestation associe</label>
+                <select id="marque" class="w-full p-2 border rounded">
+                    <option value="">Sélectionnez une prestation</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Ford">Ford</option>
+                    <option value="BMW">BMW</option>
+                </select>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
+        <p-button label="Save" icon="pi pi-check"  />
+    </ng-template>
+</p-dialog>

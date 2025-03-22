@@ -89,22 +89,22 @@ export class AppMenu {
                             {
                                 label: 'Catalogue des Pièces',
                                 icon: 'pi pi-fw pi-cog',
-                                routerLink: ['/pages/test']
+                                routerLink: ['/pages/pieces/piece']
                             },
                             {
-                                label: 'Ajout de Pièces en Stock',
+                                label: 'Ajout de Pièces en Stock (Entrée)',
                                 icon: 'pi pi-fw pi-download',
-                                routerLink: ['/pages/test']
+                                routerLink: ['/pages/pieces/entrepiece']
                             },
                             {
                                 label: 'Utilisation des Pièces', //prestation piece
                                 icon: 'pi pi-fw pi-wrench',
-                                routerLink: ['/pages/test']
+                                routerLink: ['/pages/pieces/pieceprestation']
                             },
                             {
-                                label: 'Tarification des Pièces',
+                                label: 'Tarification des Pièces', //prix piece (detail an'ilay piece)
                                 icon: 'pi pi-fw pi-dollar',
-                                routerLink: ['/pages/crud/typeVehicule']
+                                routerLink: ['/pages/pieces/prixpiece']
                             }
                         ]
                     },

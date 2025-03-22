@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     template: `<div class="layout-footer">
        <div style="display: flex; gap: 1rem;">
   <p rel="noopener noreferrer" class="text-primary font-bold">
-    ANDRIANAIVOSOA 
+    ANDRIANAIVOSOA  
     Kanto
   </p>
   <p rel="noopener noreferrer" class="text-primary font-bold">&</p>
