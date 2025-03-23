@@ -44,5 +44,41 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './prestation.component.scss'
 })
 export class PrestationComponent {
+   ajoutAction: boolean = false;
+    editAction: boolean = false;
+    submitted: boolean = false;
+    displayConfirmation: boolean = false;
   
+    products = [
+      { id: '01', name: 'Toyota', price: 20000, category: 'SUV', reviews: 4, status: 'Available' },
+      { id: '02', name: 'Ford', price: 25000, category: 'Truck', reviews: 5, status: 'Sold Out' },
+      { id: '03', name: 'BMW', price: 30000, category: 'Sedan', reviews: 4.5, status: 'Available' }
+    ];
+    ovrirNouveauAction() {
+      this.submitted = false;
+      this.ajoutAction = true;
+    }
+  
+    hideDialog() {
+      this.ajoutAction = false;
+      this.submitted = false;
+    }
+  
+    ovrirEditAction() {
+      this.submitted = false;
+      this.editAction = true;
+    }
+  
+    hideEditAction() {
+      this.editAction = false;
+      this.submitted = false;
+    }
+  
+    openConfirmation() {
+      this.displayConfirmation = true;
+  }
+  
+  closeConfirmation() {
+    this.displayConfirmation = false;
+  }
 }

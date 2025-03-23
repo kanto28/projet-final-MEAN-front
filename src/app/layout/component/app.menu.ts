@@ -86,26 +86,20 @@ export class AppMenu {
                         label: 'Gestion des Pièces',
                         icon: 'pi pi-fw pi-box',
                         items: [
-                            {
-                                label: 'Catalogue des Pièces',
-                                icon: 'pi pi-fw pi-cog',
-                                routerLink: ['/pages/pieces/piece']
-                            },
-                            {
-                                label: 'Ajout de Pièces en Stock (Entrée)',
-                                icon: 'pi pi-fw pi-download',
-                                routerLink: ['/pages/pieces/entrepiece']
-                            },
-                            {
-                                label: 'Utilisation des Pièces', //prestation piece
-                                icon: 'pi pi-fw pi-wrench',
-                                routerLink: ['/pages/pieces/pieceprestation']
-                            },
-                            {
-                                label: 'Tarification des Pièces', //prix piece (detail an'ilay piece)
-                                icon: 'pi pi-fw pi-dollar',
-                                routerLink: ['/pages/pieces/prixpiece']
-                            }
+                            // {
+                            //     label: 'Catalogue des Pièces',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']
+                            // },
+                            // {
+                            //     label: 'Ajout de Pièces en Stock (Entrée)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/entrepiece']
+                            // },
+                            // {
+                            //     label: 'Utilisation des Pièces', icon: 'pi pi-fw pi-wrench',routerLink: ['/pages/pieces/pieceprestation']
+                            // },
+                            // {
+                            //     label: 'Tarification des Pièces', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']
+                            // }
+                            {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
+                            { label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']}
                         ]
                     },
                     { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }

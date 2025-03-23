@@ -27,7 +27,6 @@
                 <th>Annee</th>
                 <th>Model</th>
                 <th>Prix Initial</th>
-                <th>Prestation associe</th>
                 <th>Action</th>
             </tr>
         </ng-template>
@@ -37,7 +36,6 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.category }}</td>
-                <td>{{ product.reviews }}</td>
                 <td>{{ product.status }}</td>
                 <td>
                     <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditPrestation()" />
@@ -86,7 +84,7 @@
                 <label for="name" class="block font-bold mb-3">Prix de la piece</label>
                 <input type="number" pInputText id="name" required autofocus fluid />
             </div>
-            <div>
+            <!-- <div>
                 <label for="inventoryStatus" class="block font-bold mb-3">Prestation associe</label>
                 <select id="marque" class="w-full p-2 border rounded">
                     <option value="">Sélectionnez une prestation</option>
@@ -94,7 +92,7 @@
                     <option value="Ford">Ford</option>
                     <option value="BMW">BMW</option>
                 </select>
-            </div>
+            </div> -->
         </div>
     </ng-template>
 
@@ -129,7 +127,7 @@
                 <label for="name" class="block font-bold mb-3">Prix de la piece</label>
                 <input type="number" pInputText id="name" required autofocus fluid />
             </div>
-            <div>
+            <!-- <div>
                 <label for="inventoryStatus" class="block font-bold mb-3">Prestation associe</label>
                 <select id="marque" class="w-full p-2 border rounded">
                     <option value="">Sélectionnez une prestation</option>
@@ -137,7 +135,7 @@
                     <option value="Ford">Ford</option>
                     <option value="BMW">BMW</option>
                 </select>
-            </div>
+            </div> -->
         </div>
     </ng-template>
 

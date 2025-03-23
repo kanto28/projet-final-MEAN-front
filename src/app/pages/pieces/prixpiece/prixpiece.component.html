@@ -5,8 +5,17 @@
 
     <ng-template #end>
         <p-button label="Ajouter un prix" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="ouvrirAjoutPrix()" />
+        <p-button label="Lier une prestation" icon="pi pi-link" severity="secondary" (onClick)="lierPrestation()" />
     </ng-template>
 </p-toolbar>
+
+<!-- Détails de la pièce -->
+<div class="card">
+    <h5>Informations de la pièce</h5>
+    <p><strong>Nom:</strong> Alternateur</p>
+    <p><strong>Modèle:</strong> XYZ-123</p>
+    <p><strong>Année:</strong> 2022</p>
+</div>
 
 <div class="card">
     <p-table [value]="prixList" responsiveLayout="scroll">
@@ -18,6 +27,7 @@
             <tr>
                 <th>Date</th>
                 <th>Prix (€)</th>
+                <th>Action</th>
             </tr>
         </ng-template>
 
@@ -25,10 +35,22 @@
             <tr>
                 <td>{{ prix.date }}</td>
                 <td>{{ prix.montant }}</td>
+                <td><p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditPrix()" /></td>
             </tr>
         </ng-template>
     </p-table>
 </div>
+
+<!-- Prestations associées -->
+<div class="card">
+    <h5>Prestations associées</h5>
+    <ul>
+        <li><strong>Prestation 1:</strong> Réparation de moteur | <strong>Date:</strong> 02-02-2022</li>
+        <li><strong>Prestation 2:</strong> Inspection complète | <strong>Date:</strong> 15-07-2022</li>
+        <li><strong>Prestation 3:</strong> Remplacement des pièces | <strong>Date:</strong> 20-11-2022</li>
+    </ul>
+</div>
+
 
 <!-- Modal d'ajout d'un prix -->
 <p-dialog [(visible)]="ajoutPrix" [style]="{ width: '450px' }" header="Ajouter un nouveau prix" [modal]="true">
@@ -48,5 +70,52 @@
     <ng-template #footer>
         <p-button label="Annuler" icon="pi pi-times" text (click)="fermerAjoutPrix()" />
         <p-button label="Enregistrer" icon="pi pi-check" />
+    </ng-template>
+</p-dialog>
+
+
+<!--edit-->
+<p-dialog [(visible)]="editPrix" [style]="{ width: '450px' }" header="Modifier la piece choisi" [modal]="true">
+    <ng-template #content>
+        <div class="flex flex-col gap-6">
+            <div>
+                <label for="date" class="block font-bold mb-3">Date</label>
+                <input type="date" pInputText id="date" required />
+            </div>
+            <div>
+                <label for="prix" class="block font-bold mb-3">Prix (€)</label>
+                <input type="number" pInputText id="prix" required />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Annuler" icon="pi pi-times" text (click)="fermerAjoutPrix()" />
+        <p-button label="Enregistrer" icon="pi pi-check" />
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Cancel" icon="pi pi-times" text (click)="hideEditPrix()" />
+        <p-button label="Save" icon="pi pi-check"  />
+    </ng-template>
+</p-dialog>
+
+<!-- Modal de liaison avec prestation -->
+<p-dialog [(visible)]="lierPrestationpiece " [style]="{ width: '450px' }" header="Lier une prestation à la pièce" [modal]="true">
+    <ng-template #content>
+        <div>
+            <label for="inventoryStatus" class="block font-bold mb-3">Model</label>
+            <select id="marque" class="w-full p-2 border rounded">
+                <option value="">Sélectionnez un model</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Ford">Ford</option>
+                <option value="BMW">BMW</option>
+            </select>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button label="Annuler" icon="pi pi-times" text (click)="fermerLierPrestation()" />
+        <p-button label="Lier" icon="pi pi-check"  />
     </ng-template>
 </p-dialog>

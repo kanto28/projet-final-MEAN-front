@@ -45,6 +45,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 })
 export class PrixpieceComponent {
   ajoutPrix: boolean = false;
+  editPrix: boolean = false;
+  lierPrestationpiece: boolean = false;
 
   // Liste statique des prix
   prixList = [
@@ -59,5 +61,21 @@ export class PrixpieceComponent {
 
   fermerAjoutPrix() {
     this.ajoutPrix = false;
+  }
+  
+  ovrirEditPrix() {
+    this.editPrix = true;
+  }
+
+  hideEditPrix() {
+    this.editPrix = false;
+  }
+  
+  lierPrestation(){
+    this.lierPrestationpiece = true;
+  }
+
+  fermerLierPrestation(){
+    this.lierPrestationpiece = false;
   }
 }
