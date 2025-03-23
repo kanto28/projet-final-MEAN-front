@@ -28,36 +28,13 @@ export class AuthService {
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
-        // Créez un objet utilisateur complet
-        const user = {
-          _id: response.id, // Utilisez `response.id` si c'est ce que l'API retourne
-          username: response.username,
-          role: response.role,
-          token: response.message // Token d'authentification
-        };
-  
-        // Stockez l'objet utilisateur complet dans le localStorage
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', user.token); // Stockez également le token séparément si nécessaire
+        // Stocker les informations de l'utilisateur dans le localStorage
+        localStorage.setItem('token', response.message); // Token d'authentification
+        localStorage.setItem('role', response.role); // Rôle de l'utilisateur
+        localStorage.setItem('username', response.username); // Nom d'utilisateur
+        localStorage.setItem('user', JSON.stringify({ _id: response._id })); // ID de l'utilisateur
       })
     );
-  }
-  
-  // login(credentials: { email: string, password: string }): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-  //     tap((response: any) => {
-  //       // Stocker les informations de l'utilisateur dans le localStorage
-  //       localStorage.setItem('token', response.message); // Token d'authentification
-  //       localStorage.setItem('role', response.role); // Rôle de l'utilisateur
-  //       localStorage.setItem('username', response.username); // Nom d'utilisateur
-  //       localStorage.setItem('user', JSON.stringify({ _id: response._id })); // ID de l'utilisateur
-  //     })
-  //   );
-  // }
-
-  getUserIdFromToken(token: string): string {
-    const decodedToken = JSON.parse(atob(token.split('.')[1])); // Décoder le token JWT
-    return decodedToken.userId; // Remplacez "userId" par la clé appropriée dans votre token
   }
 
   getUserId(): string {
