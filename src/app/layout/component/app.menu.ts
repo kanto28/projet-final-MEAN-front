@@ -99,7 +99,9 @@ export class AppMenu {
                             //     label: 'Tarification des Pièces', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']
                             // }
                             {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
-                            { label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']}
+                            { label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
+                            {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
+                            {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']}
                         ]
                     },
                     { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }

@@ -1,8 +1,10 @@
-
+// prestation.model.ts
 export interface Prestation {
-  _id?: string; // Optionnel, car il est généré par MongoDB
+  _id?: string;
   name: string;
   duree: number;
-  typeVehicule: string; // ID du type de véhicule
-  user?: string; // Optionnel, car il peut être ajouté plus tard
+  typeVehicule: string;
+  user?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

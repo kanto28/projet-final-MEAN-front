@@ -11,7 +11,8 @@ import { TransmissionComponent } from './crud/transmission/transmission.componen
 import { TypeVehiculeComponent } from './crud/type-vehicule/type-vehicule.component';
 import { PieceComponent } from './pieces/piece/piece.component';
 import { PrixpieceComponent } from './pieces/prixpiece/prixpiece.component';
-import { PieceprestationComponent } from './pieces/pieceprestation/pieceprestation.component';
+import { EtatstockpieceComponent } from './pieces/etatstockpiece/etatstockpiece.component';
+import { HistoriquestockComponent } from './pieces/historiquestock/historiquestock.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -28,6 +29,8 @@ export default [
     // Piece
     { path: 'pieces/piece', component: PieceComponent},
     { path: 'pieces/prixpiece', component: PrixpieceComponent},
-    { path: 'pieces/pieceprestation', component: PieceprestationComponent},
+    //{ path: 'pieces/pieceprestation', component: PieceprestationComponent},
+    {path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
+    {path: 'pieces/historiquestock', component: HistoriquestockComponent},
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

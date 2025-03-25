@@ -1,116 +1,105 @@
-<p>mandeha ilay prestation</p>
-
-
-<p-toolbar styleClass="mb-6">
-    <ng-template #start>
-        <p-button label="Ajout de Prestation" icon="pi pi-plus" severity="secondary" class="mr-2" (onClick)="ovrirNouveauAction()" />
-    </ng-template>
-
-    <ng-template #end>
-        <p-button label="Export" icon="pi pi-upload" severity="secondary"/>
-    </ng-template>
-</p-toolbar>
-
 <div class="card">
-    <p-table [value]="products" responsiveLayout="scroll">
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Liste des Prestations </h5>
-            </div>
-            <br>
-        </ng-template>
-    <br>
-        <ng-template #header>
-            <tr>
-                <th style="width: 3rem">ID</th>
-                <th>Nom</th>
-                <th>Duree</th>
-                <th>Type de vehicule</th>
-                <th>Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.status }}</td>
-                <td>
-                    <p-button label="Edit" icon="pi pi-pencil" severity="info" [style]="{ width: 'auto', marginRight: '8px' }" (onClick)="ovrirEditAction()" />
-                    <p-button label="Delete" icon="pi pi-trash" severity="danger" [style]="{ width: 'auto' }" (click)="openConfirmation()" />
-                </td>
-                
-            </tr>
-        </ng-template>
-    </p-table>
+    <h2>Créer une nouvelle prestation</h2>
+  
+    <!-- Message de succès -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+  
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+      <button type="button" class="close" (click)="clearMessages()">&times;</button>
+    </div>
+  
+    <form (ngSubmit)="onSubmit()" #prestationForm="ngForm">
+      <div class="form-group">
+        <label for="name">Nom de la prestation</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          [(ngModel)]="prestation.name" 
+          required
+          class="form-control"
+        >
+      </div>
+  
+      <div class="form-group">
+        <label for="duree">Durée (en minutes)</label>
+        <input 
+          type="number" 
+          id="duree" 
+          name="duree" 
+          [(ngModel)]="prestation.duree" 
+          required
+          min="1"
+          class="form-control"
+        >
+      </div>
+  
+      <div class="form-group">
+        <label for="typeVehicule">Type de véhicule</label>
+        <select 
+          id="typeVehicule" 
+          name="typeVehicule" 
+          [(ngModel)]="prestation.typeVehicule" 
+          required
+          class="form-control"
+          [disabled]="loadingTypes"
+        >
+          <option value="" disabled selected>Sélectionnez un type</option>
+          <option *ngFor="let type of typeVehicules" [value]="type._id">
+            {{ type.name }}
+          </option>
+        </select>
+        <div *ngIf="loadingTypes" class="text-muted">Chargement des types...</div>
+      </div>
+  
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="isLoading || !prestationForm.form.valid"
+      >
+        <span *ngIf="!isLoading">Créer</span>
+        <span *ngIf="isLoading">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Création en cours...
+        </span>
+      </button>
+    </form>
+  </div>
 
-    <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
-        <div class="flex items-center justify-center">
-            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
-            <span>Êtes-vous sûr de vouloir supprimer ?</span>
-        </div>
-        <ng-template #footer>
-            <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
-            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
-        </ng-template>
-    </p-dialog>
-    
+
+
+  <!-- src/app/prestation-list/prestation-list.component.html -->
+<div class="container mt-4">
+  <h2>Liste des Prestations</h2>
+  
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <table *ngIf="!isLoading" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Durée (min)</th>
+        <th>Type de véhicule</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let prestation of prestations">
+        <td>{{ prestation.name }}</td>
+        <td>{{ prestation.duree }}</td>
+        <td>{{ prestation.typeVehicule }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-
-<p-dialog [(visible)]="ajoutAction" [style]="{ width: '450px' }" header="Ajout de la Prestation" [modal]="true">
-    <ng-template #content>
-        <div class="flex flex-col gap-6">
-            <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="name" class="block font-bold mb-3">Duree</label>
-                <input type="number" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="inventoryStatus" class="block font-bold mb-3">type de Vehicule</label>
-                <select id="marque" class="w-full p-2 border rounded">
-                    <option value="">Sélectionnez un type de vehicule</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
-                </select>
-            </div>
-        </div>
-    </ng-template>
-
-    <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
-    </ng-template>
-</p-dialog>
-
-<p-dialog [(visible)]="editAction" [style]="{ width: '450px' }" header="Modifier la Prestation" [modal]="true">
-    <ng-template #content>
-        <div class="flex flex-col gap-6">
-            <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="name" class="block font-bold mb-3">Duree</label>
-                <input type="number" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="inventoryStatus" class="block font-bold mb-3">type de Vehicule</label>
-                <select id="marque" class="w-full p-2 border rounded">
-                    <option value="">Sélectionnez un type de vehicule</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
-                </select>
-            </div>
-        </div>
-    </ng-template>
-
-    <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
-    </ng-template>
-</p-dialog>
