@@ -1,4 +1,3 @@
-// prestation.model.ts
 export interface Prestation {
   _id?: string;
   name: string;

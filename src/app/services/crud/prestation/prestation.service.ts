@@ -22,19 +22,14 @@ export class PrestationService {
   }
 
   // Créer une prestation (sans prix)
-  // createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
-  //   return this.http.post<Prestation>(this.apiUrl, prestationData, { headers: this.getHeaders() });
-  // }
-  // prestation.service.ts
-// prestation.service.ts
 createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const dataWithUser = { 
     ...prestationData, 
-    user: user._id // Assurez-vous que l'ID utilisateur est correct
+    user: user._id 
   };
   
-  console.log('Données envoyées:', dataWithUser); // Debug log
+  console.log('Données envoyées:', dataWithUser); 
   
   return this.http.post<Prestation>(this.apiUrl, dataWithUser, { headers: this.getHeaders() }).pipe(
     catchError(error => {

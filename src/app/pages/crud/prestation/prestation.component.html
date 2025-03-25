@@ -71,8 +71,6 @@
   </div>
 
 
-
-  <!-- src/app/prestation-list/prestation-list.component.html -->
 <div class="container mt-4">
   <h2>Liste des Prestations</h2>
   
@@ -98,7 +96,7 @@
       <tr *ngFor="let prestation of prestations">
         <td>{{ prestation.name }}</td>
         <td>{{ prestation.duree }}</td>
-        <td>{{ prestation.typeVehicule }}</td>
+        <td>{{ getTypeVehiculeName(prestation.typeVehicule) }}</td>
       </tr>
     </tbody>
   </table>

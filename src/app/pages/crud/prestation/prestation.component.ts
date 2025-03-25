@@ -103,29 +103,9 @@ export class PrestationComponent {
     });
   }
 
-  // onSubmit() {
-  //   this.isLoading = true;
-  //   this.successMessage = null;
-  //   this.errorMessage = null;
-
-  //   this.prestationService.createPrestation(this.prestation).subscribe({
-  //     next: (response) => {
-  //       this.isLoading = false;
-  //       this.successMessage = 'Prestation créée avec succès';
-  //       setTimeout(() => {
-  //         this.router.navigate(['/prestations']);
-  //       }, 1500);
-  //     },
-  //     error: (err) => {
-  //       this.isLoading = false;
-  //       this.errorMessage = err.error.erreur || 'Erreur lors de la création';
-  //     }
-  //   });
-  // }
-  // prestation.component.ts
-// prestation.component.ts
+  
 onSubmit() {
-  console.log('Données du formulaire:', this.prestation); // Vérifiez les données avant envoi
+  console.log('Données du formulaire:', this.prestation); 
   
   this.isLoading = true;
   this.prestationService.createPrestation(this.prestation).subscribe({
@@ -149,5 +129,13 @@ onSubmit() {
   clearMessages() {
     this.successMessage = null;
     this.errorMessage = null;
+  }
+
+  // Récupérer le nom du type de véhicule
+  getTypeVehiculeName(typeVehiculeId: string): string {
+    if (!typeVehiculeId || !this.typeVehicules.length) return 'Chargement...';
+    
+    const type = this.typeVehicules.find(t => t._id === typeVehiculeId);
+    return type ? type.name : 'Type inconnu';
   }
 }
