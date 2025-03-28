@@ -11,8 +11,8 @@ import { Component } from '@angular/core';
   </p>
   <p rel="noopener noreferrer" class="text-primary font-bold">&</p>
   <p rel="noopener noreferrer" class="text-primary font-bold">
-    ANDRIANAIVOSOA 
-    Kanto
+    RAZAFINDRAKOTO 
+    Georges Aime Michel
   </p>
 </div>
     </div>`
