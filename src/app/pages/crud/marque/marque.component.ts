@@ -74,8 +74,6 @@ export class MarqueComponent implements OnInit{
     this.messageType = type;
     this.message = message;
     this.showMessage = true;
-    
-    // Masquer le message après 5 secondes
     setTimeout(() => {
       this.showMessage = false;
     }, 5000);

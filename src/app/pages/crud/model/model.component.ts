@@ -18,6 +18,8 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ModelService } from '../../../services/crud/model/model.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-model',
@@ -40,7 +42,9 @@ import { ModelService } from '../../../services/crud/model/model.service';
     InputIconModule,
     IconFieldModule,
     ConfirmDialogModule,
-    SelectModule
+    SelectModule,
+    DropdownModule,
+    ProgressBarModule
   ],
   templateUrl: './model.component.html',
   styleUrl: './model.component.scss'
@@ -52,15 +56,17 @@ export class ModelComponent {
   editModelDialog: boolean = false;
   modelToDelete: any = null;
   displayConfirmation: boolean = false;
-
+  ajoutModel: boolean = false;
+  
   selectedMarque: string = ''; 
   selectedTypeVehicule: string = ''; 
-
   marques: any[] = []; 
   typeVehicules: any[] = []; 
-  ajoutModel: boolean = false; 
-
-
+  
+  loading: boolean = false;
+  message: string = '';
+  messageType: 'success' | 'error' | '' = '';
+  showMessage: boolean = false;
 
   constructor(private modelService: ModelService) { }
 
@@ -70,43 +76,68 @@ export class ModelComponent {
     this.loadTypeVehicules(); 
   }
 
-  // Charger tous les modèles
-  loadModels(): void {
-    this.modelService.getModels().subscribe(
-      (data) => {
-        this.models = data;
-        console.log('Modèles récupérés :', this.models);
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des modèles', error);
-      }
-    );
+  private showAlert(type: 'success' | 'error', message: string) {
+    this.messageType = type;
+    this.message = message;
+    this.showMessage = true;
+    
+    setTimeout(() => {
+      this.showMessage = false;
+    }, 5000);
   }
 
-   // Charger les marques
-   loadMarques(): void {
-    this.modelService.getMarques().subscribe(
-      (data) => {
-        this.marques = data;
-        console.log('Marques récupérées :', this.marques);
+  // Charger tous les modèles
+  loadModels(): void {
+    this.loading = true;
+    this.modelService.getModels().subscribe({
+      next: (data) => {
+        this.models = data;
       },
-      (error) => {
-        console.error('Erreur lors de la récupération des marques', error);
+      error: (error) => {
+        console.error('Erreur lors de la récupération des modèles', error);
+        this.showAlert('error', 'Erreur lors du chargement des modèles');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       }
-    );
+    });
+  }
+
+  // Charger les marques
+  loadMarques(): void {
+    this.loading = true;
+    this.modelService.getMarques().subscribe({
+      next: (data) => {
+        this.marques = data;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des marques', error);
+        this.showAlert('error', 'Erreur lors du chargement des marques');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
   // Charger les types de véhicules
   loadTypeVehicules(): void {
-    this.modelService.getTypeVehicules().subscribe(
-      (data) => {
+    this.loading = true;
+    this.modelService.getTypeVehicules().subscribe({
+      next: (data) => {
         this.typeVehicules = data;
-        console.log('Types de véhicules récupérés :', this.typeVehicules);
       },
-      (error) => {
+      error: (error) => {
         console.error('Erreur lors de la récupération des types de véhicules', error);
+        this.showAlert('error', 'Erreur lors du chargement des types de véhicules');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       }
-    );
+    });
   }
 
   // Ouvrir le dialogue d'ajout
@@ -122,49 +153,66 @@ export class ModelComponent {
     this.selectedTypeVehicule = '';
   }
 
- 
   // Créer un modèle
   onCreateModel(): void {
-    this.modelService.createModel(this.modelName, this.selectedMarque, this.selectedTypeVehicule).subscribe(
-      (response) => {
-        console.log('Modèle créé avec succès', response);
+    if (!this.modelName.trim() || !this.selectedMarque || !this.selectedTypeVehicule) {
+      this.showAlert('error', 'Veuillez remplir tous les champs');
+      return;
+    }
+
+    this.loading = true;
+    this.modelService.createModel(this.modelName, this.selectedMarque, this.selectedTypeVehicule).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Modèle créé avec succès');
         this.loadModels(); 
         this.hideDialog();
       },
-      (error) => {
+      error: (error) => {
         console.error('Erreur lors de la création du modèle', error);
+        this.showAlert('error', 'Erreur lors de la création du modèle');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       }
-    );
+    });
   }
 
   openEditModelDialog(model: any) {
     this.selectedModel = { ...model };
     this.selectedModel.marque = this.marques.find(m => m._id === model.marque._id || m._id === model.marque) || null;
     this.selectedModel.typeVehicule = this.typeVehicules.find(t => t._id === model.typeVehicule._id || t._id === model.typeVehicule) || null;
-    console.log('Modèle sélectionné pour édition:', this.selectedModel);
     this.editModelDialog = true;
   }
-  
 
   onUpdateModel(): void {
-    if (this.selectedModel) {
-      const updatedModel = {
-        name: this.selectedModel.name,
-        marque: typeof this.selectedModel.marque === 'object' ? this.selectedModel.marque._id : this.selectedModel.marque,
-        typeVehicule: typeof this.selectedModel.typeVehicule === 'object' ? this.selectedModel.typeVehicule._id : this.selectedModel.typeVehicule
-      };
-  
-      this.modelService.updateModel(this.selectedModel._id, updatedModel).subscribe(
-        (response) => {
-          console.log('Modèle mis à jour avec succès', response);
-          this.loadModels(); 
-          this.editModelDialog = false; 
-        },
-        (error) => {
-          console.error('Erreur lors de la mise à jour du modèle', error);
-        }
-      );
+    if (!this.selectedModel?.name?.trim() || !this.selectedModel?.marque || !this.selectedModel?.typeVehicule) {
+      this.showAlert('error', 'Veuillez remplir tous les champs');
+      return;
     }
+
+    this.loading = true;
+    const updatedModel = {
+      name: this.selectedModel.name,
+      marque: typeof this.selectedModel.marque === 'object' ? this.selectedModel.marque._id : this.selectedModel.marque,
+      typeVehicule: typeof this.selectedModel.typeVehicule === 'object' ? this.selectedModel.typeVehicule._id : this.selectedModel.typeVehicule
+    };
+
+    this.modelService.updateModel(this.selectedModel._id, updatedModel).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Modèle mis à jour avec succès');
+        this.loadModels(); 
+        this.editModelDialog = false; 
+      },
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour du modèle', error);
+        this.showAlert('error', 'Erreur lors de la mise à jour du modèle');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 
   // Ouvrir le dialogue de confirmation de suppression
@@ -175,17 +223,21 @@ export class ModelComponent {
 
   // Supprimer un modèle
   onDeleteModel(): void {
-    if (this.modelToDelete) {
-      this.modelService.deleteModel(this.modelToDelete._id).subscribe(
-        (response) => {
-          console.log('Modèle supprimé avec succès', response);
-          this.loadModels(); 
-          this.displayConfirmation = false; 
-        },
-        (error) => {
-          console.error('Erreur lors de la suppression du modèle', error);
-        }
-      );
-    }
+    this.loading = true;
+    this.modelService.deleteModel(this.modelToDelete._id).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Modèle supprimé avec succès');
+        this.loadModels(); 
+        this.displayConfirmation = false; 
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression du modèle', error);
+        this.showAlert('error', 'Erreur lors de la suppression du modèle');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 }

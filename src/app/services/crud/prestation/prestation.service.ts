@@ -21,26 +21,70 @@ export class PrestationService {
     });
   }
 
-  // Créer une prestation (sans prix)
-createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
+//   // Créer une prestation (sans prix)
+// createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
+//   const user = JSON.parse(localStorage.getItem('user') || '{}');
+//   const dataWithUser = { 
+//     ...prestationData, 
+//     user: user._id 
+//   };
+  
+//   console.log('Données envoyées:', dataWithUser); 
+  
+//   return this.http.post<Prestation>(this.apiUrl, dataWithUser, { headers: this.getHeaders() }).pipe(
+//     catchError(error => {
+//       console.error('Erreur complète:', error);
+//       if (error.error) {
+//         console.error('Détails serveur:', error.error);
+//       }
+//       throw error;
+//     })
+//   );
+// }
+
+// // Mettre à jour une prestation
+// updatePrestation(id: string, prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
+//   const url = `${this.apiUrl}/${id}`;
+//   return this.http.put<Prestation>(url, prestationData, { headers: this.getHeaders() });
+// }
+
+ // Créer une prestation
+ createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const dataWithUser = { 
     ...prestationData, 
     user: user._id 
   };
   
-  console.log('Données envoyées:', dataWithUser); 
+  console.log('Données envoyées:', dataWithUser);
   
   return this.http.post<Prestation>(this.apiUrl, dataWithUser, { headers: this.getHeaders() }).pipe(
     catchError(error => {
-      console.error('Erreur complète:', error);
-      if (error.error) {
-        console.error('Détails serveur:', error.error);
-      }
+      console.error('Erreur création prestation:', error);
       throw error;
     })
   );
 }
+
+// Mettre à jour une prestation
+updatePrestation(id: string, prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const url = `${this.apiUrl}/${id}`;
+  const dataWithUser = {
+    ...prestationData,
+    user: user._id // Ajout cohérent du user._id
+  };
+
+  console.log('Données mises à jour:', dataWithUser);
+  
+  return this.http.put<Prestation>(url, dataWithUser, { headers: this.getHeaders() }).pipe(
+    catchError(error => {
+      console.error('Erreur mise à jour prestation:', error);
+      throw error;
+    })
+  );
+}
+
 
   // Créer une prestation avec prix (réservé au Manager)
   createPrestationWithPrice(prestationData: { name: string, duree: number, typeVehicule: string, prix: number }): Observable<any> {
@@ -59,12 +103,7 @@ createPrestation(prestationData: { name: string, duree: number, typeVehicule: st
     return this.http.get<Prestation[]>(url, { headers: this.getHeaders() });
   }
 
-  // Mettre à jour une prestation
-  updatePrestation(id: string, prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.put<Prestation>(url, prestationData, { headers: this.getHeaders() });
-  }
-
+  
   // Supprimer une prestation
   deletePrestation(id: string): Observable<any> {
     const url = `${this.apiUrl}/${id}`;

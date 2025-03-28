@@ -18,6 +18,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TypeVehiculeService } from '../../../services/crud/typeVehicule/type-vehicule.service';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-type-vehicule',
@@ -39,7 +40,8 @@ import { TypeVehiculeService } from '../../../services/crud/typeVehicule/type-ve
     TagModule,
     InputIconModule,
     IconFieldModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ProgressBarModule
   ],
   templateUrl: './type-vehicule.component.html',
   styleUrl: './type-vehicule.component.scss'
@@ -48,108 +50,157 @@ export class TypeVehiculeComponent implements OnInit{
 
   typeVehiculeName: string = '';
   typeVehicules: any[] = [];
-  selectedTypeVehicule: any = null; 
-  editTypeVehiculeDialog: boolean = false; 
+  selectedTypeVehicule: any = null;
+  editTypeVehiculeDialog: boolean = false;
   typeVehiculeToDelete: any = null;
+  ajoutTypeVehicule: boolean = false;
+  submitted: boolean = false;
+  displayConfirmation: boolean = false;
+  loading: boolean = false;
+  
+  // Propriétés pour les messages
+  message: string = '';
+  messageType: 'success' | 'error' | '' = '';
+  showMessage: boolean = false;
 
   constructor(private typeVehiculeService: TypeVehiculeService) { }
 
-   // Creer une nouvelle Type de Vehicule
-   onCreateTypeVehicule() {
-    this.typeVehiculeService.createMoteur(this.typeVehiculeName).subscribe(
-      response => {
-        console.log('Type de Vehicule  créée avec succès', response);
-      },
-      error => {
-        console.error('Erreur lors de la création du Type de Vehicule', error);
-      }
-    );
-  }
-
   ngOnInit(): void {
-    this.loadTypeVehicule(); 
+    this.loadTypeVehicule();
   }
-  
+
+  private showAlert(type: 'success' | 'error', message: string) {
+    this.messageType = type;
+    this.message = message;
+    this.showMessage = true;
+    
+    setTimeout(() => {
+      this.showMessage = false;
+    }, 5000);
+  }
+
+  // Charger les types de véhicules
   loadTypeVehicule(): void {
-    this.typeVehiculeService.getTypeVehicules().subscribe(
-      (data) => {
+    this.loading = true;
+    this.typeVehiculeService.getTypeVehicules().subscribe({
+      next: (data) => {
         this.typeVehicules = data;
-        console.log('Type de Vehicule récupérées :', this.typeVehicules);  
       },
-      (error) => {
-        console.error('Erreur lors de la récupération des type de vehicule', error);
+      error: (error) => {
+        console.error('Erreur lors de la récupération des types de véhicule', error);
+        this.showAlert('error', 'Erreur lors du chargement des types de véhicule');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
       }
-    );
+    });
   }
 
-    ajoutTypeVehicule: boolean = false;
-    submitted: boolean = false;
-    displayConfirmation: boolean = false;
-
-    ovrirNouveauTypeVehicule() {
-      this.submitted = false;
-      this.ajoutTypeVehicule = true;
-    }
-  
-  
-    hideAjoutTypeVehicule() {
-      this.ajoutTypeVehicule = false;
+  // Créer un nouveau type de véhicule
+  onCreateTypeVehicule() {
+    if (!this.typeVehiculeName.trim()) {
+      this.showAlert('error', 'Le nom du type de véhicule est requis');
+      return;
     }
 
-    // open update
+    this.loading = true;
+    this.typeVehiculeService.createMoteur(this.typeVehiculeName).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Type de véhicule créé avec succès');
+        this.typeVehiculeName = '';
+        this.ajoutTypeVehicule = false;
+        this.loadTypeVehicule();
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création du type de véhicule', error);
+        this.showAlert('error', 'Erreur lors de la création du type de véhicule');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Mettre à jour un type de véhicule
+  onUpdateTypeVehicule() {
+    if (!this.selectedTypeVehicule?.name?.trim()) {
+      this.showAlert('error', 'Le nom du type de véhicule est requis');
+      return;
+    }
+
+    this.loading = true;
+    this.typeVehiculeService.updateTypeVehicule(this.selectedTypeVehicule._id, this.selectedTypeVehicule.name).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Type de véhicule mis à jour avec succès');
+        this.loadTypeVehicule();
+        this.editTypeVehiculeDialog = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour du type de véhicule', error);
+        this.showAlert('error', 'Erreur lors de la mise à jour du type de véhicule');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Supprimer un type de véhicule
+  onDeleteTypeVehicule() {
+    this.loading = true;
+    this.typeVehiculeService.deleteTypeVehicule(this.typeVehiculeToDelete._id).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Type de véhicule supprimé avec succès');
+        this.loadTypeVehicule();
+        this.displayConfirmation = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression du type de véhicule', error);
+        this.showAlert('error', 'Erreur lors de la suppression du type de véhicule');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Ouvrir le formulaire d'ajout
+  ovrirNouveauTypeVehicule() {
+    this.submitted = false;
+    this.ajoutTypeVehicule = true;
+  }
+
+  // Fermer le formulaire d'ajout
+  hideAjoutTypeVehicule() {
+    this.ajoutTypeVehicule = false;
+  }
+
+  // Ouvrir le formulaire de modification
   openEditTypeVehiculeDialog(typeVehicule: any) {
-    this.selectedTypeVehicule = { ...typeVehicule }; 
+    this.selectedTypeVehicule = { ...typeVehicule };
     this.editTypeVehiculeDialog = true;
   }
-  
-  // close modal updaate
+
+  // Fermer le formulaire de modification
   hideEditTypeVehiculeDialog() {
     this.editTypeVehiculeDialog = false;
     this.selectedTypeVehicule = null;
   }
 
-  // creer type de vehicule
-  onUpdateTypeVehicule() {
-    if (this.selectedTypeVehicule) {
-      this.typeVehiculeService.updateTypeVehicule(this.selectedTypeVehicule._id, this.selectedTypeVehicule.name).subscribe(
-        response => {
-          console.log('Type de Vehicule mise à jour avec succès', response);
-          this.loadTypeVehicule(); 
-          this.hideEditTypeVehiculeDialog(); 
-        },
-        error => {
-          console.error('Erreur lors de la mise à jour du type de vehicule', error);
-        }
-      );
-    }
-  }
-
-  // modal supp
+  // Ouvrir la confirmation de suppression
   openConfirmation(typeVehicule: any) {
-    this.typeVehiculeToDelete = typeVehicule; 
-    this.displayConfirmation = true; 
+    this.typeVehiculeToDelete = typeVehicule;
+    this.displayConfirmation = true;
   }
   
-  // close modal supp
+  // Fermer la confirmation de suppression
   closeConfirmation() {
     this.displayConfirmation = false;
-    this.typeVehiculeToDelete = null; 
-  }
-
-  //supprimer l'Type de vehicule
-  onDeleteTypeVehicule() {
-    if (this.typeVehiculeToDelete) {
-      this.typeVehiculeService.deleteTypeVehicule(this.typeVehiculeToDelete._id).subscribe(
-        response => {
-          console.log('type de vehicule supprimée avec succès', response);
-          this.loadTypeVehicule(); 
-          this.closeConfirmation();
-        },
-        error => {
-          console.error('Erreur lors de la suppression du type de vehicule', error);
-        }
-      );
-    }
+    this.typeVehiculeToDelete = null;
   }
 
 }

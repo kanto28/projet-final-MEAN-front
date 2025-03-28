@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -22,6 +22,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { PrestationService } from '../../../services/crud/prestation/prestation.service';
 import { TypeVehiculeService } from '../../../services/crud/typeVehicule/type-vehicule.service';
 import { Prestation } from '../../../models/prestation.model';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-prestation',
@@ -43,99 +45,221 @@ import { Prestation } from '../../../models/prestation.model';
     TagModule,
     InputIconModule,
     IconFieldModule,
+    ProgressBarModule,
+    DropdownModule,
     ConfirmDialogModule
   ],
   templateUrl: './prestation.component.html',
   styleUrl: './prestation.component.scss'
 })
-export class PrestationComponent {
-  prestation = {
-    name: '',
-    duree: 0,
-    typeVehicule: ''
+export class PrestationComponent implements OnInit {
+ // Propriétés pour les données
+ prestations: Prestation[] = [];
+ typeVehicules: any[] = [];
+ 
+ // Propriétés pour les modales
+ ajoutPrestation = false;
+ editPrestationDialog = false;
+ displayConfirmation = false;
+ 
+ // Données des formulaires
+ prestationName = '';
+ prestationDuree = 0;
+ selectedTypeVehicule = '';
+ 
+ selectedPrestation: Prestation = {
+   _id: '',
+   name: '',
+   duree: 0,
+   typeVehicule: ''
+ };
+
+ // États
+ loading = false;
+ loadingTypes = false;
+ 
+ // Messages
+ message = '';
+ messageType: 'success' | 'error' | '' = '';
+ showMessage = false;
+
+ constructor(
+   private prestationService: PrestationService,
+   private typeVehiculeService: TypeVehiculeService
+ ) {}
+
+ ngOnInit(): void {
+   this.loadTypeVehicules();
+   this.loadPrestations();
+ }
+
+ // Méthodes pour charger les données
+ loadPrestations(): void {
+   this.loading = true;
+   this.prestationService.getAllPrestations().subscribe({
+     next: (data) => {
+       this.prestations = data;
+       this.loading = false;
+     },
+     error: (err) => {
+       this.showAlert('error', 'Erreur lors du chargement des prestations');
+       this.loading = false;
+     }
+   });
+ }
+
+ loadTypeVehicules(): void {
+   this.loadingTypes = true;
+   this.typeVehiculeService.getTypeVehicules().subscribe({
+     next: (response) => {
+       this.typeVehicules = response;
+       this.loadingTypes = false;
+     },
+     error: (err) => {
+       this.showAlert('error', 'Erreur lors du chargement des types de véhicules');
+       this.loadingTypes = false;
+     }
+   });
+ }
+
+ // Méthodes pour gérer les modales
+ openAddPrestationDialog(): void {
+   this.prestationName = '';
+   this.prestationDuree = 0;
+   this.selectedTypeVehicule = '';
+   this.ajoutPrestation = true;
+ }
+
+ openEditPrestationDialog(prestation: Prestation): void {
+   this.selectedPrestation = { ...prestation };
+   this.editPrestationDialog = true;
+ }
+
+ openConfirmation(prestation: Prestation): void {
+   this.selectedPrestation = { ...prestation };
+   this.displayConfirmation = true;
+ }
+
+ hideDialog(): void {
+   this.ajoutPrestation = false;
+ }
+
+ // Méthodes CRUD
+//  onCreatePrestation(): void {
+//    this.loading = true;
+//    const newPrestation = {
+//      name: this.prestationName,
+//      duree: this.prestationDuree,
+//      typeVehicule: this.selectedTypeVehicule
+//    };
+
+//    this.prestationService.createPrestation(newPrestation).subscribe({
+//      next: () => {
+//        this.showAlert('success', 'Prestation créée avec succès');
+//        this.loadPrestations();
+//        this.hideDialog();
+//      },
+//      error: (err) => {
+//        this.showAlert('error', err.error?.message || 'Erreur lors de la création');
+//        this.loading = false;
+//      }
+//    });
+//  }
+
+//  onUpdatePrestation(): void {
+//    if (!this.selectedPrestation._id) return;
+
+//    this.loading = true;
+//    this.prestationService.updatePrestation(this.selectedPrestation._id, this.selectedPrestation).subscribe({
+//      next: () => {
+//        this.showAlert('success', 'Prestation modifiée avec succès');
+//        this.loadPrestations();
+//        this.editPrestationDialog = false;
+//      },
+//      error: (err) => {
+//        this.showAlert('error', 'Erreur lors de la modification');
+//        this.loading = false;
+//      }
+//    });
+//  }
+
+onCreatePrestation(): void {
+  this.loading = true;
+  
+  const prestationData = {
+    name: this.prestationName,
+    duree: this.prestationDuree,
+    typeVehicule: this.selectedTypeVehicule
   };
-  prestations: Prestation[] = [];
 
-  // Liste des types de véhicules
-  typeVehicules: any[] = [];
-  isLoading = false;
-  loadingTypes = false;
-  successMessage: string | null = null;
-  errorMessage: string | null = null;
-
-  constructor(
-    private prestationService: PrestationService,
-    private typeVehiculeService: TypeVehiculeService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.loadTypeVehicules();
-    this.loadPrestations();
-  }
-
-  loadPrestations(): void {
-    this.prestationService.getAllPrestations().subscribe({
-      next: (data) => {
-        this.prestations = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Erreur lors du chargement des prestations';
-        this.isLoading = false;
-        console.error(err);
-      }
-    });
-  }
-
-  // Charger les types de véhicules
-  loadTypeVehicules() {
-    this.loadingTypes = true;
-    this.typeVehiculeService.getTypeVehicules().subscribe({
-      next: (response) => {
-        this.typeVehicules = response;
-        this.loadingTypes = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Erreur lors du chargement des types de véhicules';
-        this.loadingTypes = false;
-      }
-    });
-  }
-
-  
-onSubmit() {
-  console.log('Données du formulaire:', this.prestation); 
-  
-  this.isLoading = true;
-  this.prestationService.createPrestation(this.prestation).subscribe({
-    next: (response) => {
-      console.log('Réponse serveur:', response);
-      // Gestion succès...
+  this.prestationService.createPrestation(prestationData).subscribe({
+    next: () => {
+      this.showAlert('success', 'Prestation créée avec succès');
+      this.loadPrestations();
+      this.ajoutPrestation = false;
     },
     error: (err) => {
-      console.error('Erreur complète:', err);
-      if (err.error) {
-        console.error('Détails erreur serveur:', err.error);
-        this.errorMessage = err.error.message || err.error.erreur || 'Erreur serveur';
-      } else {
-        this.errorMessage = 'Erreur de connexion au serveur';
-      }
-      this.isLoading = false;
+      this.showAlert('error', err.error?.message || 'Erreur lors de la création');
+      this.loading = false;
     }
   });
 }
 
-  clearMessages() {
-    this.successMessage = null;
-    this.errorMessage = null;
-  }
+onUpdatePrestation(): void {
+  if (!this.selectedPrestation._id) return;
 
-  // Récupérer le nom du type de véhicule
-  getTypeVehiculeName(typeVehiculeId: string): string {
-    if (!typeVehiculeId || !this.typeVehicules.length) return 'Chargement...';
-    
-    const type = this.typeVehicules.find(t => t._id === typeVehiculeId);
-    return type ? type.name : 'Type inconnu';
-  }
+  this.loading = true;
+  
+  const prestationData = {
+    name: this.selectedPrestation.name,
+    duree: this.selectedPrestation.duree,
+    typeVehicule: this.selectedPrestation.typeVehicule
+  };
+
+  this.prestationService.updatePrestation(this.selectedPrestation._id, prestationData).subscribe({
+    next: () => {
+      this.showAlert('success', 'Prestation modifiée avec succès');
+      this.loadPrestations();
+      this.editPrestationDialog = false;
+    },
+    error: (err) => {
+      this.showAlert('error', err.error?.message || 'Erreur lors de la modification');
+      this.loading = false;
+    }
+  });
+}
+
+ onDeletePrestation(): void {
+   if (!this.selectedPrestation._id) return;
+   
+   this.loading = true;
+   this.prestationService.deletePrestation(this.selectedPrestation._id).subscribe({
+     next: () => {
+       this.showAlert('success', 'Prestation supprimée avec succès');
+       this.loadPrestations();
+       this.displayConfirmation = false;
+     },
+     error: (err) => {
+       this.showAlert('error', 'Erreur lors de la suppression');
+       this.loading = false;
+     }
+   });
+ }
+
+ // Utilitaires
+ getTypeVehiculeName(typeVehiculeId: string): string {
+   if (!typeVehiculeId || !this.typeVehicules.length) return 'Chargement...';
+   const type = this.typeVehicules.find(t => t._id === typeVehiculeId);
+   return type ? type.name : 'Type inconnu';
+ }
+
+ private showAlert(type: 'success' | 'error', message: string): void {
+   this.messageType = type;
+   this.message = message;
+   this.showMessage = true;
+   
+   setTimeout(() => {
+     this.showMessage = false;
+   }, 5000);
+ }
 }

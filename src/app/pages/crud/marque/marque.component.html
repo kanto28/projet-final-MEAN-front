@@ -5,9 +5,9 @@
                  (onClick)="ovrirNouveauMarque()" [disabled]="loading" />
     </ng-template>
 
-    <ng-template #end>
+    <!-- <ng-template #end>
         <p-button label="Export" icon="pi pi-upload" severity="secondary" [disabled]="loading"/>
-    </ng-template>
+    </ng-template> -->
 </p-toolbar>
 
 <div class="card">
@@ -26,7 +26,7 @@
             </button>
         </div>
     </div>
-    
+
     <p-progressBar *ngIf="loading" mode="indeterminate" styleClass="mb-4"></p-progressBar>
 
     <p-table [value]="marques" responsiveLayout="scroll" [loading]="loading">

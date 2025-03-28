@@ -18,6 +18,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MoteurService } from '../../../services/crud/moteur/moteur.service';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-moteur',
@@ -39,121 +40,165 @@ import { MoteurService } from '../../../services/crud/moteur/moteur.service';
     TagModule,
     InputIconModule,
     IconFieldModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ProgressBarModule
   ],
   templateUrl: './moteur.component.html',
   styleUrl: './moteur.component.scss'
 })
 export class MoteurComponent implements OnInit{
-    moteurName: string = '';
-    moteurs: any[] = [];
-    selectedMoteur: any = null; 
-    editMoteurDialog: boolean = false; 
-    moteurToDelete: any = null; 
+  moteurName: string = '';
+  moteurs: any[] = [];
+  selectedMoteur: any = null;
+  editMoteurDialog: boolean = false;
+  moteurToDelete: any = null;
+  ajoutMoteur: boolean = false;
+  submitted: boolean = false;
+  displayConfirmation: boolean = false;
+  loading: boolean = false;
+  
+  // Propriétés pour les messages
+  message: string = '';
+  messageType: 'success' | 'error' | '' = '';
+  showMessage: boolean = false;
+
+  constructor(private moteurService: MoteurService) { }
+
+  ngOnInit(): void {
+    this.loadMoteur();
+  }
+
+  private showAlert(type: 'success' | 'error', message: string) {
+    this.messageType = type;
+    this.message = message;
+    this.showMessage = true;
     
-  
-    constructor(private moteurService: MoteurService) { }
-  
-     // Creer une nouvelle moteur
-     onCreateMoteur() {
-      this.moteurService.createMoteur(this.moteurName).subscribe(
-        response => {
-          console.log('Moteur créée avec succès', response);
-        },
-        error => {
-          console.error('Erreur lors de la création du moteur', error);
-        }
-      );
+    setTimeout(() => {
+      this.showMessage = false;
+    }, 5000);
+  }
+
+  // Charger les moteurs
+  loadMoteur(): void {
+    this.loading = true;
+    this.moteurService.getMoteurs().subscribe({
+      next: (data) => {
+        this.moteurs = data;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des moteurs', error);
+        this.showAlert('error', 'Erreur lors du chargement des moteurs');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Créer un nouveau moteur
+  onCreateMoteur() {
+    if (!this.moteurName.trim()) {
+      this.showAlert('error', 'Le nom du moteur est requis');
+      return;
     }
-  
-    ngOnInit(): void {
-      this.loadMoteur(); 
+
+    this.loading = true;
+    this.moteurService.createMoteur(this.moteurName).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Moteur créé avec succès');
+        this.moteurName = '';
+        this.ajoutMoteur = false;
+        this.loadMoteur();
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création du moteur', error);
+        this.showAlert('error', 'Erreur lors de la création du moteur');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Mettre à jour un moteur
+  onUpdateMoteur() {
+    if (!this.selectedMoteur?.name?.trim()) {
+      this.showAlert('error', 'Le nom du moteur est requis');
+      return;
     }
-    
-    loadMoteur(): void {
-      this.moteurService.getMoteurs().subscribe(
-        (data) => {
-          this.moteurs = data;
-          console.log('Moteur récupérées :', this.moteurs);  
-        },
-        (error) => {
-          console.error('Erreur lors de la récupération des moteurs', error);
-        }
-      );
-    }
-    
-  
-    ajoutMoteur: boolean = false;
-    submitted: boolean = false;
-    displayConfirmation: boolean = false;
-    
-  
-    ovrirNouveauMoteur() {
-      this.submitted = false;
-      this.ajoutMoteur = true;
-    }
-  
-  
-    hideAjoutMoteur() {
-      this.ajoutMoteur = false;
-    }
-  
-  
-  // open update
+
+    this.loading = true;
+    this.moteurService.updateMoteur(this.selectedMoteur._id, this.selectedMoteur.name).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Moteur mis à jour avec succès');
+        this.loadMoteur();
+        this.editMoteurDialog = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour du moteur', error);
+        this.showAlert('error', 'Erreur lors de la mise à jour du moteur');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Supprimer un moteur
+  onDeleteMoteur() {
+    this.loading = true;
+    this.moteurService.deleteMoteur(this.moteurToDelete._id).subscribe({
+      next: (response) => {
+        this.showAlert('success', 'Moteur supprimé avec succès');
+        this.loadMoteur();
+        this.displayConfirmation = false;
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression du moteur', error);
+        this.showAlert('error', 'Erreur lors de la suppression du moteur');
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
+
+  // Ouvrir le formulaire d'ajout
+  ovrirNouveauMoteur() {
+    this.submitted = false;
+    this.ajoutMoteur = true;
+  }
+
+  // Fermer le formulaire d'ajout
+  hideAjoutMoteur() {
+    this.ajoutMoteur = false;
+  }
+
+  // Ouvrir le formulaire de modification
   openEditMoteurDialog(moteur: any) {
-    this.selectedMoteur = { ...moteur }; 
+    this.selectedMoteur = { ...moteur };
     this.editMoteurDialog = true;
   }
-  
-  // close modal updaate
+
+  // Fermer le formulaire de modification
   hideEditMoteurDialog() {
     this.editMoteurDialog = false;
     this.selectedMoteur = null;
   }
-  
-  // creer moteur
-  onUpdateMoteur() {
-    if (this.selectedMoteur) {
-      this.moteurService.updateMoteur(this.selectedMoteur._id, this.selectedMoteur.name).subscribe(
-        response => {
-          console.log('Moteur mise à jour avec succès', response);
-          this.loadMoteur(); 
-          this.hideEditMoteurDialog(); 
-        },
-        error => {
-          console.error('Erreur lors de la mise à jour du moteur', error);
-        }
-      );
-    }
-  }
-  
-  
-  
-  // modal supp
+
+  // Ouvrir la confirmation de suppression
   openConfirmation(moteur: any) {
-    this.moteurToDelete = moteur; 
-    this.displayConfirmation = true; 
+    this.moteurToDelete = moteur;
+    this.displayConfirmation = true;
   }
   
-  // close modal supp
+  // Fermer la confirmation de suppression
   closeConfirmation() {
     this.displayConfirmation = false;
-    this.moteurToDelete = null; 
-  }
-  
-  //supprimer l'énergie
-  onDeleteMoteur() {
-    if (this.moteurToDelete) {
-      this.moteurService.deleteMoteur(this.moteurToDelete._id).subscribe(
-        response => {
-          console.log('Moteur supprimée avec succès', response);
-          this.loadMoteur(); 
-          this.closeConfirmation();
-        },
-        error => {
-          console.error('Erreur lors de la suppression du moteur', error);
-        }
-      );
-    }
+    this.moteurToDelete = null;
   }
 }
