@@ -58,6 +58,7 @@ export class AddPieceComponent implements OnInit{
   models: any[] = [];
   prestations: any[] = [];
   loading = false;
+  errorMessage: string = ''; // Ajout de cette variable pour l'erreur
 
   constructor(
     private fb: FormBuilder,
@@ -108,97 +109,68 @@ export class AddPieceComponent implements OnInit{
     });
   }
 
- 
-  // add-piece.component.ts
+
 // onSubmit(): void {
+//   this.loading = true;
+  
 //   this.pieceService.addPiece(this.pieceForm.value).subscribe({
-//     error: (err) => {
-//       console.error('Submission error:', err);
-      
+//     next: (response) => {
+//       console.log('Réponse complète:', response);
+//       // Gestion du succès...
+//     },
+//     error: (error) => {
+//       this.loading = false;
+//       console.error('Erreur détaillée:', error);
+
 //       let errorMessage = 'Erreur serveur';
-//       if (err.status === 500 && err.error?.message) {
-//         errorMessage = err.error.message;
+//       if (error.error?.erreur) {
+//         errorMessage = error.error.erreur;
+//         if (error.error.details) {
+//           errorMessage += ` (${error.error.details})`;
+//         }
 //       }
 
 //       this.messageService.add({
 //         severity: 'error',
 //         summary: 'Erreur',
 //         detail: errorMessage,
-//         life: 10000 // Affiche plus longtemps
-//       });
-//     }
-//   });
-// }
-
-// Dans add-piece.component.ts
-// onSubmit(): void {
-//   if (this.pieceForm.invalid) {
-//     this.pieceForm.markAllAsTouched();
-//     return;
-//   }
-
-//   this.loading = true;
-//   const formData = this.pieceForm.value;
-
-//   this.pieceService.addPiece(formData).subscribe({
-//     next: (response) => {
-//       this.messageService.add({
-//         severity: 'success',
-//         summary: 'Succès',
-//         detail: 'Pièce ajoutée avec succès'
-//       });
-//       this.router.navigate(['/pieces/stock']);
-//     },
-//     error: (err) => {
-//       this.loading = false;
-//       console.error('Full error:', err);
-      
-//       let errorDetail = 'Erreur lors de l\'ajout de la pièce';
-//       if (err.status === 404) {
-//         errorDetail = 'Endpoint API non trouvé - Contactez l\'administrateur';
-//       } else if (err.error?.message) {
-//         errorDetail = err.error.message;
-//       }
-
-//       this.messageService.add({
-//         severity: 'error',
-//         summary: 'Erreur',
-//         detail: errorDetail,
 //         life: 10000
 //       });
 //     }
 //   });
 // }
 
-onSubmit(): void {
+ // Envoi des données du formulaire pour ajouter la pièce
+ onSubmit(): void {
   this.loading = true;
   
   this.pieceService.addPiece(this.pieceForm.value).subscribe({
     next: (response) => {
       console.log('Réponse complète:', response);
       // Gestion du succès...
+      this.errorMessage = ''; // Réinitialiser le message d'erreur en cas de succès
     },
     error: (error) => {
       this.loading = false;
       console.error('Erreur détaillée:', error);
 
-      let errorMessage = 'Erreur serveur';
-      if (error.error?.erreur) {
-        errorMessage = error.error.erreur;
-        if (error.error.details) {
-          errorMessage += ` (${error.error.details})`;
-        }
+      // Vérifie si l'erreur est liée à la duplication du nom de pièce
+      if (error.error?.erreur === 'Nom déjà pris') {
+        this.errorMessage = 'Une pièce avec ce nom existe déjà dans la base de données.';
+      } else {
+        this.errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
       }
 
       this.messageService.add({
         severity: 'error',
         summary: 'Erreur',
-        detail: errorMessage,
+        detail: this.errorMessage,
         life: 10000
       });
     }
   });
 }
+
 
   private handleError(detail: string): void {
     this.messageService.add({

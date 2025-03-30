@@ -1,59 +1,29 @@
-<div class="container mt-4">
-    <h2>Ajouter une nouvelle pièce</h2>
-    <form [formGroup]="pieceForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="nom">Nom de la pièce</label>
-        <input type="text" class="form-control" id="nom" formControlName="nom" required>
-        <div *ngIf="pieceForm.get('nom')?.invalid && (pieceForm.get('nom')?.dirty || pieceForm.get('nom')?.touched)"
-             class="text-danger">
-          Le nom est requis
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="annees">Année</label>
-        <input type="text" class="form-control" id="annees" formControlName="annees" maxlength="4" required>
-        <div *ngIf="pieceForm.get('annees')?.errors?.['maxlength']" class="text-danger">
-          Maximum 4 caractères
-        </div>
-      </div>
-  
-      <!-- Select pour les modèles -->
-      <div class="form-group">
-        <label for="model">Modèle</label>
-        <select class="form-control" formControlName="model" required>
-          <option [ngValue]="null" disabled>Sélectionner un modèle</option>
-          <!-- Utilisez [ngValue] pour les objets ou value pour les strings -->
-          <option *ngFor="let model of models" [ngValue]="model._id">
-            {{ model?.nom }} <!-- Protection contre null/undefined -->
-          </option>
-        </select>
-      </div>
-  
-  <!-- Select pour les prestations -->
-  <div class="form-group">
-    <label for="prestationId">Prestation</label>
-    <select class="form-control" id="prestationId" formControlName="prestationId" required>
-      <option [ngValue]="null" disabled>Sélectionner une prestation</option>
-      <option *ngFor="let prestation of prestations" [value]="prestation._id">
-        {{ prestation.nom }}
-      </option>
-    </select>
-  </div>
-  
-      <div class="form-group">
-        <label for="prix">Prix</label>
-        <input type="number" class="form-control" id="prix" formControlName="prix" required>
-      </div>
-  
-      <!-- <div class="form-group">
-        <label for="prestationId">Prestation associée</label>
-        <select class="form-control" id="prestationId" formControlName="prestationId" required>
-          <option value="">Sélectionner une prestation</option>
-          <option *ngFor="let prestation of prestations" [value]="prestation._id">{{ prestation.nom }}</option>
-        </select>
-      </div> -->
-  
-      <button type="submit" class="btn btn-primary" [disabled]="!pieceForm.valid">Ajouter</button>
-    </form>
-  </div>
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<!-- Affichage de la liste des pièces -->
+<table *ngIf="pieces.length > 0">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Années</th>
+      <th>Modèle</th>
+      <th>Prix</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let piece of pieces">
+      <td>{{ piece.nom }}</td> <!-- Affiche le nom de la pièce -->
+      <td>{{ piece.annees }}</td>
+      <td>{{ piece.model }}</td>
+      <td>{{ piece.prix }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Si aucune pièce n'est disponible -->
+<div *ngIf="pieces.length === 0">
+  Aucune pièce disponible.
+</div>

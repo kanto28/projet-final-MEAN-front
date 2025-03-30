@@ -20,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ModelService } from '../../../services/crud/model/model.service';
 import { PrestationService } from '../../../services/crud/prestation/prestation.service';
 import { PieceService } from '../../../services/pieces/piece.service';
+import { Piece } from '../../../models/piece.model';
 
 @Component({
   selector: 'app-piece',
@@ -48,123 +49,26 @@ import { PieceService } from '../../../services/pieces/piece.service';
   styleUrl: './piece.component.scss'
 })
 export class PieceComponent {
-  pieceForm: FormGroup;
-  models: any[] = [];
-  prestations: any[] = [];
+  pieces: Piece[] = []; // Tableau pour stocker les pièces
+  errorMessage: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private pieceService: PieceService,
-    private modelService: ModelService,
-    private prestationService: PrestationService
-  ) {
-    this.pieceForm = this.fb.group({
-      nom: ['', Validators.required],
-      annees: ['', [Validators.required, Validators.maxLength(4)]],
-      model: ['', Validators.required],
-      prix: ['', Validators.required],
-      prestationId: ['', Validators.required]
-    });
-  }
+  constructor(private pieceService: PieceService) { }
 
   ngOnInit(): void {
-    this.loadModels();
-    this.loadPrestations();
+    this.loadPieces(); // Charge la liste des pièces dès que le composant est initialisé
   }
 
-  // loadModels(): void {
-  //   this.modelService.getModels().subscribe(
-  //     data => this.models = data,
-  //     error => console.error('Error loading models', error)
-  //   );
-  // }
-
- loadModels() {
-  this.modelService.getModels().subscribe({
-    next: (data) => {
-      console.log('Données reçues:', data); // Vérifiez la structure
-      this.models = data || []; // Garantit un tableau même si null
-    },
-    error: (err) => console.error('Erreur chargement modèles', err)
-  });
-}
-  loadPrestations(): void {
-    this.prestationService.getAllPrestations().subscribe({
-      next: (data) => {
-        this.prestations = data;
-        console.log('Prestations loaded:', this.prestations); // Vérifiez dans la console
+  // Fonction pour charger les pièces depuis l'API
+  // Fonction pour charger les pièces depuis l'API
+  loadPieces(): void {
+    this.pieceService.getPieces().subscribe(
+      (data: Piece[]) => {
+        this.pieces = data; // Enregistre les pièces dans le tableau
       },
-      error: (err) => console.error('Error loading prestations', err)
-    });
-  }
-
-  // loadPrestations(): void {
-  //   this.prestationService.getAllPrestations().subscribe(
-  //     data => this.prestations = data,
-  //     error => console.error('Error loading prestations', error)
-  //   );
-  // }
-
-  // onSubmit(): void {
-  //   if (this.pieceForm.valid) {
-  //     const pieceData = this.pieceForm.value;
-  //     this.pieceService.addPiece(pieceData).subscribe(
-  //       response => {
-  //         console.log('Pièce ajoutée avec succès', response);
-  //         // Réinitialiser le formulaire ou rediriger
-  //         this.pieceForm.reset();
-  //       },
-  //       error => console.error('Erreur lors de l\'ajout de la pièce', error)
-  //     );
-  //   }
-  // }
-
-  onSubmit(): void {
-    // Vérifie si le formulaire est valide
-    if (this.pieceForm.valid) {
-      const pieceData = this.pieceForm.value;
-      
-      this.pieceService.addPiece(pieceData).subscribe({
-        next: (response: any) => {
-          console.log('Pièce ajoutée avec succès', response);
-          alert('Pièce ajoutée avec succès!'); // Notification simple
-          this.pieceForm.reset(); // Réinitialise le formulaire
-          
-          // Option: Recharger les données si nécessaire
-          // this.loadPieces(); 
-        },
-        error: (error: any) => {
-          console.error('Erreur lors de l\'ajout', error);
-          
-          // Gestion d'erreur basique
-          if (error.status === 0) {
-            alert('Erreur de connexion - Vérifiez votre réseau');
-          } else if (error.status === 400) {
-            alert('Données invalides: ' + (error.error.message || ''));
-          } else if (error.status === 401 || error.status === 403) {
-            alert('Accès non autorisé');
-          } else {
-            alert('Erreur serveur: ' + (error.message || 'Veuillez réessayer'));
-          }
-        }
-      });
-    } else {
-      // Affiche une alerte si le formulaire est invalide
-      alert('Veuillez remplir tous les champs requis correctement');
-      
-      // Marque les champs comme touchés pour afficher les erreurs
-      this.markFormGroupTouched(this.pieceForm);
-    }
-  }
-  
-  // Méthode utilitaire pour marquer tous les champs comme "touched"
-  private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-  
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
+      (error) => {
+        this.errorMessage = 'Erreur lors du chargement des pièces';
+        console.error(error);
       }
-    });
+    );
   }
 }

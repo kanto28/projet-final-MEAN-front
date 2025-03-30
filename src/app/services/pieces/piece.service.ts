@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class PieceService {
 
-  ;private apiUrl = 'http://localhost:5001/api/piece' // Remplacez par votre URL backend
+  private apiUrl = 'http://localhost:5001/api/piece'; // Remplacez par votre URL backend
 
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -22,22 +22,6 @@ export class PieceService {
     });
   }
 
-
-  // piece.service.ts
-  // addPiece(pieceData: any): Observable<any> {
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
-  //     'Content-Type': 'application/json'
-  //   });
-
-  //   // URL corrigée : /pieces au lieu de /piece/pieces
-  //   return this.http.post(`${this.apiUrl}/pieces`, pieceData, { headers }).pipe(
-  //     catchError(error => {
-  //       console.error('Error:', error);
-  //       return throwError(() => error);
-  //     })
-  //   );
-  // }
 
   addPiece(pieceData: any): Observable<any> {
     const headers = new HttpHeaders({
@@ -66,10 +50,20 @@ export class PieceService {
 
   // 1. Obtenir l'état du stock
   getStockState(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/stock`);
+    return this.http.get<any[]>(`${this.apiUrl}/pieces`);
   }
 
-  // 2. Ajouter une nouvelle pièce
+  // Ajoutez une méthode dans le service pour récupérer la liste des pièces
+getPieces(): Observable<Piece[]> {
+  return this.http.get<Piece[]>(`${this.apiUrl}/pieces`, { headers: this.getHeaders() })
+    .pipe(
+      catchError(error => {
+        console.error('Erreur lors de la récupération des pièces', error);
+        return throwError(() => error);
+      })
+    );
+}
+
   
   
   // 3. Ajouter un prix à une pièce

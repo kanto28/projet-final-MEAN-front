@@ -1,70 +1,75 @@
 <p>add-piece works!</p>
 <div class="card">
-    <div class="card-header">
-        <h3>Ajouter une Nouvelle Pièce</h3>
-    </div>
-    <div class="card-body">
-        <form (ngSubmit)="onSubmit()" [formGroup]="pieceForm">
-            <div class="p-fluid grid">
-                <div class="field col-12 md:col-6">
-                    <label for="nom">Nom</label>
-                    <input id="nom" type="text" pInputText formControlName="nom" />
-                    <small *ngIf="pieceForm.get('nom')?.invalid && pieceForm.get('nom')?.touched" class="p-error">
-                        Le nom est requis
-                    </small>
-                </div>
+  <div class="card-header">
+    <h3>Ajouter une Nouvelle Pièce</h3>
+  </div>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" [formGroup]="pieceForm">
+      <div class="p-fluid grid">
+        <div class="field col-12 md:col-6">
+          <label for="nom">Nom</label>
+          <input id="nom" type="text" pInputText formControlName="nom" />
+          <small *ngIf="pieceForm.get('nom')?.invalid && pieceForm.get('nom')?.touched" class="p-error">
+            Le nom est requis
+          </small>
+        </div>
 
-                <div class="field col-12 md:col-6">
-                    <label for="annees">Année</label>
-                    <input id="annees" type="text" pInputText formControlName="annees" maxlength="4" />
-                    <small *ngIf="pieceForm.get('annees')?.invalid && pieceForm.get('annees')?.touched" class="p-error">
-                        Maximum 4 caractères
-                    </small>
-                </div>
+        <div class="field col-12 md:col-6">
+          <label for="annees">Année</label>
+          <input id="annees" type="text" pInputText formControlName="annees" maxlength="4" />
+          <small *ngIf="pieceForm.get('annees')?.invalid && pieceForm.get('annees')?.touched" class="p-error">
+            Maximum 4 caractères
+          </small>
+        </div>
 
-                <div class="field col-12 md:col-6">
-                    <label for="model">Modèle</label>
-                    <p-select
-                    [options]="models"
-                    formControlName="model"
-                    optionLabel="name"
-                    optionValue="_id"
-                    placeholder="Sélectionnez un modèle">
-                  </p-select>
-                    <small *ngIf="pieceForm.get('model')?.invalid && pieceForm.get('model')?.touched" class="p-error">
-                        Le modèle est requis
-                    </small>
-                </div>
+        <div class="field col-12 md:col-6">
+          <label for="model">Modèle</label>
+          <p-select
+            [options]="models"
+            formControlName="model"
+            optionLabel="name"
+            optionValue="_id"
+            placeholder="Sélectionnez un modèle">
+          </p-select>
+          <small *ngIf="pieceForm.get('model')?.invalid && pieceForm.get('model')?.touched" class="p-error">
+            Le modèle est requis
+          </small>
+        </div>
 
-                <div class="field col-12 md:col-6">
-                    <label for="prix">Prix initial</label>
-                    <input id="prix" type="number" pInputText formControlName="prix" />
-                    <small *ngIf="pieceForm.get('prix')?.invalid && pieceForm.get('prix')?.touched" class="p-error">
-                        Le prix est requis
-                    </small>
-                </div>
+        <div class="field col-12 md:col-6">
+          <label for="prix">Prix initial</label>
+          <input id="prix" type="number" pInputText formControlName="prix" />
+          <small *ngIf="pieceForm.get('prix')?.invalid && pieceForm.get('prix')?.touched" class="p-error">
+            Le prix est requis
+          </small>
+        </div>
 
-                <div class="field col-12">
-                    <label for="prestation">Prestation associée</label>
-                    <p-select
-    id="prestation"
-    [options]="prestations"
-    formControlName="prestationId"
-    optionLabel="name"
-    optionValue="_id"
-    placeholder="Sélectionnez une prestation">
-  </p-select>
-                    <small *ngIf="pieceForm.get('prestationId')?.invalid && pieceForm.get('prestationId')?.touched" class="p-error">
-                        La prestation est requise
-                    </small>
-                </div>
+        <div class="field col-12">
+          <label for="prestation">Prestation associée</label>
+          <p-select
+            id="prestation"
+            [options]="prestations"
+            formControlName="prestationId"
+            optionLabel="name"
+            optionValue="_id"
+            placeholder="Sélectionnez une prestation">
+          </p-select>
+          <small *ngIf="pieceForm.get('prestationId')?.invalid && pieceForm.get('prestationId')?.touched" class="p-error">
+            La prestation est requise
+          </small>
+        </div>
 
-                <div class="field col-12 flex justify-content-end gap-3">
-                    <button pButton pRipple type="button" label="Annuler" class="p-button-secondary" 
-                            (click)="onCancel()"></button>
-                    <button pButton pRipple type="submit" label="Valider" [disabled]="pieceForm.invalid"></button>
-                </div>
-            </div>
-        </form>
-    </div>
+        <div class="field col-12 flex justify-content-end gap-3">
+          <button pButton pRipple type="button" label="Annuler" class="p-button-secondary" (click)="onCancel()"></button>
+          <button pButton pRipple type="submit" label="Valider" [disabled]="pieceForm.invalid"></button>
+        </div>
+      </div>
+    </form>
+
+   <!-- Affichage spécifique de l'erreur de duplication du nom -->
+   <div *ngIf="errorMessage" class="p-mt-3 p-error">
+    <strong>Erreur :</strong> {{ errorMessage }}
+  </div>
+  
+  </div>
 </div>
