@@ -1,35 +1,107 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Piece } from '../../models/piece.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PieceService {
 
-  private apiUrl = 'http://localhost:5001/api/piece/pieces'; // Remplacez par votre URL backend
+  ;private apiUrl = 'http://localhost:5001/api/piece' // Remplacez par votre URL backend
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-  private getHeaders(): HttpHeaders {
+  private getHeaders() {
     const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
 
-  // Ajouter une nouvelle pièce
+
+  // piece.service.ts
+  // addPiece(pieceData: any): Observable<any> {
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+  //     'Content-Type': 'application/json'
+  //   });
+
+  //   // URL corrigée : /pieces au lieu de /piece/pieces
+  //   return this.http.post(`${this.apiUrl}/pieces`, pieceData, { headers }).pipe(
+  //     catchError(error => {
+  //       console.error('Error:', error);
+  //       return throwError(() => error);
+  //     })
+  //   );
+  // }
+
   addPiece(pieceData: any): Observable<any> {
-    return this.http.post(this.apiUrl, pieceData, { headers: this.getHeaders() });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
+    });
+  
+    return this.http.post(`${this.apiUrl}/pieces`, pieceData, { 
+      headers,
+      observe: 'response' // Pour avoir toute la réponse
+    }).pipe(
+      catchError(error => {
+        console.error('Erreur complète:', error);
+        if (error.status === 500) {
+          console.error('Détails serveur:', error.error);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
-  // Récupérer toutes les pièces
-  getAllPieces(): Observable<Piece[]> {
-    return this.http.get<Piece[]>(this.apiUrl, { headers: this.getHeaders() });
+  private handleAuthError() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 
-  // Ajouter un prix à une pièce
-  addPriceToPiece(pieceId: string, priceData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${pieceId}/prix`, priceData, { headers: this.getHeaders() });
+  // 1. Obtenir l'état du stock
+  getStockState(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/stock`);
+  }
+
+  // 2. Ajouter une nouvelle pièce
+  
+  
+  // 3. Ajouter un prix à une pièce
+  addPriceToPiece(pieceId: string, priceData: {
+    prix: number;
+    date?: Date;
+  }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${pieceId}/prix`, priceData);
+  }
+
+  // 4. Enregistrer une entrée de pièce
+  registerPieceEntry(pieceId: string, quantity: number, userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${pieceId}/entrer`, { quantity, userId });
+  }
+
+  // 5. Enregistrer une sortie de pièce
+  registerPieceExit(pieceId: string, quantity: number, userId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${pieceId}/sortie`, { quantity, userId });
+  }
+
+  // 6. Obtenir l'historique d'une pièce
+  getPieceHistory(pieceId: string): Observable<{entrer: any[], sorties: any[]}> {
+    return this.http.get<{entrer: any[], sorties: any[]}>(`${this.apiUrl}/${pieceId}/historique`);
+  }
+
+  // 7. Lier une pièce à une prestation
+  linkPieceToPrestation(pieceId: string, prestationId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/piece-prestation`, { pieceId, prestationId });
+  }
+
+  // 8. Supprimer un lien pièce-prestation
+  unlinkPieceFromPrestation(linkId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/piece-prestation/${linkId}`);
   }
 }

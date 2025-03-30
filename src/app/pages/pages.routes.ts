@@ -13,6 +13,8 @@ import { PieceComponent } from './pieces/piece/piece.component';
 import { PrixpieceComponent } from './pieces/prixpiece/prixpiece.component';
 import { EtatstockpieceComponent } from './pieces/etatstockpiece/etatstockpiece.component';
 import { HistoriquestockComponent } from './pieces/historiquestock/historiquestock.component';
+import { StockDashboardComponent } from './pieces/stock-dashboard/stock-dashboard.component';
+import { AddPieceComponent } from './pieces/add-piece/add-piece.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -32,5 +34,7 @@ export default [
     //{ path: 'pieces/pieceprestation', component: PieceprestationComponent},
     {path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
     {path: 'pieces/historiquestock', component: HistoriquestockComponent},
+    {path: 'pieces/dashboradStock', component: StockDashboardComponent},
+    {path: 'pieces/addPiece', component: AddPieceComponent},
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

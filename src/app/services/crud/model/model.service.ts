@@ -25,6 +25,7 @@ export class ModelService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
     return this.http.get<any>(this.apiUrl, { headers });
   }
+  
 
   // update un modèle
   updateModel(id: string, model: any): Observable<any> {
