@@ -21,6 +21,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PieceService } from '../../../services/pieces/piece.service';
+import { PaginatorModule } from 'primeng/paginator';
 
 @Component({
   selector: 'app-stock-dashboard',
@@ -44,6 +45,7 @@ import { PieceService } from '../../../services/pieces/piece.service';
         IconFieldModule,
         ConfirmDialogModule,
         ReactiveFormsModule,
+        PaginatorModule,
         CommonModule
   ],
   templateUrl: './stock-dashboard.component.html',

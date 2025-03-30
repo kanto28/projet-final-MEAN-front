@@ -15,6 +15,12 @@ import { EtatstockpieceComponent } from './pieces/etatstockpiece/etatstockpiece.
 import { HistoriquestockComponent } from './pieces/historiquestock/historiquestock.component';
 import { StockDashboardComponent } from './pieces/stock-dashboard/stock-dashboard.component';
 import { AddPieceComponent } from './pieces/add-piece/add-piece.component';
+import { DetailpieceComponent } from './pieces/detailpiece/detailpiece.component';
+import { ListepresationComponent } from './prestation/listepresation/listepresation.component';
+import { DetailprestationComponent } from './prestation/detailprestation/detailprestation.component';
+import { AffectationprestationComponent } from './prestation/affectationprestation/affectationprestation.component';
+import { MechanicienprestationComponent } from './prestation/mechanicienprestation/mechanicienprestation.component';
+import { PieceprestationComponent } from './pieces/pieceprestation/pieceprestation.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -36,5 +42,12 @@ export default [
     {path: 'pieces/historiquestock', component: HistoriquestockComponent},
     {path: 'pieces/dashboradStock', component: StockDashboardComponent},
     {path: 'pieces/addPiece', component: AddPieceComponent},
+    {path: 'pieces/detailPiece', component: DetailpieceComponent},
+    //prestation
+    {path: 'prestation/listeprestation', component: ListepresationComponent},
+    {path: 'prestation/detailprestation', component: DetailprestationComponent},
+    {path: 'prestation/affectationprestation', component: AffectationprestationComponent},
+    {path: 'prestation/mechanicienprestation', component: MechanicienprestationComponent},
+    {path: 'prestation/pieceprestation', component: PieceprestationComponent},
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

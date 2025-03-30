@@ -1,0 +1,90 @@
+<div class="piece-details p-4">
+
+    <!-- Section Infos Générales -->
+    <div class="p-shadow-3 p-3 mb-4 bg-white border-round">
+        <h3 class="p-mb-3">Détails de la pièce</h3>
+        <div class="p-grid p-ai-center">
+            <div class="p-col-6">
+                <p><strong>Nom :</strong> <span>Nom de la pièce</span></p>
+                <p><strong>Modèle :</strong> <span>Modèle XYZ</span></p>
+                <p><strong>Années compatibles :</strong> <span>2010 - 2024</span></p>
+            </div>
+            <div class="p-col-6">
+                <p><strong>Prix actuel :</strong> <span class="p-text-bold p-text-primary">120 €</span></p>
+                <button pButton label="Modifier le prix" icon="pi pi-pencil" class="p-button-sm p-button-warning"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Historique des prix -->
+    <div class="p-shadow-3 p-3 mb-4 bg-white border-round">
+        <h3 class="p-mb-3">Historique des prix</h3>
+        <table class="p-datatable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Ancien Prix</th>
+                    <th>Nouveau Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01/01/2024</td>
+                    <td>100 €</td>
+                    <td>120 €</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section Stock -->
+    <div class="p-shadow-3 p-3 mb-4 bg-white border-round">
+        <h3 class="p-mb-3">Stock et Mouvements</h3>
+        <p><strong>Quantité en stock :</strong> <span class="p-text-bold">20</span></p>
+        <button pButton label="Ajouter une entrée" icon="pi pi-plus" class="p-button-success p-button-sm"></button>
+        <button pButton label="Enregistrer une sortie" icon="pi pi-minus" class="p-button-danger p-button-sm ml-2"></button>
+
+        <h4 class="mt-3">Historique des mouvements</h4>
+        <table class="p-datatable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>Quantité</th>
+                    <th>Utilisateur</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>01/02/2024</td>
+                    <td>Entrée</td>
+                    <td>10</td>
+                    <td>Manager X</td>
+                </tr>
+                <tr>
+                    <td>03/02/2024</td>
+                    <td>Sortie</td>
+                    <td>5</td>
+                    <td>Mécanicien Y</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Section Prestations associées -->
+    <div class="p-shadow-3 p-3 bg-white border-round">
+        <h3 class="p-mb-3">Prestations associées</h3>
+        <ul class="p-list">
+            <li class="p-d-flex p-ai-center p-jc-between p-mb-2">
+                Révision moteur 
+                <button pButton icon="pi pi-times" class="p-button-text p-button-danger p-button-sm"></button>
+            </li>
+            <li class="p-d-flex p-ai-center p-jc-between p-mb-2">
+                Changement courroie 
+                <button pButton icon="pi pi-times" class="p-button-text p-button-danger p-button-sm"></button>
+            </li>
+        </ul>
+        <button pButton label="Ajouter une prestation" icon="pi pi-plus" class="p-button-sm p-button-secondary"></button>
+    </div>
+
+</div>
