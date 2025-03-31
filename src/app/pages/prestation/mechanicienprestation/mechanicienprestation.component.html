@@ -1,25 +1,46 @@
-<p>mechanicienprestation works!</p>
-<div class="container">
-    <h2>Prestations de John Doe</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Prestation</th>
-          <th>Date</th>
-          <th>Statut</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Réparation moteur</td>
-          <td>01/02/2025</td>
-          <td>En cours</td>
-        </tr>
-        <tr>
-          <td>Changement de pneu</td>
-          <td>03/02/2025</td>
-          <td>Terminée</td>
-        </tr>
-      </tbody>
-    </table>
+<div class="p-col-8 p-md-6">
+  <div class="card p-4 shadow-lg rounded-lg bg-white dark:bg-gray-800">
+    
+    <!-- En-tête -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <span class="block text-sm text-gray-500 dark:text-gray-400">Mécanicien</span>
+        <div class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ nomMecanicien }}</div>
+      </div>
+      <div class="icon-container bg-blue-100 dark:bg-blue-800">
+        <i class="pi pi-user text-blue-500 dark:text-blue-300 text-lg"></i>
+      </div>
+    </div>
+
+    <!-- Tableau des prestations -->
+    <p-table 
+    [value]="prestations" 
+    [paginator]="true" 
+    [rows]="5" 
+    [rowsPerPageOptions]="[5, 10, 20]" 
+    responsiveLayout="scroll"
+    class="table-auto w-full text-sm border-collapse"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+        <th class="px-4 py-2 text-left">Prestation</th>
+        <th class="px-4 py-2 text-left">Date</th>
+        <th class="px-4 py-2 text-left">Statut</th>
+      </tr>
+    </ng-template>
+  
+    <ng-template pTemplate="body" let-prestation>
+      <tr class="border-b dark:border-gray-600">
+        <td class="px-4 py-2 font-medium text-gray-900 dark:text-gray-200">{{ prestation.prestation }}</td>
+        <td class="px-4 py-2 text-gray-500 dark:text-gray-400">{{ prestation.date }}</td>
+        <td class="px-4 py-2">
+          <span class="badge text-xs px-3 py-1 rounded-full" [ngClass]="getStatusColor(prestation.statut)">
+            {{ prestation.statut }}
+          </span>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  
   </div>
+</div>

@@ -46,5 +46,24 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './mechanicienprestation.component.scss'
 })
 export class MechanicienprestationComponent {
+  nomMecanicien: string = 'John Doe';
 
+  prestations = [
+    { prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
+    { prestation: 'Changement de pneu', date: '03/02/2025', statut: 'Terminée' },
+    { prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
+    { prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
+    { prestation: 'Changement de pneu', date: '03/02/2025', statut: 'Terminée' },
+    { prestation: 'Réparation moteur', date: '01/02/2025', statut: 'Terminée' },
+    { prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
+    { prestation: 'Changement de pneu', date: '03/02/2025', statut: 'Terminée' }
+  ];
+
+  getStatusColor(statut: string): string {
+    switch (statut) {
+      case 'En cours': return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300';
+      case 'Terminée': return 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300';
+      default: return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
+    }
+  }
 }

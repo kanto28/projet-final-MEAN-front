@@ -48,6 +48,6 @@ export default [
     {path: 'prestation/detailprestation', component: DetailprestationComponent},
     {path: 'prestation/affectationprestation', component: AffectationprestationComponent},
     {path: 'prestation/mechanicienprestation', component: MechanicienprestationComponent},
-    {path: 'prestation/pieceprestation', component: PieceprestationComponent},
+    {path: 'prestation/prixprestation', component: PieceprestationComponent},
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

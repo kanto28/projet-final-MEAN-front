@@ -1,29 +1,30 @@
-<p>pieceprestation works!</p>
-<div>
-    <h2>haha</h2>
-</div>
-<table class="p-datatable p-datatable-striped p-datatable-sm">
-    <thead>
-      <tr>
-        <th>Mécanicien</th>
-        <th>Prestation</th>
-        <th>Date</th>
-        <th>Statut</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John Doe</td>
-        <td>Réparation moteur</td>
-        <td>01/02/2025</td>
-        <td>En cours</td>
-      </tr>
-      <tr>
-        <td>Jane Smith</td>
-        <td>Changement de pneu</td>
-        <td>03/02/2025</td>
-        <td>Terminée</td>
-      </tr>
-    </tbody>
-  </table>
- 
+<p-table 
+  [value]="prestations" 
+  [paginator]="true" 
+  [rows]="5" 
+  [rowsPerPageOptions]="[5, 10, 20]" 
+  class="p-datatable p-datatable-striped p-datatable-sm"
+  responsiveLayout="scroll"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Mécanicien</th>
+      <th>Prestation</th>
+      <th>Date</th>
+      <th>Statut</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-prestation>
+    <tr>
+      <td>{{ prestation.nomMecanicien }}</td>
+      <td>{{ prestation.prestation }}</td>
+      <td>{{ prestation.date }}</td>
+      <td>
+        <span class="badge text-xs px-3 py-1 rounded-full" [ngClass]="getStatusColor(prestation.statut)">
+          {{ prestation.statut }}
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

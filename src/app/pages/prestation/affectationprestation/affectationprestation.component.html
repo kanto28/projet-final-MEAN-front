@@ -1,22 +1,17 @@
-<p>affectationprestation works!</p>
+<div class="card p-4 rounded-lg shadow-md w-96 bg-white dark:bg-gray-800">
+  <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Affectation d'une Prestation</h2>
 
-<div class="container">
-    <h2>Affectation d'une Prestation à un Mécanicien</h2>
-    <form>
-      <div class="p-field">
-        <label for="prestation">Prestation</label>
-        <select id="prestation" class="p-dropdown">
-          <option value="1">Réparation moteur</option>
-          <option value="2">Changement de pneu</option>
-        </select>
-      </div>
-      <div class="p-field">
-        <label for="mecanicien">Mécanicien</label>
-        <select id="mecanicien" class="p-dropdown">
-          <option value="1">John Doe</option>
-          <option value="2">Jane Smith</option>
-        </select>
-      </div>
-      <button class="p-button p-button-success">Affecter</button>
-    </form>
+  <div class="mb-4">
+      <label for="prestation" class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Prestation</label>
+      <p-select [options]="prestations" [(ngModel)]="selectedPrestation" optionLabel="label" placeholder="Sélectionner une prestation"></p-select>
   </div>
+
+  <div class="mb-4">
+      <label for="mecanicien" class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Mécanicien</label>
+      <p-select [options]="mecaniciens" [(ngModel)]="selectedMecanicien" optionLabel="label" placeholder="Sélectionner un mécanicien"></p-select>
+  </div>
+
+  <button pButton class="p-button p-button-success p-button-sm w-full mt-4" (click)="affecterPrestation()">
+      Affecter <i class="pi pi-check ml-2"></i>
+  </button>
+</div>

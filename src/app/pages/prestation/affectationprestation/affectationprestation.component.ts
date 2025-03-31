@@ -46,5 +46,34 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './affectationprestation.component.scss'
 })
 export class AffectationprestationComponent {
+ // Liste des prestations
+ prestations = [
+  { label: 'Réparation moteur', value: 'reparation_moteur' },
+  { label: 'Changement de pneu', value: 'changement_pneu' }
+];
 
+// Liste des mécaniciens
+mecaniciens = [
+  { label: 'John Doe', value: 'john_doe' },
+  { label: 'Jane Smith', value: 'jane_smith' }
+];
+
+// Sélections de l'utilisateur
+selectedPrestation: string | null = null;
+selectedMecanicien: string | null = null;
+
+// Fonction pour gérer l'affectation
+affecterPrestation() {
+  if (!this.selectedPrestation || !this.selectedMecanicien) {
+    alert("Veuillez sélectionner une prestation et un mécanicien.");
+    return;
+  }
+
+  console.log(`Prestation ${this.selectedPrestation} affectée à ${this.selectedMecanicien}`);
+  alert(`✅ Prestation "${this.selectedPrestation}" affectée à "${this.selectedMecanicien}"`);
+  
+  // Réinitialiser la sélection après l'affectation
+  this.selectedPrestation = null;
+  this.selectedMecanicien = null;
+}
 }

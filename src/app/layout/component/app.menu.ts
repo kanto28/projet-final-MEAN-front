@@ -40,7 +40,7 @@ export class AppMenu {
             {
                 label: 'Gestion du Garage',
                 items: [
-                    { label: 'Page Test', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/test'] },
+                    // { label: 'Page Test', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/test'] },
                     {
                         label: 'Gestion des Véhicules',
                         icon: 'pi pi-fw pi-pencil',
@@ -59,12 +59,12 @@ export class AppMenu {
                         icon: 'pi pi-fw pi-box',
                         items: [
                             {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
-                            { label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
-                            {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
-                            {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']},
-                            {label:'add piece', routerLink:['pages/pieces/addPiece']},
-                            {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
-                            {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
+                            //{ label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
+                            //{label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
+                           // {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']},
+                            {label:'add piece',icon: 'pi pi-fw pi-download', routerLink:['pages/pieces/addPiece']},
+                            {label:'detail piece',  icon: 'pi pi-fw pi-dollar', routerLink:['pages/pieces/detailPiece']},
+                           // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
                         ]
                     },
                     {
@@ -76,7 +76,7 @@ export class AppMenu {
                             {label: 'Detail Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/detailprestation']},
                             { label: 'Affectation Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/affectationprestation']},
                             {label: 'Prestation mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prestation/mechanicienprestation']},
-                            {label: 'Piece presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/pieceprestation']}
+                            {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/prixprestation']}
                             // {label:'add piece', routerLink:['pages/pieces/addPiece']},
                             // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
                             // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}

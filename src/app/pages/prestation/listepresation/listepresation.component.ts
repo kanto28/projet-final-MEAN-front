@@ -46,5 +46,20 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './listepresation.component.scss'
 })
 export class ListepresationComponent {
+  prestations = [
+    { nomMecanicien: 'John Doe', prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
+    { nomMecanicien: 'Jane Smith', prestation: 'Changement de pneu', date: '03/02/2025', statut: 'Terminé' },
+    { nomMecanicien: 'Alex Dupont', prestation: 'Vidange', date: '05/02/2025', statut: 'En cours' },
+    { nomMecanicien: 'Sarah Connor', prestation: 'Révision complète', date: '07/02/2025', statut: 'Terminé' },
+    { nomMecanicien: 'Jean Michel', prestation: 'Diagnostic électronique', date: '10/02/2025', statut: 'En attente' },
+    { nomMecanicien: 'Paul Atreides', prestation: 'Changement de batterie', date: '15/02/2025', statut: 'En cours' },
+  ];
 
+getStatusColor(statut: string): string {
+  switch (statut) {
+    case 'En cours': return 'badge-en-cours';
+    case 'Terminé': return 'badge-termine';
+    default: return 'badge-autre';
+}
+}
 }

@@ -46,5 +46,20 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './detailprestation.component.scss'
 })
 export class DetailprestationComponent {
+  prestation = {
+    nomMecanicien: 'John Doe',
+    prestation: 'Réparation moteur',
+    date: '01/02/2025',
+    statut: 'En cours',
+    commentaires: 'La réparation est en cours, remplacement du filtre à huile nécessaire.'
+  };
 
+  getStatusColor(statut: string): string {
+    switch (statut) {
+      case 'En cours': return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-800 dark:text-yellow-300';
+      case 'Terminé': return 'bg-green-100 text-green-700 dark:bg-green-800 dark:text-green-300';
+      case 'En attente': return 'bg-blue-100 text-blue-700 dark:bg-blue-800 dark:text-blue-300';
+      default: return 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300';
+    }
+  }
 }
