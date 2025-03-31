@@ -21,6 +21,8 @@ import { ModelService } from '../../../services/crud/model/model.service';
 import { PrestationService } from '../../../services/crud/prestation/prestation.service';
 import { PieceService } from '../../../services/pieces/piece.service';
 import { Piece } from '../../../models/piece.model';
+import { MessageService } from 'primeng/api';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @Component({
   selector: 'app-piece',
@@ -43,31 +45,33 @@ import { Piece } from '../../../models/piece.model';
         InputIconModule,
         IconFieldModule,
         ConfirmDialogModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ProgressBarModule 
   ],
   templateUrl: './piece.component.html',
-  styleUrl: './piece.component.scss'
+  styleUrl: './piece.component.scss',
+  providers: [MessageService] // Ajout du service pour les notifications
 })
 export class PieceComponent {
-  pieces: Piece[] = []; // Tableau pour stocker les pièces
-  errorMessage: string = '';
+  pieces: Piece[] = [];
+  loading: boolean = true;
 
-  constructor(private pieceService: PieceService) { }
+  constructor(private pieceService: PieceService, private messageService: MessageService) {}
 
   ngOnInit(): void {
-    this.loadPieces(); // Charge la liste des pièces dès que le composant est initialisé
+    this.loadPieces();
   }
 
-  // Fonction pour charger les pièces depuis l'API
-  // Fonction pour charger les pièces depuis l'API
   loadPieces(): void {
     this.pieceService.getPieces().subscribe(
       (data: Piece[]) => {
-        this.pieces = data; // Enregistre les pièces dans le tableau
+        this.pieces = data;
+        this.loading = false;
       },
       (error) => {
-        this.errorMessage = 'Erreur lors du chargement des pièces';
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors du chargement des pièces' });
         console.error(error);
+        this.loading = false;
       }
     );
   }

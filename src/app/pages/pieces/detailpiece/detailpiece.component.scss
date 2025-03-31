@@ -1,0 +1,306 @@
+.p-grid {
+    gap: 1.5rem;
+}
+
+.section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.stock-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.p-datatable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.p-datatable th,
+.p-datatable td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.p-datatable th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+}
+
+.p-button-text {
+    background-color: transparent;
+    border: none;
+}
+
+.p-button-sm {
+    font-size: 0.875rem;
+}
+
+ul.p-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+ul.p-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+ul.p-list li button {
+    margin-left: 10px;
+}
+
+.p-col-12.p-md-6 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.p-text-primary {
+    color: #007bff;
+}
+
+.p-text-bold {
+    font-weight: bold;
+}
+
+.card {
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.mb-3 {
+    margin-bottom: 0.75rem;
+}
+
+.text-muted-color {
+    color: #6c757d;
+}
+
+.text-surface-900 {
+    color: #212529;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.text-lg {
+    font-size: 1rem;
+}
+
+.block {
+    display: block;
+}
+
+.details-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+
+.bg-blue-100 {
+    background-color: #cfe2ff;
+}
+
+.bg-green-100 {
+    background-color: #d1e7dd;
+}
+
+.bg-yellow-100 {
+    background-color: #fff3cd;
+}
+
+.bg-red-100 {
+    background-color: #f8d7da;
+}
+
+.pi {
+    font-size: 1.2rem;
+}
+
+.pi-cog {
+    color: #007bff;
+}
+
+.pi-cogs {
+    color: #28a745;
+}
+
+.pi-calendar {
+    color: #ffc107;
+}
+
+.pi-tag {
+    color: #dc3545;
+}
+
+.icon-container i {
+    margin: 0;
+}
+
+/* Section Stock et Mouvements */
+.section {
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Quantité en stock */
+.stock-info {
+    text-align: center;
+}
+
+.stock-badge {
+    display: inline-block;
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 50px;
+    margin: 1.5rem 0;
+}
+
+.stock-quantity {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.stock-label {
+    font-size: 1rem;
+    color: #666;
+    margin-left: 0.5rem;
+}
+
+.stock-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* Boutons de gestion du stock */
+.p-button-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.p-button-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.p-button-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.p-button:hover {
+    transform: scale(1.05);
+}
+
+.p-button-icon {
+    margin-left: 8px;
+}
+
+/* Tableau historique des mouvements */
+.p-datatable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.p-datatable th,
+.p-datatable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.p-datatable th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+}
+
+/* Badge actions (Entrée/Sortie) */
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Disposition côté à côté pour grand écran */
+.p-grid {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.p-col-12 {
+    flex: 1 1 100%;
+}
+
+.p-col-12.p-md-6 {
+    flex: 1 1 48%; /* 48% pour laisser un petit écart entre les colonnes */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .p-col-12.p-md-6 {
+        flex: 1 1 100%;
+    }
+}

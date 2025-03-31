@@ -1,30 +1,39 @@
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div>
+<p-toast></p-toast>
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+      <div class="flex justify-between items-center mb-6">
+          <div class="font-semibold text-xl">Liste des pieces</div>
+      </div>
+  </ng-template>
 
-<!-- Affichage de la liste des pièces -->
-<table *ngIf="pieces.length > 0">
-  <thead>
+</p-toolbar>
+
+<p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
+
+
+<p-table [value]="pieces" *ngIf="!loading && pieces.length > 0" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+  <ng-template pTemplate="header">
     <tr>
       <th>Nom</th>
       <th>Années</th>
       <th>Modèle</th>
       <th>Prix</th>
-      <th>actiom</th>
+      <th>Action</th>
     </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let piece of pieces">
-      <td>{{ piece.nom }}</td> <!-- Affiche le nom de la pièce -->
+  </ng-template>
+  <ng-template pTemplate="body" let-piece>
+    <tr>
+      <td>{{ piece.nom }}</td>
       <td>{{ piece.annees }}</td>
-      <td>{{ piece.model }}</td>
-      <td>{{ piece.prix }}</td>
-      <td><button type="button">detail</button></td>
+      <td><p-tag [value]="piece.model" severity="info"></p-tag></td>
+      <td><p-tag [value]="piece.prix + '€'" severity="success"></p-tag></td>
+      <td>
+        <p-button icon="pi pi-search" label="Détails" class="p-button-sm p-button-outlined"></p-button>
+      </td>
     </tr>
-  </tbody>
-</table>
+  </ng-template>
+</p-table>
 
-<!-- Si aucune pièce n'est disponible -->
-<div *ngIf="pieces.length === 0">
-  Aucune pièce disponible.
+<div *ngIf="!loading && pieces.length === 0" class="empty-state">
+  <p>Aucune pièce disponible.</p>
 </div>

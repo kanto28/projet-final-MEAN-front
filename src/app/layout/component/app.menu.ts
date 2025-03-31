@@ -45,59 +45,19 @@ export class AppMenu {
                         label: 'Gestion des Véhicules',
                         icon: 'pi pi-fw pi-pencil',
                         items: [
-                            {
-                                label: 'Marque',
-                                icon: 'pi pi-fw pi-car',
-                                routerLink: ['/pages/crud/marque']
-                            },
-                            {
-                                label: 'Energie',
-                                icon: 'pi pi-fw pi-bolt',
-                                routerLink: ['/pages/crud/energie']
-                            },
-                            {
-                                label: 'Model',
-                                icon: 'pi pi-fw pi-tags',
-                                routerLink: ['/pages/crud/model']
-                            },
-                            {
-                                label: 'Moteur',
-                                icon: 'pi pi-fw pi-wrench',
-                                routerLink: ['/pages/crud/moteur']
-                            },
-                            {
-                                label: 'Prestation',
-                                icon: 'pi pi-fw pi-check-circle',
-                                routerLink: ['/pages/crud/prestation']
-                            },
-                            {
-                                label: 'Transmission',
-                                icon: 'pi pi-fw pi-share-alt',
-                                routerLink: ['/pages/crud/transmission']
-                            },
-                            {
-                                label: 'Type de Vehicule',
-                                icon: 'pi pi-fw pi-truck',
-                                routerLink: ['/pages/crud/typeVehicule']
-                            }
+                            {label: 'Marque',icon: 'pi pi-fw pi-car',routerLink: ['/pages/crud/marque']},
+                            {label: 'Energie', icon: 'pi pi-fw pi-bolt',routerLink: ['/pages/crud/energie']},
+                            {label: 'Model',icon: 'pi pi-fw pi-tags',routerLink: ['/pages/crud/model']},
+                            {label: 'Moteur', icon: 'pi pi-fw pi-wrench', routerLink: ['/pages/crud/moteur']},
+                            {label: 'Prestation',icon: 'pi pi-fw pi-check-circle',routerLink: ['/pages/crud/prestation']},
+                            {label: 'Transmission',icon: 'pi pi-fw pi-share-alt',routerLink: ['/pages/crud/transmission']},
+                            {label: 'Type de Vehicule',icon: 'pi pi-fw pi-truck',routerLink: ['/pages/crud/typeVehicule']}
                         ]
                     },
                     {
                         label: 'Gestion des Pièces',
                         icon: 'pi pi-fw pi-box',
                         items: [
-                            // {
-                            //     label: 'Catalogue des Pièces',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']
-                            // },
-                            // {
-                            //     label: 'Ajout de Pièces en Stock (Entrée)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/entrepiece']
-                            // },
-                            // {
-                            //     label: 'Utilisation des Pièces', icon: 'pi pi-fw pi-wrench',routerLink: ['/pages/pieces/pieceprestation']
-                            // },
-                            // {
-                            //     label: 'Tarification des Pièces', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']
-                            // }
                             {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
                             { label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
                             {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
@@ -116,7 +76,7 @@ export class AppMenu {
                             {label: 'Detail Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/detailprestation']},
                             { label: 'Affectation Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/affectationprestation']},
                             {label: 'Prestation mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prestation/mechanicienprestation']},
-                            {label: 'Piece presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/pieceprestation']},
+                            {label: 'Piece presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/pieceprestation']}
                             // {label:'add piece', routerLink:['pages/pieces/addPiece']},
                             // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
                             // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
