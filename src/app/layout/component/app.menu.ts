@@ -42,7 +42,7 @@ export class AppMenu {
                 items: [
                     // { label: 'Page Test', icon: 'pi pi-fw pi-id-card', routerLink: ['/pages/test'] },
                     {
-                        label: 'Gestion des Véhicules',
+                        label: 'Gestion des CRUD',
                         icon: 'pi pi-fw pi-pencil',
                         items: [
                             {label: 'Marque',icon: 'pi pi-fw pi-car',routerLink: ['/pages/crud/marque']},
@@ -76,7 +76,44 @@ export class AppMenu {
                             {label: 'Detail Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/detailprestation']},
                             { label: 'Affectation Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/affectationprestation']},
                             {label: 'Prestation mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prestation/mechanicienprestation']},
-                            {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/prixprestation']}
+                            //{label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/prixprestation']}
+                            // {label:'add piece', routerLink:['pages/pieces/addPiece']},
+                            // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
+                            // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
+                        ]
+                    },
+                    {
+                        label: 'Gestion de Vehicule',
+                        icon: 'pi pi-fw pi-box',
+                        items: [
+                            
+                            {label: 'Ajout Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/ajoutvehicule']},
+                            {label: 'Detail Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/detailvehicule']},
+                            { label: 'liste Vehicule', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehicules/listevehicule']},
+                            {label: 'Modification Vehicule',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehicules/modifvehicule']}
+                        ]
+                    },
+                    {
+                        label: 'Gestion de Vehicule Utilisateur',
+                        icon: 'pi pi-fw pi-box',
+                        items: [
+                            
+                            {label: 'Ajout Vehicule user',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/ajoutvehiculeuser']},
+                            {label: 'Detail Vehicule user' ,icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/detailvehiculeuser']},
+                            { label: 'liste Vehicule user', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehiculesuser/vehiculeUtilisateur']},
+                            {label: 'Modification Vehicule user',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehiculesuser/modifvehiculeuser']}
+                        ]
+                    },
+                    {
+                        label: ' Prix Prestation',
+                        icon: 'pi pi-fw pi-box',
+                        items: [
+                            
+                            {label: 'Liste Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/listepres']},
+                            {label: 'Ajout Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/ajoutpres']},
+                            { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
+                            {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
+                            {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
                             // {label:'add piece', routerLink:['pages/pieces/addPiece']},
                             // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
                             // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}

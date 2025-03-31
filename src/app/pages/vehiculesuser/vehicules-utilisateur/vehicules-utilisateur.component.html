@@ -1,0 +1,29 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Liste des Véhicules de l'Utilisateur</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="vehicules-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+
+  <div *ngFor="let vehicule of vehicules" class="vehicule-card bg-white shadow-lg rounded-lg p-6">
+    <h3 class="text-lg font-semibold mb-4">Véhicule: {{ vehicule.matricule }}</h3>
+    
+    <div class="vehicule-details text-gray-700">
+      <p><strong>Année:</strong> {{ vehicule.annees }}</p>
+      <p><strong>Modèle:</strong> {{ vehicule.model }}</p>
+      <p><strong>Énergie:</strong> {{ vehicule.energie }}</p>
+      <p><strong>Moteur:</strong> {{ vehicule.moteur }}</p>
+      <p><strong>Transmission:</strong> {{ vehicule.transmission }}</p>
+      <p><strong>Status:</strong> <span [ngClass]="vehicule.status ? 'status-active' : 'status-inactive'">
+                  {{ vehicule.status ? 'Actif' : 'Inactif' }}
+                </span></p>
+    </div>
+    
+    <div class="vehicule-actions mt-4">
+      <button class="btn-edit" >Modifier</button>
+      <button class="btn-delete" >Supprimer</button>
+    </div>
+  </div>
+
+</div>

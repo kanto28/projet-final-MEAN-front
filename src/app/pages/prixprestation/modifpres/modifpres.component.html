@@ -1,0 +1,30 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Mettre à jour le prix</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+  <h2 class="text-lg font-semibold text-gray-800 dark:text-white">{{ prestation.name }}</h2>
+  <p class="text-gray-600 dark:text-gray-300">
+    Dernier prix : <span class="font-semibold">{{ lastPrice?.prix }} €</span> 
+    ({{ lastPrice?.dates | date:'dd/MM/yyyy' }})
+  </p>
+
+  <form #priceForm="ngForm" (ngSubmit)="updatePrice()" class="mt-4">
+    <div class="mb-4">
+      <label for="newPrice" class="block font-medium text-gray-700 dark:text-gray-300">Nouveau prix</label>
+      <input type="number" step="0.01" id="newPrice" name="newPrice" 
+        class="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+        required [(ngModel)]="newPrice">
+    </div>
+
+    <button 
+      type="submit" 
+      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+      [disabled]="!priceForm.valid"
+    >
+      Mettre à jour
+    </button>
+  </form>
+</div>

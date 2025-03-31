@@ -1,0 +1,54 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Ajouter un véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+  <form (ngSubmit)="addVehicle()">
+    <div class="mb-4">
+      <label for="matricule" class="block text-gray-700 dark:text-gray-300">Matricule</label>
+      <input id="matricule" type="text" [(ngModel)]="matricule" name="matricule" required
+        class="p-inputtext p-2 w-full border rounded-md dark:bg-gray-700 dark:text-white"
+        placeholder="Ex: 123-XYZ">
+    </div>
+
+    <div class="mb-4">
+      <label for="annee" class="block text-gray-700 dark:text-gray-300">Année</label>
+      <input id="annee" type="number" [(ngModel)]="annee" name="annee" required
+        class="p-inputtext p-2 w-full border rounded-md dark:bg-gray-700 dark:text-white"
+        placeholder="Ex: 2022">
+    </div>
+
+    <div class="mb-4">
+      <label for="modele" class="block text-gray-700 dark:text-gray-300">Modèle</label>
+      <select id="modele" [(ngModel)]="modele" name="modele" required
+        class="p-inputtext p-2 w-full border rounded-md dark:bg-gray-700 dark:text-white">
+        <option value="">Sélectionner un modèle</option>
+        <option *ngFor="let m of modeles" [value]="m.value">{{ m.label }}</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="energie" class="block text-gray-700 dark:text-gray-300">Énergie</label>
+      <select id="energie" [(ngModel)]="energie" name="energie" required
+        class="p-inputtext p-2 w-full border rounded-md dark:bg-gray-700 dark:text-white">
+        <option value="">Sélectionner une énergie</option>
+        <option *ngFor="let e of energies" [value]="e.value">{{ e.label }}</option>
+      </select>
+    </div>
+
+    <div class="flex gap-4 mt-6">
+      <button 
+        type="submit"
+        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300">
+        <i class="pi pi-check"></i> Ajouter
+      </button>
+      <button 
+        type="button" (click)="cancel()"
+        class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300">
+        <i class="pi pi-times"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,39 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Détails du Véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="vehicule-detail bg-white shadow-md rounded-lg max-w-4xl mx-auto p-8">
+  
+  <div class="flex flex-col gap-4">
+    <div class="flex justify-between items-center">
+      <p><strong>Matricule:</strong> {{ vehicule.matricule }}</p>
+      <p><strong>Année:</strong> {{ vehicule.annees }}</p>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <p><strong>Modèle:</strong> {{ vehicule.model }}</p>
+      <p><strong>Énergie:</strong> {{ vehicule.energie }}</p>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <p><strong>Moteur:</strong> {{ vehicule.moteur }}</p>
+      <p><strong>Transmission:</strong> {{ vehicule.transmission }}</p>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <p><strong>Status:</strong> 
+        <span [ngClass]="vehicule.status ? 'status-active' : 'status-inactive'">
+          {{ vehicule.status ? 'Actif' : 'Inactif' }}
+        </span>
+      </p>
+      <p><strong>Utilisateur:</strong> {{ vehicule.user }}</p>
+    </div>
+  </div>
+
+  <div class="flex justify-end mt-6">
+    <button pButton label="Retour" icon="pi pi-arrow-left" class="p-button-text p-button-sm"></button>
+  </div>
+  
+</div>

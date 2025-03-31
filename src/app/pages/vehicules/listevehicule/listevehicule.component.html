@@ -1,0 +1,41 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Liste des Véhicules</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+  <p-table [value]="vehicules" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Matricule</th>
+        <th>Année</th>
+        <th>Modèle</th>
+        <th>Énergie</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-vehicule>
+      <tr>
+        <td>{{ vehicule.matricule }}</td>
+        <td>{{ vehicule.annee }}</td>
+        <td>{{ vehicule.model }}</td>
+        <td>{{ vehicule.energie }}</td>
+        <td class="flex gap-2">
+          <button 
+            (click)="voirDetails(vehicule.matricule)" 
+            class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
+            <i class="pi pi-search"></i> Détails
+          </button>
+
+          <button 
+            (click)="modifierVehicule(vehicule.matricule)" 
+            class="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300">
+            <i class="pi pi-pencil"></i> Modifier
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,60 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Détails du Véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+  <div class="grid grid-cols-2 gap-4">
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Matricule :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.matricule }}</span>
+    </div>
+    
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Année :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.annee }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Modèle :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.modele }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Énergie :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.energie }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Moteur :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.moteur }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Transmission :</strong>
+      <span class="text-gray-900 dark:text-white">{{ vehicle.transmission }}</span>
+    </div>
+
+    <div class="flex items-center">
+      <strong class="text-gray-700 dark:text-gray-300 w-32">Statut :</strong>
+      <span [ngClass]="{'text-green-600': vehicle.status, 'text-red-600': !vehicle.status}">
+        {{ vehicle.status ? 'Actif' : 'Inactif' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex gap-4 mt-6">
+    <button 
+      (click)="editVehicle()"
+      class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-300">
+      <i class="pi pi-pencil"></i> Modifier
+    </button>
+
+    <button 
+      (click)="deleteVehicle()"
+      class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300">
+      <i class="pi pi-trash"></i> Supprimer
+    </button>
+  </div>
+</div>

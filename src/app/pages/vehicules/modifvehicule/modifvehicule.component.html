@@ -1,0 +1,71 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Modifier un Véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800 max-w-4xl mx-auto mt-8">
+  <form (ngSubmit)="enregistrer()" class="space-y-6">
+    
+    <div class="p-field">
+      <label for="matricule" class="block text-gray-700 dark:text-gray-300">Matricule</label>
+      <input id="matricule" type="text" [(ngModel)]="vehicule.matricule" name="matricule" 
+             class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+             placeholder="Ex: 123-XYZ" required>
+    </div>
+
+    <div class="p-field">
+      <label for="annee" class="block text-gray-700 dark:text-gray-300">Année</label>
+      <input id="annee" type="number" [(ngModel)]="vehicule.annee" name="annee" 
+             class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+             placeholder="Ex: 2022" required>
+    </div>
+
+    <div class="p-field">
+      <label for="modele" class="block text-gray-700 dark:text-gray-300">Modèle</label>
+      <select id="modele" [(ngModel)]="vehicule.modele" name="modele" 
+              class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option *ngFor="let modele of modeles" [value]="modele">{{ modele }}</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="energie" class="block text-gray-700 dark:text-gray-300">Énergie</label>
+      <select id="energie" [(ngModel)]="vehicule.energie" name="energie" 
+              class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option *ngFor="let energie of energies" [value]="energie">{{ energie }}</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="transmission" class="block text-gray-700 dark:text-gray-300">Transmission</label>
+      <select id="transmission" [(ngModel)]="vehicule.transmission" name="transmission" 
+              class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option *ngFor="let transmission of transmissions" [value]="transmission">{{ transmission }}</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="status" class="block text-gray-700 dark:text-gray-300">Statut</label>
+      <select id="status" [(ngModel)]="vehicule.status" name="status" 
+              class="p-inputtext w-full border-2 border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option [value]="true">Actif</option>
+        <option [value]="false">Inactif</option>
+      </select>
+    </div>
+
+    <div class="p-mt-3 flex gap-3">
+      <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition duration-300">
+        <i class="pi pi-check"></i> Enregistrer
+      </button>
+
+      <button type="button" (click)="annuler()" class="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300">
+        <i class="pi pi-times"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>

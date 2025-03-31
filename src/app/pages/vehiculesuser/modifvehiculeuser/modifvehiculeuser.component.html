@@ -1,0 +1,64 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Modifier le Véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="form-container bg-white shadow-lg rounded-lg max-w-4xl mx-auto p-8">
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="flex flex-col gap-4">
+      
+      <!-- Matricule -->
+      <div class="form-field">
+        <label for="matricule">Matricule</label>
+        <input type="text" id="matricule" [(ngModel)]="vehicule.matricule" name="matricule" required placeholder="Ex: 123-XYZ" class="form-input" />
+      </div>
+      
+      <!-- Année -->
+      <div class="form-field">
+        <label for="annees">Année</label>
+        <input type="number" id="annees" [(ngModel)]="vehicule.annees" name="annees" required placeholder="Ex: 2022" class="form-input" />
+      </div>
+      
+      <!-- Modèle -->
+      <div class="form-field">
+        <label for="model">Modèle</label>
+        <select [(ngModel)]="selectedModel" name="model" required class="form-select">
+          <option *ngFor="let model of models" [ngValue]="model">{{ model.name }}</option>
+        </select>
+      </div>
+      
+      <!-- Énergie -->
+      <div class="form-field">
+        <label for="energie">Énergie</label>
+        <select [(ngModel)]="vehicule.energie" name="energie" required class="form-select">
+          <option value="Electric">Électrique</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Gasoline">Essence</option>
+        </select>
+      </div>
+      
+      <!-- Moteur -->
+      <div class="form-field">
+        <label for="moteur">Moteur</label>
+        <input type="text" id="moteur" [(ngModel)]="vehicule.moteur" name="moteur" required placeholder="Ex: V6 3.0L" class="form-input" />
+      </div>
+      
+      <!-- Transmission -->
+      <div class="form-field">
+        <label for="transmission">Transmission</label>
+        <select [(ngModel)]="vehicule.transmission" name="transmission" required class="form-select">
+          <option value="Automatique">Automatique</option>
+          <option value="Manuelle">Manuelle</option>
+        </select>
+      </div>
+      
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Modifier Véhicule</button>
+      </div>
+
+    </div>
+  </form>
+</div>

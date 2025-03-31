@@ -1,0 +1,81 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Ajouter un Nouveau Véhicule</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="form-container bg-white shadow-md rounded-lg max-w-4xl mx-auto p-8">
+  <form (ngSubmit)="onSubmit()" class="space-y-6">
+    
+    <div class="p-field">
+      <label for="matricule" class="block text-gray-700 dark:text-gray-300">Matricule</label>
+      <input id="matricule" type="text" [(ngModel)]="matricule" name="matricule"
+             class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+             placeholder="Ex: 123-XYZ" required />
+    </div>
+
+    <div class="p-field">
+      <label for="annees" class="block text-gray-700 dark:text-gray-300">Année</label>
+      <input id="annees" type="text" [(ngModel)]="annees" name="annees" 
+             class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+             maxlength="4" placeholder="Ex: 2022" required />
+    </div>
+
+    <div class="p-field">
+      <label for="model" class="block text-gray-700 dark:text-gray-300">Modèle</label>
+      <select id="model" [(ngModel)]="selectedModel" name="model" 
+              class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option *ngFor="let model of models" [ngValue]="model">{{ model.name }}</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="energie" class="block text-gray-700 dark:text-gray-300">Énergie</label>
+      <select id="energie" [(ngModel)]="energie" name="energie" 
+              class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option value="Electric">Électrique</option>
+        <option value="Diesel">Diesel</option>
+        <option value="Gasoline">Essence</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="moteur" class="block text-gray-700 dark:text-gray-300">Moteur</label>
+      <input id="moteur" type="text" [(ngModel)]="moteur" name="moteur" 
+             class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+             placeholder="Ex: V6" required />
+    </div>
+
+    <div class="p-field">
+      <label for="transmission" class="block text-gray-700 dark:text-gray-300">Transmission</label>
+      <select id="transmission" [(ngModel)]="transmission" name="transmission" 
+              class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option value="Automatique">Automatique</option>
+        <option value="Manuelle">Manuelle</option>
+      </select>
+    </div>
+
+    <div class="p-field">
+      <label for="user" class="block text-gray-700 dark:text-gray-300">Utilisateur</label>
+      <select id="user" [(ngModel)]="selectedUser" name="user" 
+              class="p-inputtext w-full p-3 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400" 
+              required>
+        <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <div class="p-mt-4 flex gap-3">
+      <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">
+        <i class="pi pi-check"></i> Ajouter Véhicule
+      </button>
+
+      <button type="button"  
+              class="w-full sm:w-auto px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300">
+        <i class="pi pi-times"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,45 @@
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+    <div class="font-semibold text-xl">Changer le statut de la prestation</div>
+  </ng-template>
+</p-toolbar>
+
+<div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
+  <p class="text-gray-800 dark:text-white">
+    Prestation : <span class="font-semibold">{{ prestation.name }}</span>
+  </p>
+
+  <p class="mt-2 text-gray-700 dark:text-gray-300">
+    Statut actuel : 
+    <span class="px-3 py-1 rounded-md text-white" 
+      [ngClass]="{'bg-green-500': prestation.status, 'bg-red-500': !prestation.status}">
+      {{ prestation.status ? 'Actif' : 'Inactif' }}
+    </span>
+  </p>
+
+  <div class="mt-4">
+    <label class="inline-flex items-center">
+      <input type="radio" name="status" [(ngModel)]="newStatus" [value]="true"
+        class="form-radio text-blue-600 dark:text-blue-400">
+      <span class="ml-2 text-gray-700 dark:text-gray-300">Activer</span>
+    </label>
+    <label class="inline-flex items-center ml-6">
+      <input type="radio" name="status" [(ngModel)]="newStatus" [value]="false"
+        class="form-radio text-red-600 dark:text-red-400">
+      <span class="ml-2 text-gray-700 dark:text-gray-300">Désactiver</span>
+    </label>
+  </div>
+
+  <div class="mt-6 flex gap-4">
+    <button 
+      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
+      (click)="updateStatus()">
+      Mettre à jour
+    </button>
+    <button 
+      class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300"
+      (click)="cancel()">
+      Annuler
+    </button>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+.vehicule-detail {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+  
+  .vehicule-detail .flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  .vehicule-detail .flex.justify-between {
+    justify-content: space-between;
+  }
+  
+  .vehicule-detail p {
+    margin: 0;
+    font-size: 1rem;
+    color: #4a4a4a;
+  }
+  
+  .vehicule-detail p strong {
+    color: #2c3e50;
+  }
+  
+  .status-active {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-inactive {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .vehicule-detail .p-button {
+    background-color: #007BFF;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .vehicule-detail .p-button-text {
+    text-decoration: none;
+  }
+  
+  .vehicule-detail .p-button-sm {
+    padding: 0.5rem 1rem;
+  }
+  
+  .vehicule-detail .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  

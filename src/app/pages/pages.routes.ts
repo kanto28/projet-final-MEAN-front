@@ -21,6 +21,19 @@ import { DetailprestationComponent } from './prestation/detailprestation/detailp
 import { AffectationprestationComponent } from './prestation/affectationprestation/affectationprestation.component';
 import { MechanicienprestationComponent } from './prestation/mechanicienprestation/mechanicienprestation.component';
 import { PieceprestationComponent } from './pieces/pieceprestation/pieceprestation.component';
+import { ListepresComponent } from './prixprestation/listepres/listepres.component';
+import { AjoutpresComponent } from './prixprestation/ajoutpres/ajoutpres.component';
+import { ModifpresComponent } from './prixprestation/modifpres/modifpres.component';
+import { StatutpresComponent } from './prixprestation/statutpres/statutpres.component';
+import { HistoriquepresComponent } from './prixprestation/historiquepres/historiquepres.component';
+import { AjoutvehiculeComponent } from './vehicules/ajoutvehicule/ajoutvehicule.component';
+import { DetailvehiculeComponent } from './vehicules/detailvehicule/detailvehicule.component';
+import { ListevehiculeComponent } from './vehicules/listevehicule/listevehicule.component';
+import { ModifvehiculeComponent } from './vehicules/modifvehicule/modifvehicule.component';
+import { VehiculesUtilisateurComponent } from './vehiculesuser/vehicules-utilisateur/vehicules-utilisateur.component';
+import { AjoutvehiculeuserComponent } from './vehiculesuser/ajoutvehiculeuser/ajoutvehiculeuser.component';
+import { ModifvehiculeuserComponent } from './vehiculesuser/modifvehiculeuser/modifvehiculeuser.component';
+import { DetailvehiculeuserComponent } from './vehiculesuser/detailvehiculeuser/detailvehiculeuser.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -49,5 +62,25 @@ export default [
     {path: 'prestation/affectationprestation', component: AffectationprestationComponent},
     {path: 'prestation/mechanicienprestation', component: MechanicienprestationComponent},
     {path: 'prestation/prixprestation', component: PieceprestationComponent},
+
+    //prix Prestation
+    {path: 'prixprestation/listepres', component: ListepresComponent},
+    {path: 'prixprestation/ajoutpres', component: AjoutpresComponent},
+    {path: 'prixprestation/modifpres', component: ModifpresComponent},
+    {path: 'prixprestation/historiquepres', component: HistoriquepresComponent},
+    {path: 'prixprestation/statutpres', component: StatutpresComponent},
+
+    //Vehicule
+    {path: 'vehicules/ajoutvehicule', component: AjoutvehiculeComponent},
+    {path: 'vehicules/detailvehicule', component: DetailvehiculeComponent},
+    {path: 'vehicules/listevehicule', component: ListevehiculeComponent},
+    {path: 'vehicules/modifvehicule', component: ModifvehiculeComponent},
+
+     //Vehicule utilisateur
+     {path: 'vehiculesuser/vehiculeUtilisateur', component: VehiculesUtilisateurComponent},
+     {path: 'vehiculesuser/ajoutvehiculeuser', component: AjoutvehiculeuserComponent},
+     {path: 'vehiculesuser/modifvehiculeuser', component: ModifvehiculeuserComponent},
+     {path: 'vehiculesuser/detailvehiculeuser', component: DetailvehiculeuserComponent},
+
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;
