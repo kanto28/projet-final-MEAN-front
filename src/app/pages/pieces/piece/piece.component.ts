@@ -54,5 +54,22 @@ import { ProgressBarModule } from 'primeng/progressbar';
 })
 export class PieceComponent {
   loading: boolean = true;
+  pieces: any[] = [];
 
+  constructor(private pieceService: PieceService) {}
+
+  ngOnInit() {
+    this.chargerPieces();
+  }
+
+  chargerPieces() {
+    this.pieceService.getPieces().subscribe(
+      (data) => {
+        this.pieces = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des pièces :', error);
+      }
+    );
+  }
 }

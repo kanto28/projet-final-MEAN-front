@@ -26,6 +26,23 @@ export class PieceService {
   }
 
   
+  ajouterPrix(pieceId: string, prix: number, date: string): Observable<any> {
+    const token = localStorage.getItem('token'); // Récupérer le token d'authentification
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.post<any>(`${this.apiUrl}/${pieceId}/prix`, { prix, date }, { headers });
+  }
+  
+
+  getPieces(): Observable<any[]> {
+    const token = localStorage.getItem('token'); // Récupérer le token stocké
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // Ajouter le token dans l'en-tête
+    });
+    return this.http.get<any[]>(`${this.apiUrl}/pieces`);
+  }
+  
 
 //   private apiUrl = 'http://localhost:5001/api/piece'; // Remplacez par votre URL backend
 

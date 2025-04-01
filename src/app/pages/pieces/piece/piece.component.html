@@ -1,4 +1,4 @@
-<p-toast></p-toast>
+<!-- <p-toast></p-toast>
 <p-toolbar styleClass="mb-6">
   <ng-template #start>
       <div class="flex justify-between items-center mb-6">
@@ -8,7 +8,7 @@
 
 </p-toolbar>
 
-<!-- <p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar> -->
+<p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar> 
 
 
 <p-table>
@@ -36,4 +36,40 @@
 
 <div class="empty-state">
   <p>Aucune pièce disponible.</p>
+</div> -->
+
+<div class="card p-4 shadow-lg rounded-lg">
+  <div class="card-header text-center mb-4">
+    <h3 class="text-xl font-bold">Liste des Pièces</h3>
+  </div>
+
+  <table class="w-full border-collapse border border-gray-300">
+    <thead class="bg-gray-200">
+      <tr>
+        <th class="border p-2">Nom</th>
+        <th class="border p-2">Année</th>
+        <th class="border p-2">Modèle</th>
+        <th class="border p-2">Prix</th>
+        <th class="border p-2">Prestation</th>
+        <th class="border p-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let piece of pieces" class="hover:bg-gray-100">
+        <td class="border p-2">{{ piece.nom }}</td>
+        <td class="border p-2">{{ piece.annees }}</td>
+        <td class="border p-2">{{ piece.model?.name }}</td>
+        <td class="border p-2">{{ piece.prix }} €</td>
+        <td class="border p-2">{{ piece.prestationId?.name }}</td>
+        <td class="border p-2 text-center">
+          <button pButton pRipple label="Modifier" class="p-button-sm p-button-warning"></button>
+          <button pButton pRipple label="Supprimer" class="p-button-sm p-button-danger ml-2"></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="pieces.length === 0" class="text-center text-gray-500 mt-4">
+    Aucune pièce trouvée.
+  </div>
 </div>
