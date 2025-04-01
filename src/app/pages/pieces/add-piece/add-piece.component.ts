@@ -54,135 +54,61 @@ import { DropdownModule } from 'primeng/dropdown';
   providers: [MessageService]
 })
 export class AddPieceComponent implements OnInit{
+
   pieceForm: FormGroup;
-  models: any[] = [];
-  prestations: any[] = [];
-  loading = false;
-  errorMessage: string = ''; // Ajout de cette variable pour l'erreur
+  models: any[] = []; 
+  prestations: any[] = []; 
 
-  constructor(
-    private fb: FormBuilder,
-    private pieceService: PieceService,
-    private modelService: ModelService, // À injecter
-    private prestationService: PrestationService, // À injecter
-    private messageService: MessageService,
-    private router: Router
-  ) {
+  // Initialisation du formulaire
+  constructor(private fb: FormBuilder, private pieceService: PieceService,  private modelService: ModelService,private prestationService: PrestationService) {
     this.pieceForm = this.fb.group({
-      nom: ['', Validators.required],
+      nom: ['', [Validators.required]],
       annees: ['', [Validators.required, Validators.maxLength(4)]],
-      model: ['', Validators.required],
-      prix: ['', Validators.required],
-      prestationId: ['', Validators.required]
+      model: ['', [Validators.required]],
+      prix: ['', [Validators.required]],
+      prestationId: ['', [Validators.required]]
     });
   }
 
-  ngOnInit(): void {
-    this.loadModels();
-    this.loadPrestations();
-  }
-
- 
-  loadModels(): void {
-    this.modelService.getModels().subscribe({
-      next: (data) => {
-        console.log('Models data:', data); // Debug
-        this.models = data;
-      },
-      error: (err) => {
-        console.error('Error loading models:', err); // Debug
-        this.handleError('Impossible de charger les modèles');
-      }
+  ngOnInit() {
+    this.modelService.getModels().subscribe(models => {
+      console.log("Modèles récupérés:", models);  
+      this.models = models;  
+    }, error => {
+      console.error("Erreur lors de la récupération des modèles:", error);
+    });
+  
+    this.prestationService.getPrestations().subscribe(prestations => {
+      console.log("Prestations récupérées:", prestations);  
+      this.prestations = prestations;  
+    }, error => {
+      console.error("Erreur lors de la récupération des prestations:", error);
     });
   }
   
-  loadPrestations(): void {
-    this.prestationService.getAllPrestations().subscribe({
-      next: (data) => {
-        console.log('Prestations data:', data); // Debug
-        this.prestations = data;
-      },
-      error: (err) => {
-        console.error('Error loading prestations:', err); // Debug
-        this.handleError('Impossible de charger les prestations');
-      }
-    });
-  }
 
+  // Soumission du formulaire
+  onSubmit() {
+    if (this.pieceForm.valid) {
+      const formData = this.pieceForm.value;
 
-// onSubmit(): void {
-//   this.loading = true;
-  
-//   this.pieceService.addPiece(this.pieceForm.value).subscribe({
-//     next: (response) => {
-//       console.log('Réponse complète:', response);
-//       // Gestion du succès...
-//     },
-//     error: (error) => {
-//       this.loading = false;
-//       console.error('Erreur détaillée:', error);
-
-//       let errorMessage = 'Erreur serveur';
-//       if (error.error?.erreur) {
-//         errorMessage = error.error.erreur;
-//         if (error.error.details) {
-//           errorMessage += ` (${error.error.details})`;
-//         }
-//       }
-
-//       this.messageService.add({
-//         severity: 'error',
-//         summary: 'Erreur',
-//         detail: errorMessage,
-//         life: 10000
-//       });
-//     }
-//   });
-// }
-
- // Envoi des données du formulaire pour ajouter la pièce
- onSubmit(): void {
-  this.loading = true;
-  
-  this.pieceService.addPiece(this.pieceForm.value).subscribe({
-    next: (response) => {
-      console.log('Réponse complète:', response);
-      // Gestion du succès...
-      this.errorMessage = ''; // Réinitialiser le message d'erreur en cas de succès
-    },
-    error: (error) => {
-      this.loading = false;
-      console.error('Erreur détaillée:', error);
-
-      // Vérifie si l'erreur est liée à la duplication du nom de pièce
-      if (error.error?.erreur === 'Nom déjà pris') {
-        this.errorMessage = 'Une pièce avec ce nom existe déjà dans la base de données.';
-      } else {
-        this.errorMessage = 'Une erreur est survenue. Veuillez réessayer plus tard.';
-      }
-
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erreur',
-        detail: this.errorMessage,
-        life: 10000
+      this.pieceService.ajouterPiece(formData).subscribe({
+        next: (response) => {
+          alert('Pièce ajoutée avec succès !');
+          this.pieceForm.reset(); 
+        },
+        error: (error) => {
+          alert(error.error.erreur || 'Une erreur est survenue');
+        }
       });
+    } else {
+      alert('Veuillez remplir correctement tous les champs');
     }
-  });
-}
-
-
-  private handleError(detail: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erreur',
-      detail
-    });
-    this.loading = false;
   }
 
-
-  onCancel(): void {
-    this.router.navigate(['/pieces/stock']);
+  // Méthode pour annuler
+  onCancel() {
+    this.pieceForm.reset();
   }
+
 }

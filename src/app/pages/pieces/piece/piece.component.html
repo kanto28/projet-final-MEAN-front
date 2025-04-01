@@ -8,10 +8,10 @@
 
 </p-toolbar>
 
-<p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar>
+<!-- <p-progressBar *ngIf="loading" mode="indeterminate" [style]="{ height: '6px' }"></p-progressBar> -->
 
 
-<p-table [value]="pieces" *ngIf="!loading && pieces.length > 0" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+<p-table>
   <ng-template pTemplate="header">
     <tr>
       <th>Nom</th>
@@ -34,6 +34,6 @@
   </ng-template>
 </p-table>
 
-<div *ngIf="!loading && pieces.length === 0" class="empty-state">
+<div class="empty-state">
   <p>Aucune pièce disponible.</p>
 </div>

@@ -1,4 +1,5 @@
-<p-toolbar styleClass="mb-6">
+
+ <p-toolbar styleClass="mb-6">
   <ng-template #start>
       <div class="flex justify-between items-center mb-6">
           <div class="font-semibold text-xl">Ajout d'une piece</div>
@@ -6,7 +7,8 @@
   </ng-template>
 
 </p-toolbar>
-<div class="card p-4 shadow-lg rounded-lg">
+
+ <div class="card p-4 shadow-lg rounded-lg">
   <div class="card-header text-center mb-4">
     <h3 class="text-xl font-bold">Ajouter une Nouvelle Pièce</h3>
   </div>
@@ -30,14 +32,19 @@
           </small>
         </div>
 
+        <!-- Modèle -->
         <div class="field">
           <label for="model" class="font-semibold">Modèle</label>
-          <p-select [options]="models" formControlName="model" optionLabel="name" optionValue="_id" placeholder="Sélectionnez un modèle" class="w-full"></p-select>
+          <select id="model" formControlName="model" class="w-full p-2 border rounded">
+            <option *ngIf="models.length === 0" disabled>Chargement...</option>
+            <option *ngFor="let model of models" [value]="model._id">{{ model.name }}</option>
+          </select>
           <small *ngIf="pieceForm.get('model')?.invalid && pieceForm.get('model')?.touched" class="text-red-500">
             Le modèle est requis
           </small>
         </div>
 
+        <!-- Prix -->
         <div class="field">
           <label for="prix" class="font-semibold">Prix initial</label>
           <input id="prix" type="number" pInputText formControlName="prix" class="w-full" />
@@ -46,9 +53,13 @@
           </small>
         </div>
 
+        <!-- Prestation -->
         <div class="field col-span-2">
-          <label for="prestation" class="font-semibold">Prestation associée</label>
-          <p-select [options]="prestations" formControlName="prestationId" optionLabel="name" optionValue="_id" placeholder="Sélectionnez une prestation" class="w-full"></p-select>
+          <label for="prestationId" class="font-semibold">Prestation associée</label>
+          <select id="prestationId" formControlName="prestationId" class="w-full p-2 border rounded">
+            <option *ngIf="prestations.length === 0" disabled>Chargement...</option>
+            <option *ngFor="let prestation of prestations" [value]="prestation._id">{{ prestation.name }}</option>
+          </select>
           <small *ngIf="pieceForm.get('prestationId')?.invalid && pieceForm.get('prestationId')?.touched" class="text-red-500">
             La prestation est requise
           </small>
@@ -60,11 +71,6 @@
         <button pButton pRipple type="submit" label="Valider" [disabled]="pieceForm.invalid" class="p-button-primary"></button>
       </div>
     </form>
-
-    <!-- Affichage des messages -->
-    <p-toast></p-toast>
-    <div *ngIf="errorMessage" class="mt-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded">
-      <strong>Erreur :</strong> {{ errorMessage }}
-    </div>
+    
   </div>
 </div>

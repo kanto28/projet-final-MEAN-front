@@ -53,26 +53,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
   providers: [MessageService] // Ajout du service pour les notifications
 })
 export class PieceComponent {
-  pieces: Piece[] = [];
   loading: boolean = true;
 
-  constructor(private pieceService: PieceService, private messageService: MessageService) {}
-
-  ngOnInit(): void {
-    this.loadPieces();
-  }
-
-  loadPieces(): void {
-    this.pieceService.getPieces().subscribe(
-      (data: Piece[]) => {
-        this.pieces = data;
-        this.loading = false;
-      },
-      (error) => {
-        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Erreur lors du chargement des pièces' });
-        console.error(error);
-        this.loading = false;
-      }
-    );
-  }
 }

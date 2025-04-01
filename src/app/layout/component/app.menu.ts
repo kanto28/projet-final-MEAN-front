@@ -114,9 +114,6 @@ export class AppMenu {
                             { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
                             {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
                             {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
-                            // {label:'add piece', routerLink:['pages/pieces/addPiece']},
-                            // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
-                            // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
                         ]
                     },
                     { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }

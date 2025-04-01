@@ -1,4 +1,5 @@
-import { Marque } from "./marque";
+
+import { Marque } from "./marque.model";
 import { TypeVehicule } from "./type-vehicule.model";
 
 export interface Model {

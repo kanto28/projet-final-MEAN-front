@@ -97,6 +97,13 @@ updatePrestation(id: string, prestationData: { name: string, duree: number, type
     return this.http.get<Prestation[]>(this.apiUrl, { headers: this.getHeaders() });
   }
 
+  // Récupérer tous les modèles
+  getPrestations(): Observable<any> {
+    const token = localStorage.getItem('token'); 
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
+    return this.http.get<any>(this.apiUrl, { headers });
+  }
+
   // Récupérer les prestations par type de véhicule
   getPrestationsByVehicleType(typeVehiculeId: string): Observable<Prestation[]> {
     const url = `${this.apiUrl}/type/${typeVehiculeId}`;

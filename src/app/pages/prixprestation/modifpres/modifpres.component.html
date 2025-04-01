@@ -6,10 +6,10 @@
 
 <div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
   <h2 class="text-lg font-semibold text-gray-800 dark:text-white">{{ prestation.name }}</h2>
-  <p class="text-gray-600 dark:text-gray-300">
+  <!-- <p class="text-gray-600 dark:text-gray-300">
     Dernier prix : <span class="font-semibold">{{ lastPrice?.prix }} €</span> 
     ({{ lastPrice?.dates | date:'dd/MM/yyyy' }})
-  </p>
+  </p> -->
 
   <form #priceForm="ngForm" (ngSubmit)="updatePrice()" class="mt-4">
     <div class="mb-4">
