@@ -86,5 +86,10 @@ export class PieceService {
     );
   }
 
+  //entree // piece.service.ts
+addPieceEntry(pieceId: string, entryData: { quantity: number, userId: string }): Observable<any> {
+  return this.http.post(`${this.apiUrl}/pieces/${pieceId}/entrer`, entryData);
+}
+
 
 }

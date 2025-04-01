@@ -71,39 +71,67 @@
         
     
         <!-- Colonne de droite : Quantité en stock et Actions -->
-         <div class="p-col-12 p-md-6">
-            <div class="card p-4 mb-0" style="min-height: 90%;">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <span class="block text-muted-color text-sm mb-3">Quantité en stock</span>
-                        <div class="text-surface-950 font-medium text-2xl">20</div> 
-                        <span class="text-muted-color text-lg">unités</span> 
-                    </div>
-                    <div class="icon-container bg-yellow-100">
-                        <i class="pi pi-box text-yellow-500 !text-xl"></i>
-                    </div>
-                </div>
-                
-                
-                <!-- Séparation pour espacement entre les éléments -->
-                <div class="mb-4">
-                    <div class="flex justify-between">
-                        <div class="flex flex-col">
-                            <button class="p-button p-button-success p-button-sm mb-3 w-full">
-                                Ajouter une entrée <i class="pi pi-plus ml-1"></i>
-                            </button>
-                            <button class="p-button p-button-danger p-button-sm w-full">
-                                Enregistrer une sortie <i class="pi pi-minus ml-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+<div class="p-col-12 p-md-6">
+    <div class="card p-4 mb-0" style="min-height: 90%;">
+        <!-- Section Stock -->
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <span class="block text-muted-color text-sm mb-3">Quantité en stock</span>
+                <div class="text-surface-950 font-medium text-2xl">20</div> 
+                <span class="text-muted-color text-lg">unités</span> 
+            </div>
+            <div class="icon-container bg-yellow-100">
+                <i class="pi pi-box text-yellow-500 !text-xl"></i>
             </div>
         </div>
         
+        <!-- Section Actions -->
+        <div class="mb-4">
+            <div class="flex flex-col gap-3">
+                <!-- Bouton bascule Entrée -->
+                <button 
+                    class="p-button p-button-success p-button-sm w-full"
+                    (click)="toggleEntryForm()"
+                >
+                    {{ showEntryForm ? 'Annuler' : 'Ajouter une entrée' }}
+                    <i class="pi" [class.pi-plus]="!showEntryForm" [class.pi-times]="showEntryForm" class="ml-1"></i>
+                </button>
+
+                <!-- Formulaire Entrée (masqué par défaut) -->
+                <div *ngIf="showEntryForm" class="p-3 surface-card border-round border-1 surface-border" >
+                    <div class="field mb-3">
+                        <label class="block text-sm font-medium mb-1">Quantité</label>
+                        <input
+                            type="number"
+                            [(ngModel)]="newEntry.quantity"
+                            min="1"
+                            pInputText
+                            class="w-full"
+                            placeholder="Nombre d'unités"
+                        >
+                    </div>
+                    
+                    <button 
+                        class="p-button p-button-success p-button-sm w-full"
+                        (click)="addEntry()"
+                        [disabled]="!newEntry.quantity || newEntry.quantity <= 0"
+                    >
+                        Confirmer <i class="pi pi-check ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- Bouton Sortie -->
+                <button class="p-button p-button-danger p-button-sm w-full">
+                    Enregistrer une sortie <i class="pi pi-minus ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        
     </div> 
     
-    <!-- <div class="card">
+   <div class="card">
         <div class="flex justify-between items-center mb-6">
             <div class="font-semibold text-xl">Historique des Mouvements</div>
         </div>
@@ -138,7 +166,7 @@
                 </tr>
             </tbody>
         </table>
-    </div> -->
+    </div> 
 
     <div class="p-grid">
         <!-- Section Historique des prix -->

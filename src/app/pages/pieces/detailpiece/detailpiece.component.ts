@@ -66,6 +66,14 @@ export class DetailpieceComponent {
   };
   priceFormError: string | null = null;
 
+  // detailpiece.component.ts
+showEntryForm = false;
+newEntry = {
+  quantity: null as number | null,
+  userId: '' // Vous pourriez pré-remplir avec l'ID de l'utilisateur connecté
+};
+entryFormError: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private pieceService: PieceService,
@@ -135,4 +143,36 @@ export class DetailpieceComponent {
       }
     });
   }
+
+  //entre de stock
+  // detailpiece.component.ts
+toggleEntryForm() {
+  this.showEntryForm = !this.showEntryForm;
+  this.entryFormError = null;
+}
+
+addEntry() {
+  if (!this.newEntry.quantity || this.newEntry.quantity <= 0) {
+    this.entryFormError = 'La quantité doit être supérieure à 0';
+    return;
+  }
+
+  const pieceId = this.route.snapshot.paramMap.get('id');
+  if (!pieceId) return;
+
+  this.pieceService.addPieceEntry(pieceId, {
+    quantity: this.newEntry.quantity,
+    userId: this.newEntry.userId
+  }).subscribe({
+    next: () => {
+      // Recharger les données
+      this.loadPiece(pieceId);
+      this.showEntryForm = false;
+      this.newEntry = { quantity: null, userId: '' };
+    },
+    error: (err) => {
+      this.entryFormError = err.error?.message || "Erreur lors de l'enregistrement";
+    }
+  });
+}
 }
