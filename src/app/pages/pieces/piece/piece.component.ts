@@ -23,6 +23,7 @@ import { PieceService } from '../../../services/pieces/piece.service';
 import { Piece } from '../../../models/piece.model';
 import { MessageService } from 'primeng/api';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-piece',
@@ -56,20 +57,46 @@ export class PieceComponent {
   loading: boolean = true;
   pieces: any[] = [];
 
-  constructor(private pieceService: PieceService) {}
+  constructor(private pieceService: PieceService, private router: Router, private messageService: MessageService) {}
 
   ngOnInit() {
-    this.chargerPieces();
+    this.loadPieces();
   }
 
-  chargerPieces() {
-    this.pieceService.getPieces().subscribe(
-      (data) => {
+  loadPieces() {
+    this.pieceService.getPieces().subscribe({
+      next: (data) => {
         this.pieces = data;
+        this.loading = false;
       },
-      (error) => {
-        console.error('Erreur lors du chargement des pièces :', error);
+      error: (err) => {
+        console.error('Erreur:', err);
+        this.loading = false;
       }
-    );
+    });
+  }
+
+  navigateToDetail(pieceId: string) {
+    if (!pieceId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'ID de pièce manquant'
+      });
+      return;
+    }
+  
+    // Utilisez le chemin complet avec le préfixe 'pages'
+    this.router.navigate(['/pages/pieces/detailPiece', pieceId])
+      .then(success => {
+        if (!success) {
+          console.error('Échec de navigation - Vérifiez :');
+          console.log('1. La configuration des routes');
+          console.log('2. Que le composant DetailpieceComponent est bien déclaré');
+          
+          // Solution de repli - recharge la page
+          window.location.href = `/pages/pieces/detailPiece/${pieceId}`;
+        }
+      });
   }
 }

@@ -47,14 +47,12 @@ export default [
     { path: 'crud/transmission', component: TransmissionComponent},
     { path: 'crud/typeVehicule', component: TypeVehiculeComponent},
     // Piece
-    { path: 'pieces/piece', component: PieceComponent},
-    { path: 'pieces/prixpiece', component: PrixpieceComponent},
-    //{ path: 'pieces/pieceprestation', component: PieceprestationComponent},
-    {path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
-    {path: 'pieces/historiquestock', component: HistoriquestockComponent},
-    //{path: 'pieces/dashboradStock', component: StockDashboardComponent},
-    {path: 'pieces/addPiece', component: AddPieceComponent},
-    {path: 'pieces/detailPiece', component: DetailpieceComponent},
+    { path: 'pieces/piece', component: PieceComponent}, //liste
+    //{ path: 'pieces/prixpiece', component: PrixpieceComponent},
+    //{path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
+    //{path: 'pieces/historiquestock', component: HistoriquestockComponent},
+    {path: 'pieces/addPiece', component: AddPieceComponent},//ajout
+    {path: 'pieces/detailPiece/:id', component: DetailpieceComponent},//detail
     //prestation
     {path: 'prestation/listeprestation', component: ListepresationComponent},
     {path: 'prestation/detailprestation', component: DetailprestationComponent},

@@ -38,38 +38,46 @@
   <p>Aucune pièce disponible.</p>
 </div> -->
 
-<div class="card p-4 shadow-lg rounded-lg">
-  <div class="card-header text-center mb-4">
-    <h3 class="text-xl font-bold">Liste des Pièces</h3>
-  </div>
 
-  <table class="w-full border-collapse border border-gray-300">
-    <thead class="bg-gray-200">
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+      <div class="flex justify-between items-center mb-6">
+          <div class="font-semibold text-xl">Liste des pieces</div>
+      </div>
+  </ng-template>
+
+</p-toolbar>
+<!-- src/app/pieces/pieces.component.html -->
+<div class="card">
+  <p-table [value]="pieces" 
+    [loading]="loading" 
+    [paginator]="true" 
+    [rows]="10" 
+    [paginator]="true" 
+    [rows]="5" 
+    [rowsPerPageOptions]="[5, 10, 20]" 
+    responsiveLayout="scroll"
+    class="w-full">
+    <ng-template pTemplate="header">
       <tr>
-        <th class="border p-2">Nom</th>
-        <th class="border p-2">Année</th>
-        <th class="border p-2">Modèle</th>
-        <th class="border p-2">Prix</th>
-        <th class="border p-2">Prestation</th>
-        <th class="border p-2">Actions</th>
+        <th>Nom</th>
+        <th>Année</th>
+        <th>Modèle</th>
+        <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let piece of pieces" class="hover:bg-gray-100">
-        <td class="border p-2">{{ piece.nom }}</td>
-        <td class="border p-2">{{ piece.annees }}</td>
-        <td class="border p-2">{{ piece.model?.name }}</td>
-        <td class="border p-2">{{ piece.prix }} €</td>
-        <td class="border p-2">{{ piece.prestationId?.name }}</td>
-        <td class="border p-2 text-center">
-          <button pButton pRipple label="Modifier" class="p-button-sm p-button-warning"></button>
-          <button pButton pRipple label="Supprimer" class="p-button-sm p-button-danger ml-2"></button>
+    </ng-template>
+    <ng-template pTemplate="body" let-piece>
+      <tr>
+        <td>{{ piece.nom }}</td>
+        <td>{{ piece.annees }}</td>
+        <td>{{ piece.model?.name }}</td>
+        <td class="px-4 py-2">
+          <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-text p-button-info" (click)="navigateToDetail(piece._id)" (click)="navigateToDetail(piece._id)" 
+          [disabled]="!piece._id"
+          pTooltip="Voir le détail" tooltipPosition="top"></button>
+          <button pButton type="button" icon="pi pi-pencil" class="p-button-sm p-button-text p-button-warning"></button>
         </td>
       </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="pieces.length === 0" class="text-center text-gray-500 mt-4">
-    Aucune pièce trouvée.
-  </div>
+    </ng-template>
+  </p-table>
 </div>

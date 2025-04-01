@@ -5,49 +5,61 @@
         </div>
     </ng-template>
 
-</p-toolbar>
+</p-toolbar> 
 
-<div class="piece-details p-4">
+ <!-- Loader simplifié -->
+ <div *ngIf="loading" class="loader">Chargement en cours...</div>
 
-    
-    <div class="p-grid">
-        <!-- Colonne de gauche : Détails de la pièce -->
-        <div class="p-col-12 p-md-6">
-            <div class="card p-3 mb-0">
-                <div class="flex justify-between mb-3">
+<div class="p-grid">
+         <!-- Colonne de gauche : Détails de la pièce  -->
+       <div class="p-col-12 p-md-6" *ngIf="!loading && piece && !error">
+             <div class="card p-3 mb-0"> 
+                
+                 <!-- Nom de la pièce  -->
+                 <div class="flex justify-between mb-3">
                     <div class="details-item">
                         <span class="text-muted-color font-medium">Nom de la pièce</span>
-                        <div class="text-surface-900 font-medium text-lg">Révision moteur</div>
+                        <div class="text-surface-900 font-medium text-lg">{{ piece.nom || 'Non spécifié' }}</div>
                     </div>
                     <div class="icon-container bg-blue-100">
                         <i class="pi pi-cog text-blue-500 !text-xl"></i>
                     </div>
-                </div>
-    
+                </div> 
+
+              
+                <!-- Modèle -->
                 <div class="flex justify-between mb-3">
                     <div class="details-item">
                         <span class="text-muted-color font-medium">Modèle</span>
-                        <div class="text-surface-900 font-medium text-lg">XYZ</div>
+                        <div class="text-surface-900 font-medium text-lg">
+                            {{ piece.model?.name || 'Non spécifié' }}
+                        </div>
                     </div>
                     <div class="icon-container bg-green-100">
                         <i class="pi pi-car text-green-500 !text-xl"></i>
                     </div>
                 </div>
-    
+        
+                <!-- Années compatibles -->
                 <div class="flex justify-between mb-3">
                     <div class="details-item">
                         <span class="text-muted-color font-medium">Années compatibles</span>
-                        <div class="text-surface-900 font-medium text-lg">2010 - 2024</div>
+                        <div class="text-surface-900 font-medium text-lg">
+                            {{ piece.annees || 'Non spécifié' }}
+                        </div>
                     </div>
                     <div class="icon-container bg-yellow-100">
                         <i class="pi pi-calendar text-yellow-500 !text-xl"></i>
                     </div>
                 </div>
-    
+        
+                <!-- Prix -->
                 <div class="flex justify-between">
                     <div class="details-item">
                         <span class="text-muted-color font-medium">Prix</span>
-                        <div class="text-surface-900 font-medium text-lg">120 Ar</div>
+                        <div class="text-surface-900 font-medium text-lg">
+                            {{ piece.prix ? piece.prix + ' Ar' : 'Non spécifié' }}
+                        </div>
                     </div>
                     <div class="icon-container bg-red-100">
                         <i class="pi pi-tag text-red-500 !text-xl"></i>
@@ -55,15 +67,17 @@
                 </div>
             </div>
         </div>
+        
+        
     
         <!-- Colonne de droite : Quantité en stock et Actions -->
-        <div class="p-col-12 p-md-6">
-            <div class="card p-4 mb-0" style="min-height: 90%;"> <!-- Forcer la même hauteur -->
+         <div class="p-col-12 p-md-6">
+            <div class="card p-4 mb-0" style="min-height: 90%;">
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <span class="block text-muted-color text-sm mb-3">Quantité en stock</span>
-                        <div class="text-surface-950 font-medium text-2xl">20</div> <!-- Taille du texte augmentée -->
-                        <span class="text-muted-color text-lg">unités</span> <!-- Taille du texte augmentée -->
+                        <div class="text-surface-950 font-medium text-2xl">20</div> 
+                        <span class="text-muted-color text-lg">unités</span> 
                     </div>
                     <div class="icon-container bg-yellow-100">
                         <i class="pi pi-box text-yellow-500 !text-xl"></i>
@@ -87,9 +101,9 @@
             </div>
         </div>
         
-    </div>
+    </div> 
     
-    <div class="card">
+    <!-- <div class="card">
         <div class="flex justify-between items-center mb-6">
             <div class="font-semibold text-xl">Historique des Mouvements</div>
         </div>
@@ -124,7 +138,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div> -->
     
     <div class="p-grid">
         <!-- Section Historique des prix -->
@@ -163,10 +177,10 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> 
     
         <!-- Section Prestations associées -->
-        <div class="p-col-12 p-md-6">
+        <!-- <div class="p-col-12 p-md-6">
             <div class="card p-4 mb-0" >
                 <div class="flex justify-between items-center mb-6">
                     <div class="font-semibold text-xl">Prestation Associe</div>
@@ -189,4 +203,6 @@
     </div>
     
     
-</div>
+</div> -->
+
+

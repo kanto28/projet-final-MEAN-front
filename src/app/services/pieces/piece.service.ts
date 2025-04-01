@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Piece } from '../../models/piece.model';
 import { Router } from '@angular/router';
 
@@ -26,14 +26,14 @@ export class PieceService {
   }
 
   
-  ajouterPrix(pieceId: string, prix: number, date: string): Observable<any> {
-    const token = localStorage.getItem('token'); // Récupérer le token d'authentification
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // ajouterPrix(pieceId: string, prix: number, date: string): Observable<any> {
+  //   const token = localStorage.getItem('token'); // Récupérer le token d'authentification
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.post<any>(`${this.apiUrl}/${pieceId}/prix`, { prix, date }, { headers });
-  }
+  //   return this.http.post<any>(`${this.apiUrl}/${pieceId}/prix`, { prix, date }, { headers });
+  // }
   
-
+ 
   getPieces(): Observable<any[]> {
     const token = localStorage.getItem('token'); // Récupérer le token stocké
     const headers = new HttpHeaders({
@@ -43,52 +43,30 @@ export class PieceService {
     return this.http.get<any[]>(`${this.apiUrl}/pieces`);
   }
   
-
-//   private apiUrl = 'http://localhost:5001/api/piece'; // Remplacez par votre URL backend
-
-
-//   constructor(private http: HttpClient, private router: Router) { }
-
-//   private getHeaders() {
-//     const token = localStorage.getItem('token');
-//     return new HttpHeaders({
-//       'Content-Type': 'application/json',
-//       'Authorization': `Bearer ${token}`
-//     });
-//   }
-
-
-//   addPiece(pieceData: any): Observable<any> {
-//     const headers = this.getHeaders();
-  
-//     return this.http.post(`${this.apiUrl}/pieces`, pieceData, { 
-//       headers,
-//       observe: 'response' // Pour avoir toute la réponse
-//     }).pipe(
-//       catchError(error => {
-//         console.error('Erreur complète:', error);
-//         if (error.status === 500) {
-//           console.error('Détails serveur:', error.error);
-//         }
-//         return throwError(() => error);
-//       })
-//     );
-//   }
-  
-
  
+  getPieceById(id: string) {
+    return this.http.get(`${this.apiUrl}/pieces/${id}`).pipe(
+      catchError(error => {
+        console.error('Erreur API:', error);
+        return throwError(() => new Error(
+          error.error?.message || 
+          error.message || 
+          'Erreur lors de la récupération des données'
+        ));
+      })
+    );
+  }
 
-//   // Ajoutez une méthode dans le service pour récupérer la liste des pièces
-// getPieces(): Observable<Piece[]> {
-//   return this.http.get<Piece[]>(`${this.apiUrl}/pieces`, { headers: this.getHeaders() })
-//     .pipe(
-//       catchError(error => {
-//         console.error('Erreur lors de la récupération des pièces', error);
-//         return throwError(() => error);
-//       })
-//     );
-// }
+  // Ajouter un nouveau prix
+  ajouterPrix(pieceId: string, prixData: { prix: number, date?: Date }): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/pieces/${pieceId}/prix`,
+      { 
+        prix: prixData.prix,
+        date: prixData.date || new Date() // Date actuelle par défaut
+      }
+    );
+  }
 
-  
-  
+
 }
