@@ -57,14 +57,32 @@ export class PieceService {
     );
   }
 
-  // Ajouter un nouveau prix
-  ajouterPrix(pieceId: string, prixData: { prix: number, date?: Date }): Observable<any> {
-    return this.http.post(
-      `${this.apiUrl}/pieces/${pieceId}/prix`,
-      { 
-        prix: prixData.prix,
-        date: prixData.date || new Date() // Date actuelle par défaut
-      }
+  // // Ajouter un nouveau prix
+  // ajouterPrix(pieceId: string, prixData: { prix: number, date?: Date }): Observable<any> {
+  //   return this.http.post(
+  //     `${this.apiUrl}/pieces/${pieceId}/prix`,
+  //     { 
+  //       prix: prixData.prix,
+  //       date: prixData.date || new Date() // Date actuelle par défaut
+  //     }
+  //   );
+  // }
+
+  ajouterPrix(pieceId: string, prixData: { prix: number, date: Date }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/pieces/${pieceId}/prix`, {
+      prix: prixData.prix,
+      date: prixData.date.toISOString() // Format ISO pour le backend
+    });
+  }
+  
+  getPieceWithPrices(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/pieces/${id}`).pipe(
+      map((piece: any) => ({
+        ...piece,
+        prix: piece.prix?.sort((a: any, b: any) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        ) || []
+      }))
     );
   }
 

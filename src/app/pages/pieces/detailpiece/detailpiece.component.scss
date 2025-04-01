@@ -346,3 +346,29 @@ ul.p-list li button {
     font-weight: bold;
     min-width: 100px;
   }
+
+  /* Animation douce pour les interactions */
+input, button {
+    transition: all 0.15s ease;
+  }
+  
+  /* Style personnalisé pour l'input date */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  
+  /* Couleur primaire - à adapter */
+  .bg-primary-600 {
+    background-color: #2563eb;
+  }
+  .hover\:bg-primary-700:hover {
+    background-color: #1d4ed8;
+  }
+  .focus\:ring-primary-500:focus {
+    ring-color: #3b82f6;
+  }

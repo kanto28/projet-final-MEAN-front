@@ -46,8 +46,7 @@ import { SortByDatePipe } from '../../../pipe/sort-by-date.pipe';
         ConfirmDialogModule,
         ReactiveFormsModule,
         ProgressBarModule,
-        SelectModule,
-        SortByDatePipe
+        SelectModule
   ],
   templateUrl: './detailpiece.component.html',
   styleUrl: './detailpiece.component.scss',
