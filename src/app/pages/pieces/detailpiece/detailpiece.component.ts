@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +21,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PieceService } from '../../../services/pieces/piece.service';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { SortByDatePipe } from '../../../pipe/sort-by-date.pipe';
 
 @Component({
   selector: 'app-detailpiece',
@@ -45,7 +46,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
         ConfirmDialogModule,
         ReactiveFormsModule,
         ProgressBarModule,
-        SelectModule
+        SelectModule,
+        SortByDatePipe
   ],
   templateUrl: './detailpiece.component.html',
   styleUrl: './detailpiece.component.scss',
@@ -57,9 +59,18 @@ export class DetailpieceComponent {
   loading = true;
   error: string | null = null;
 
+  // Nouveaux états pour l'ajout de prix
+  showPriceForm = false;
+  newPrice = {
+    prix: null as number | null,
+    date: new Date().toISOString().substring(0, 10) // Date du jour par défaut
+  };
+  priceFormError: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
-    private pieceService: PieceService
+    private pieceService: PieceService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -90,5 +101,39 @@ export class DetailpieceComponent {
   private showError(message: string) {
     this.error = message;
     console.error('Erreur:', message); // Log dans la console
+  }
+
+  // Ajoutez ces nouvelles méthodes :
+  togglePriceForm() {
+    this.showPriceForm = !this.showPriceForm;
+    this.priceFormError = null;
+  }
+
+  addPrice() {
+    if (!this.newPrice.prix || this.newPrice.prix <= 0) {
+      this.priceFormError = 'Veuillez entrer un prix valide';
+      return;
+    }
+
+    const pieceId = this.route.snapshot.paramMap.get('id');
+    if (!pieceId) return;
+
+    this.pieceService.ajouterPrix(pieceId, {
+      prix: this.newPrice.prix,
+      date: new Date(this.newPrice.date)
+    }).subscribe({
+      next: (response) => {
+        // Recharger les données de la pièce
+        this.loadPiece(pieceId);
+        this.showPriceForm = false;
+        this.newPrice = {
+          prix: null,
+          date: new Date().toISOString().substring(0, 10)
+        };
+      },
+      error: (err) => {
+        this.priceFormError = err.error?.message || 'Erreur lors de l\'ajout du prix';
+      }
+    });
   }
 }
