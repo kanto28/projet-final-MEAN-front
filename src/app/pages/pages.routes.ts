@@ -33,6 +33,7 @@ import { VehiculesUtilisateurComponent } from './vehiculesuser/vehicules-utilisa
 import { AjoutvehiculeuserComponent } from './vehiculesuser/ajoutvehiculeuser/ajoutvehiculeuser.component';
 import { ModifvehiculeuserComponent } from './vehiculesuser/modifvehiculeuser/modifvehiculeuser.component';
 import { DetailvehiculeuserComponent } from './vehiculesuser/detailvehiculeuser/detailvehiculeuser.component';
+import { UserVehiculeComponent } from './clients/vehicule/user-vehicule/user-vehicule.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -78,6 +79,13 @@ export default [
      {path: 'vehiculesuser/ajoutvehiculeuser', component: AjoutvehiculeuserComponent},
      {path: 'vehiculesuser/modifvehiculeuser', component: ModifvehiculeuserComponent},
      {path: 'vehiculesuser/detailvehiculeuser', component: DetailvehiculeuserComponent},
+
+
+      //Cote client
+      {path: 'clients/vehicule/userVehicule', component: UserVehiculeComponent},
+    //   {path: 'vehiculesuser/ajoutvehiculeuser', component: AjoutvehiculeuserComponent},
+    //   {path: 'vehiculesuser/modifvehiculeuser', component: ModifvehiculeuserComponent},
+    //   {path: 'vehiculesuser/detailvehiculeuser', component: DetailvehiculeuserComponent},
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

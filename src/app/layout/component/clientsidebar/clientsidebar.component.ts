@@ -46,11 +46,11 @@ export class ClientSidebar {
                       icon: 'pi pi-fw pi-box',
                       items: [
                           
-                          {label: 'Liste Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/listepres']},
-                          {label: 'Ajout Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/ajoutpres']},
-                          { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
-                          {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
-                          {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
+                          {label: 'Liste Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/clients/vehicule/userVehicule']},
+                        //   {label: 'Ajout Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/ajoutpres']},
+                        //   { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
+                        //   {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
+                        //   {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
                       ]
                   },
                   {
@@ -58,11 +58,11 @@ export class ClientSidebar {
                     icon: 'pi pi-fw pi-box',
                     items: [
                         
-                        {label: 'Liste Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/listepres']},
-                        {label: 'Ajout Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/ajoutpres']},
-                        { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
-                        {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
-                        {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
+                        // {label: 'Liste Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/listepres']},
+                        // {label: 'Ajout Prix Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prixprestation/ajoutpres']},
+                        // { label: 'Modifier prix Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/modifpres']},
+                        // {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
+                        // {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
                     ]
                 },
                 
