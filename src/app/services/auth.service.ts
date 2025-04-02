@@ -19,14 +19,18 @@ export class AuthService {
   login(credentials: { email: string, password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
+        console.log("Réponse du backend:", response); // ✅ Debug
+  
         localStorage.setItem('token', response.message); 
         localStorage.setItem('role', response.role); 
         localStorage.setItem('username', response.username); 
-        localStorage.setItem('user', JSON.stringify({ _id: response._id })); 
+        localStorage.setItem('userId', response.id); // ✅ Correction ici
+  
+        console.log("Utilisateur connecté, ID stocké:", response.id);
       })
     );
   }
-
+  
   getUserId(): string {
     return localStorage.getItem('userId') || ''; // Stocké après connexion
   }

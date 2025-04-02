@@ -22,6 +22,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { PieceService } from '../../../services/pieces/piece.service';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SortByDatePipe } from '../../../pipe/sort-by-date.pipe';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-detailpiece',
@@ -74,10 +75,15 @@ newEntry = {
 };
 entryFormError: string | null = null;
 
+successMessage: string | null = null;
+errorMessage: string | null = null;
+
+
   constructor(
     private route: ActivatedRoute,
     private pieceService: PieceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -151,28 +157,46 @@ toggleEntryForm() {
   this.entryFormError = null;
 }
 
+
 addEntry() {
   if (!this.newEntry.quantity || this.newEntry.quantity <= 0) {
-    this.entryFormError = 'La quantité doit être supérieure à 0';
+    this.errorMessage = 'La quantité doit être supérieure à 0';
     return;
   }
 
   const pieceId = this.route.snapshot.paramMap.get('id');
   if (!pieceId) return;
 
+  const userId = this.authService.getUserId(); 
+  if (!userId) {
+    this.errorMessage = "Erreur : ID utilisateur introuvable.";
+    return;
+  }
+
   this.pieceService.addPieceEntry(pieceId, {
     quantity: this.newEntry.quantity,
-    userId: this.newEntry.userId
+    userId: userId
   }).subscribe({
     next: () => {
-      // Recharger les données
+      this.successMessage = "Entrée ajoutée avec succès !";
+      this.errorMessage = null;
       this.loadPiece(pieceId);
       this.showEntryForm = false;
       this.newEntry = { quantity: null, userId: '' };
+
+      // Effacer le message après 3 secondes
+      setTimeout(() => { this.successMessage = null; }, 3000);
     },
     error: (err) => {
-      this.entryFormError = err.error?.message || "Erreur lors de l'enregistrement";
+      this.errorMessage = err.error?.message || "Erreur lors de l'enregistrement";
+      this.successMessage = null;
+
+      // Effacer le message après 3 secondes
+      setTimeout(() => { this.errorMessage = null; }, 3000);
     }
   });
 }
+
+
+
 }

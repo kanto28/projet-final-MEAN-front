@@ -5,7 +5,7 @@
         </div>
     </ng-template>
 
-</p-toolbar> 
+</p-toolbar>   
 
  <!-- Loader simplifié -->
  <div *ngIf="loading" class="loader">Chargement en cours...</div>
@@ -72,6 +72,13 @@
     
         <!-- Colonne de droite : Quantité en stock et Actions -->
 <div class="p-col-12 p-md-6">
+    <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      
     <div class="card p-4 mb-0" style="min-height: 90%;">
         <!-- Section Stock -->
         <div class="flex justify-between items-center mb-4">

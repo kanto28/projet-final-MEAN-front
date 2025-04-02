@@ -24,15 +24,6 @@ export class PieceService {
 
     return this.http.post<any>(`${this.apiUrl}/pieces`, pieceData, { headers });
   }
-
-  
-  // ajouterPrix(pieceId: string, prix: number, date: string): Observable<any> {
-  //   const token = localStorage.getItem('token'); // Récupérer le token d'authentification
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-  //   return this.http.post<any>(`${this.apiUrl}/${pieceId}/prix`, { prix, date }, { headers });
-  // }
-  
  
   getPieces(): Observable<any[]> {
     const token = localStorage.getItem('token'); // Récupérer le token stocké
@@ -58,16 +49,6 @@ export class PieceService {
   }
 
   // // Ajouter un nouveau prix
-  // ajouterPrix(pieceId: string, prixData: { prix: number, date?: Date }): Observable<any> {
-  //   return this.http.post(
-  //     `${this.apiUrl}/pieces/${pieceId}/prix`,
-  //     { 
-  //       prix: prixData.prix,
-  //       date: prixData.date || new Date() // Date actuelle par défaut
-  //     }
-  //   );
-  // }
-
   ajouterPrix(pieceId: string, prixData: { prix: number, date: Date }): Observable<any> {
     return this.http.post(`${this.apiUrl}/pieces/${pieceId}/prix`, {
       prix: prixData.prix,
@@ -90,6 +71,8 @@ export class PieceService {
 addPieceEntry(pieceId: string, entryData: { quantity: number, userId: string }): Observable<any> {
   return this.http.post(`${this.apiUrl}/pieces/${pieceId}/entrer`, entryData);
 }
+
+
 
 
 }
