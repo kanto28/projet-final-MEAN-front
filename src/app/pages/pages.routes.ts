@@ -34,6 +34,10 @@ import { AjoutvehiculeuserComponent } from './vehiculesuser/ajoutvehiculeuser/aj
 import { ModifvehiculeuserComponent } from './vehiculesuser/modifvehiculeuser/modifvehiculeuser.component';
 import { DetailvehiculeuserComponent } from './vehiculesuser/detailvehiculeuser/detailvehiculeuser.component';
 import { UserVehiculeComponent } from './clients/vehicule/user-vehicule/user-vehicule.component';
+import { UserVehiculeAjoutComponent } from './clients/vehicule/user-vehicule-ajout/user-vehicule-ajout.component';
+import { ListerendezvouComponent } from './clients/rendezvous/listerendezvou/listerendezvou.component';
+import { AjoutrendezvouComponent } from './clients/rendezvous/ajoutrendezvou/ajoutrendezvou.component';
+import { DetailrendezvouComponent } from './clients/rendezvous/detailrendezvou/detailrendezvou.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -81,11 +85,14 @@ export default [
      {path: 'vehiculesuser/detailvehiculeuser', component: DetailvehiculeuserComponent},
 
 
-      //Cote client
+      //Cote client voiture
       {path: 'clients/vehicule/userVehicule', component: UserVehiculeComponent},
-    //   {path: 'vehiculesuser/ajoutvehiculeuser', component: AjoutvehiculeuserComponent},
-    //   {path: 'vehiculesuser/modifvehiculeuser', component: ModifvehiculeuserComponent},
-    //   {path: 'vehiculesuser/detailvehiculeuser', component: DetailvehiculeuserComponent},
+        {path: 'clients/vehicule/userVehiculeAjout', component: UserVehiculeAjoutComponent},
+
+        //rendez-vous
+      {path: 'clients/rendezvous/listerendezvou', component: ListerendezvouComponent},
+      {path: 'clients/rendezvous/ajoutrendezvou', component: AjoutrendezvouComponent},
+      {path: 'clients/rendezvous/detailrendevous', component: DetailrendezvouComponent},
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

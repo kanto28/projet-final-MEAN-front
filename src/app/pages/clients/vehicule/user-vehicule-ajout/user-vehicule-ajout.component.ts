@@ -20,32 +20,32 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
-  selector: 'app-user-vehicule',
+  selector: 'app-user-vehicule-ajout',
   imports: [
     CommonModule,
-            TableModule,
-            FormsModule,
-            ButtonModule,
-            RippleModule,
-            ToastModule,
-            ToolbarModule,
-            RatingModule,
-            InputTextModule,
-            TextareaModule,
-            SelectModule,
-            RadioButtonModule,
-            InputNumberModule,
-            DialogModule,
-            TagModule,
-            InputIconModule,
-            IconFieldModule,
-            ConfirmDialogModule,
-            ReactiveFormsModule,
-            ProgressBarModule 
+        TableModule,
+        FormsModule,
+        ButtonModule,
+        RippleModule,
+        ToastModule,
+        ToolbarModule,
+        RatingModule,
+        InputTextModule,
+        TextareaModule,
+        SelectModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        TagModule,
+        InputIconModule,
+        IconFieldModule,
+        ConfirmDialogModule,
+        ReactiveFormsModule,
+        ProgressBarModule 
   ],
-  templateUrl: './user-vehicule.component.html',
-  styleUrl: './user-vehicule.component.scss'
+  templateUrl: './user-vehicule-ajout.component.html',
+  styleUrl: './user-vehicule-ajout.component.scss'
 })
-export class UserVehiculeComponent {
+export class UserVehiculeAjoutComponent {
 
 }

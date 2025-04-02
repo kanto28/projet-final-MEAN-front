@@ -8,7 +8,6 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { ProgressBarModule } from 'primeng/progressbar';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RatingModule } from 'primeng/rating';
 import { RippleModule } from 'primeng/ripple';
@@ -20,32 +19,30 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
-  selector: 'app-user-vehicule',
-  imports: [
-    CommonModule,
-            TableModule,
-            FormsModule,
-            ButtonModule,
-            RippleModule,
-            ToastModule,
-            ToolbarModule,
-            RatingModule,
-            InputTextModule,
-            TextareaModule,
-            SelectModule,
-            RadioButtonModule,
-            InputNumberModule,
-            DialogModule,
-            TagModule,
-            InputIconModule,
-            IconFieldModule,
-            ConfirmDialogModule,
-            ReactiveFormsModule,
-            ProgressBarModule 
-  ],
-  templateUrl: './user-vehicule.component.html',
-  styleUrl: './user-vehicule.component.scss'
+  selector: 'app-ajoutrendezvou',
+  imports: [CommonModule,
+        TableModule,
+        FormsModule,
+        ButtonModule,
+        RippleModule,
+        ToastModule,
+        ToolbarModule,
+        RatingModule,
+        InputTextModule,
+        TextareaModule,
+        SelectModule,
+        RadioButtonModule,
+        InputNumberModule,
+        DialogModule,
+        TagModule,
+        InputIconModule,
+        IconFieldModule,
+        ConfirmDialogModule,
+        ReactiveFormsModule,
+        SelectModule],
+  templateUrl: './ajoutrendezvou.component.html',
+  styleUrl: './ajoutrendezvou.component.scss'
 })
-export class UserVehiculeComponent {
+export class AjoutrendezvouComponent {
 
 }

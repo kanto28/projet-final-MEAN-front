@@ -1,0 +1,97 @@
+
+<div class="card">
+    <div class="header">
+      <h2>Ajouter un nouveau véhicule</h2>
+      <a href="liste-vehicules.html" class="back-link">← Retour à la liste</a>
+    </div>
+  
+    <form class="vehicle-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="matricule">Matricule*</label>
+          <input 
+            type="text" 
+            id="matricule" 
+            placeholder="AB-123-CD"
+            value="AB-123-CD" 
+            required>
+          <div class="hint">Format: XX-999-XX</div>
+        </div>
+  
+        <div class="form-group">
+          <label for="annee">Année*</label>
+          <input 
+            type="text" 
+            id="annee" 
+            maxlength="4"
+            placeholder="2023"
+            value="2023" 
+            required>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group">
+          <label for="marque">Marque*</label>
+          <select id="marque" required>
+            <option value="">Sélectionnez une marque</option>
+            <option value="peugeot" selected>Peugeot</option> <!-- Sélection fictive -->
+            <option value="renault">Renault</option>
+            <option value="citroen">Citroën</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="modele">Modèle*</label>
+          <select id="modele" required>
+            <option value="">Sélectionnez un modèle</option>
+            <option value="308" selected>308</option> <!-- Sélection fictive -->
+            <option value="3008">3008</option>
+            <option value="208">208</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group">
+          <label for="energie">Énergie*</label>
+          <select id="energie" required>
+            <option value="">Sélectionnez une énergie</option>
+            <option value="essence" selected>Essence</option> <!-- Sélection fictive -->
+            <option value="diesel">Diesel</option>
+            <option value="electrique">Électrique</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="moteur">Moteur*</label>
+          <input 
+            type="text" 
+            id="moteur" 
+            placeholder="1.2L PureTech 130"
+            value="1.2L PureTech 130" 
+            required>
+        </div>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="transmission">Transmission*</label>
+        <div class="radio-group">
+          <label>
+            <input type="radio" name="transmission" value="manuelle" checked> <!-- Sélection fictive -->
+            <span>Manuelle</span>
+          </label>
+          <label>
+            <input type="radio" name="transmission" value="automatique">
+            <span>Automatique</span>
+          </label>
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button type="reset" class="secondary-btn">Annuler</button>
+        <button type="submit" class="primary-btn">Enregistrer le véhicule</button>
+      </div>
+    </form>
+  </div>
+  
