@@ -11,9 +11,13 @@ export const appRoutes: Routes = [
             { path: '', redirectTo: '/auth', pathMatch: 'full' },
             { path: 'dashboard', component: Dashboard },
             { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
-            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') }
+            { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
+            { path: 'pagesuser', loadChildren: () =>('./app/pagesuser/pagesuser.routes')},
+            
         ]
     },
+    
+    //{ path: 'pagesuser', loadChildren: () =>('./app/pagesuser/pagesuser.routes')},
     { path: 'auth', loadChildren: () => import('./app/pages/auth/auth.routes') },
     { path: 'notfound', component: Notfound },
     { path: '**', redirectTo: '/notfound' }

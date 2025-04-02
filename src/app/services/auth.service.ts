@@ -54,9 +54,12 @@ export class AuthService {
   }
 
   // récupérer le rôle de l'utilisateur
-  getRole(): string | null {
-    return localStorage.getItem('role');
-  }
+  getUserRole(): string {
+    const role = localStorage.getItem('role')?.toLowerCase(); // Convertir en minuscule pour éviter les erreurs
+    return role === 'manager' ? 'Manager' : 'Client'; // Par défaut, 'Client'
+}
+
+
 
   // récupérer le nom d'utilisateur
   getUsername(): string | null {

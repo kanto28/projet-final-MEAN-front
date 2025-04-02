@@ -6,6 +6,7 @@ import { AppTopbar } from './app.topbar';
 import { AppSidebar } from './app.sidebar';
 import { AppFooter } from './app.footer';
 import { LayoutService } from '../service/layout.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-layout',
@@ -35,7 +36,8 @@ export class AppLayout {
     constructor(
         public layoutService: LayoutService,
         public renderer: Renderer2,
-        public router: Router
+        public router: Router,
+        private authService: AuthService  // Ajoute le service d'authentification
     ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
@@ -55,6 +57,11 @@ export class AppLayout {
             this.hideMenu();
         });
     }
+
+    get userRole(): string {
+        return this.authService.getUserRole(); // Cette méthode doit retourner "admin" ou "client"
+    }
+    
 
     isOutsideClicked(event: MouseEvent) {
         const sidebarEl = document.querySelector('.layout-sidebar');

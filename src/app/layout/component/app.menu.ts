@@ -19,11 +19,13 @@ import { AuthService } from '../../services/auth.service';
 export class AppMenu {
     model: MenuItem[] = [];
     menuItems: any[];
+    role: string;
 
     constructor(private authService: AuthService, private router: Router) {
       this.menuItems = [
         { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }
       ];
+      this.role = this.authService.getUserRole();
     }
   
     onLogout() {
@@ -32,10 +34,17 @@ export class AppMenu {
       }
 
     ngOnInit() {
-        this.model = [
-            {
+        this.model = [];
+        // Afficher Accueil uniquement pour les Managers
+        if (this.role === 'Manager') { 
+            this.model.push({
                 label: 'Accueil',
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] }]
+            });
+        }
+        this.model.push({
+                label: 'Accueil meca',
+                items: [{ label: 'test', icon: 'pi pi-fw pi-home', routerLink: ['/pages/test'] }]
             },
             {
                 label: 'Gestion du Garage',
@@ -118,8 +127,7 @@ export class AppMenu {
                     },
                     { label: 'Déconnexion', icon: 'pi pi-fw pi-sign-out', command: () => this.onLogout() }
                 ]
-            }
+            })
            
-        ];
     }
 }
