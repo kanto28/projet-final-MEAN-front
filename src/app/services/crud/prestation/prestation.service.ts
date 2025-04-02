@@ -21,32 +21,6 @@ export class PrestationService {
     });
   }
 
-//   // Créer une prestation (sans prix)
-// createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
-//   const user = JSON.parse(localStorage.getItem('user') || '{}');
-//   const dataWithUser = { 
-//     ...prestationData, 
-//     user: user._id 
-//   };
-  
-//   console.log('Données envoyées:', dataWithUser); 
-  
-//   return this.http.post<Prestation>(this.apiUrl, dataWithUser, { headers: this.getHeaders() }).pipe(
-//     catchError(error => {
-//       console.error('Erreur complète:', error);
-//       if (error.error) {
-//         console.error('Détails serveur:', error.error);
-//       }
-//       throw error;
-//     })
-//   );
-// }
-
-// // Mettre à jour une prestation
-// updatePrestation(id: string, prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {
-//   const url = `${this.apiUrl}/${id}`;
-//   return this.http.put<Prestation>(url, prestationData, { headers: this.getHeaders() });
-// }
 
  // Créer une prestation
  createPrestation(prestationData: { name: string, duree: number, typeVehicule: string }): Observable<Prestation> {

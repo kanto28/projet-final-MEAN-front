@@ -24,6 +24,7 @@ import { TypeVehiculeService } from '../../../services/crud/typeVehicule/type-ve
 import { Prestation } from '../../../models/prestation.model';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { DropdownModule } from 'primeng/dropdown';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-prestation',
@@ -53,6 +54,18 @@ import { DropdownModule } from 'primeng/dropdown';
   styleUrl: './prestation.component.scss'
 })
 export class PrestationComponent implements OnInit {
+  // Ajoutez cette méthode dans votre classe PrestationComponent
+resetForm(): void {
+  this.prestationName = '';
+  this.prestationDuree = 0;
+  this.selectedTypeVehicule = '';
+  this.selectedPrestation = {
+    _id: '',
+    name: '',
+    duree: 0,
+    typeVehicule: ''
+  };
+}
  // Propriétés pour les données
  prestations: Prestation[] = [];
  typeVehicules: any[] = [];
@@ -85,7 +98,8 @@ export class PrestationComponent implements OnInit {
 
  constructor(
    private prestationService: PrestationService,
-   private typeVehiculeService: TypeVehiculeService
+   private typeVehiculeService: TypeVehiculeService,
+   private authService: AuthService
  ) {}
 
  ngOnInit(): void {
@@ -144,52 +158,52 @@ export class PrestationComponent implements OnInit {
    this.ajoutPrestation = false;
  }
 
- // Méthodes CRUD
-//  onCreatePrestation(): void {
-//    this.loading = true;
-//    const newPrestation = {
-//      name: this.prestationName,
-//      duree: this.prestationDuree,
-//      typeVehicule: this.selectedTypeVehicule
-//    };
 
-//    this.prestationService.createPrestation(newPrestation).subscribe({
-//      next: () => {
-//        this.showAlert('success', 'Prestation créée avec succès');
-//        this.loadPrestations();
-//        this.hideDialog();
-//      },
-//      error: (err) => {
-//        this.showAlert('error', err.error?.message || 'Erreur lors de la création');
-//        this.loading = false;
-//      }
-//    });
-//  }
 
-//  onUpdatePrestation(): void {
-//    if (!this.selectedPrestation._id) return;
+// onCreatePrestation(): void {
+//   this.loading = true;
+  
+//   const prestationData = {
+//     name: this.prestationName,
+//     duree: this.prestationDuree,
+//     typeVehicule: this.selectedTypeVehicule
+//   };
 
-//    this.loading = true;
-//    this.prestationService.updatePrestation(this.selectedPrestation._id, this.selectedPrestation).subscribe({
-//      next: () => {
-//        this.showAlert('success', 'Prestation modifiée avec succès');
-//        this.loadPrestations();
-//        this.editPrestationDialog = false;
-//      },
-//      error: (err) => {
-//        this.showAlert('error', 'Erreur lors de la modification');
-//        this.loading = false;
-//      }
-//    });
-//  }
+//   this.prestationService.createPrestation(prestationData).subscribe({
+//     next: () => {
+//       this.showAlert('success', 'Prestation créée avec succès');
+//       this.loadPrestations();
+//       this.ajoutPrestation = false;
+//     },
+//     error: (err) => {
+//       this.showAlert('error', err.error?.message || 'Erreur lors de la création');
+//       this.loading = false;
+//     }
+//   });
+// }
 
 onCreatePrestation(): void {
+  // Récupérer l'ID de l'utilisateur connecté
+  const userId = this.authService.getUserId();
+  
+  if (!userId) {
+    this.showAlert('error', 'Utilisateur non identifié. Veuillez vous reconnecter.');
+    return;
+  }
+
+  // Validation des données
+  if (!this.prestationName || !this.prestationDuree || !this.selectedTypeVehicule) {
+    this.showAlert('error', 'Veuillez remplir tous les champs');
+    return;
+  }
+
   this.loading = true;
   
   const prestationData = {
     name: this.prestationName,
     duree: this.prestationDuree,
-    typeVehicule: this.selectedTypeVehicule
+    typeVehicule: this.selectedTypeVehicule,
+    user: userId // Ajout de l'utilisateur créateur
   };
 
   this.prestationService.createPrestation(prestationData).subscribe({
@@ -197,9 +211,11 @@ onCreatePrestation(): void {
       this.showAlert('success', 'Prestation créée avec succès');
       this.loadPrestations();
       this.ajoutPrestation = false;
+      this.resetForm();
     },
     error: (err) => {
-      this.showAlert('error', err.error?.message || 'Erreur lors de la création');
+      const errorMessage = err.error?.message || err.message || 'Erreur lors de la création';
+      this.showAlert('error', errorMessage);
       this.loading = false;
     }
   });

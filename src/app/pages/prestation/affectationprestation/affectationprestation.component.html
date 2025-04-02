@@ -1,4 +1,4 @@
-<div class="card p-4 rounded-lg shadow-md w-96 bg-white dark:bg-gray-800">
+<!-- <div class="card p-4 rounded-lg shadow-md w-96 bg-white dark:bg-gray-800">
   <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Affectation d'une Prestation</h2>
 
   <div class="mb-4">
@@ -14,4 +14,23 @@
   <button pButton class="p-button p-button-success p-button-sm w-full mt-4" (click)="affecterPrestation()">
       Affecter <i class="pi pi-check ml-2"></i>
   </button>
-</div>
+</div> -->
+<!-- prestation-mecanicien.component.html -->
+<div class="form-container">
+    <h2>Créer une prestation mécanicien</h2>
+    <form (ngSubmit)="createPrestationMecanicien()">
+      <label for="prestation">Prestation</label>
+      <select id="prestation" [(ngModel)]="prestationId" name="prestation" required>
+        <option value="" disabled>Sélectionner une prestation</option>
+        <option *ngFor="let prestation of prestations" [value]="prestation._id">
+          {{ prestation.name }}  <!-- Assurez-vous d'utiliser la propriété correcte ici -->
+        </option>
+      </select>
+  
+      <label for="user">Utilisateur (Mécanicien)</label>
+      <input type="text" id="user" [(ngModel)]="userId" name="user" required />
+  
+      <button type="submit">Créer</button>
+    </form>
+  </div>
+  

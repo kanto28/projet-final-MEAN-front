@@ -90,5 +90,23 @@ removePieceEntry(pieceId: string, data: { quantity: number; userId: string }): O
     headers: this.getHeaders() // Utilisation de la méthode
   });
 }
+
+//stock piece
+// Récupérer l'état du stock pour toutes les pièces
+getStock(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/pieces/stock`);
+}
+
+// Récupérer l'état du stock pour une pièce spécifique
+getStockById(pieceId: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}/pieces/stock/${pieceId}`);
+}
+
+ // Récupérer l'historique des entrées et sorties pour une pièce spécifique
+ getHistorique(pieceId: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}/pieces/${pieceId}/historique`);
+}
+
+
 }
 

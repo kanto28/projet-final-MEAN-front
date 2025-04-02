@@ -60,7 +60,7 @@ export class AppMenu {
                         items: [
                             {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
                             //{ label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
-                            //{label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
+                            {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
                            // {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']},
                             {label:'add piece',icon: 'pi pi-fw pi-download', routerLink:['pages/pieces/addPiece']},
                             //{label:'detail piece',  icon: 'pi pi-fw pi-dollar', routerLink:['pages/pieces/detailPiece']},

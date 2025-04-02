@@ -1,117 +1,36 @@
-<p>etatstockpiece works!</p>
-<div class="card">
-    <p-table [value]="products" responsiveLayout="scroll">
-        <ng-template #caption>
-            <div class="flex items-center justify-between">
-                <h5 class="m-0">Liste des Prestations </h5>
-            </div>
-            <br>
-        </ng-template>
-    <br>
-        <ng-template #header>
-            <tr>
-                <th style="width: 3rem">ID</th>
-                <th>Nom</th>
-                <th>Duree</th>
-                <th>Type de vehicule</th>
-                <th>Action</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.status }}</td>
-                <td>
-                    <p-button 
-                        label="Entrée en stock" 
-                        icon="pi pi-plus" 
-                        severity="success" 
-                        [style]="{ width: 'auto', marginRight: '8px' }"
-                        (onClick)="ovrirEditAction()"
-                    />
-                    <p-button 
-                        label="Sortie de stock" 
-                        icon="pi pi-minus" 
-                        severity="warn" 
-                        [style]="{ width: 'auto' }" 
-                        (onClick)="ovrirNouveauAction()"
-                    />
-                </td>
-                
-                
-            </tr>
-        </ng-template>
-    </p-table>
-
-    <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true">
-        <div class="flex items-center justify-center">
-            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"> </i>
-            <span>Êtes-vous sûr de vouloir supprimer ?</span>
-        </div>
-        <ng-template #footer>
-            <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" />
-            <p-button label="Oui" icon="pi pi-check" (click)="closeConfirmation()" severity="danger" outlined autofocus />
-        </ng-template>
-    </p-dialog>
-    
-</div>
-
-<p-dialog [(visible)]="ajoutAction" [style]="{ width: '450px' }" header="Entree " [modal]="true">
-    <ng-template #content>
-        <div class="flex flex-col gap-6">
-            <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="name" class="block font-bold mb-3">Duree</label>
-                <input type="number" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="inventoryStatus" class="block font-bold mb-3">type de Vehicule</label>
-                <select id="marque" class="w-full p-2 border rounded">
-                    <option value="">Sélectionnez un type de vehicule</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
-                </select>
-            </div>
-        </div>
-    </ng-template>
-
-    <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
-    </ng-template>
-</p-dialog>
-
-<p-dialog [(visible)]="editAction" [style]="{ width: '450px' }" header="Sortie" [modal]="true">
-    <ng-template #content>
-        <div class="flex flex-col gap-6">
-            <div>
-                <label for="name" class="block font-bold mb-3">Nom</label>
-                <input type="text" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="name" class="block font-bold mb-3">Duree</label>
-                <input type="number" pInputText id="name" required autofocus fluid />
-            </div>
-            <div>
-                <label for="inventoryStatus" class="block font-bold mb-3">type de Vehicule</label>
-                <select id="marque" class="w-full p-2 border rounded">
-                    <option value="">Sélectionnez un type de vehicule</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Ford">Ford</option>
-                    <option value="BMW">BMW</option>
-                </select>
-            </div>
-        </div>
-    </ng-template>
-
-    <ng-template #footer>
-        <p-button label="Cancel" icon="pi pi-times" text (click)="hideDialog()" />
-        <p-button label="Save" icon="pi pi-check"  />
-    </ng-template>
-</p-dialog>
+<div>
+    <h2>État du stock des pièces</h2>
+  
+    <!-- Liste des pièces avec leur stock -->
+    <div *ngIf="pieces.length > 0">
+      <ul>
+        <li *ngFor="let piece of pieces">
+          {{ piece.piece.nom }} : {{ piece.stock }} en stock
+          <button (click)="getHistorique(piece.piece._id)">Voir l'historique</button>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="pieces.length === 0">
+      <p>Aucune pièce disponible.</p>
+    </div>
+  
+    <!-- Affichage de l'historique des entrées et sorties d'une pièce -->
+    <div *ngIf="historique">
+      <h3>Historique de la pièce {{ historique.pieceId }}</h3>
+      
+      <h4>Entrées</h4>
+      <ul>
+        <li *ngFor="let entrer of historique.entrer">
+          Date: {{ entrer.date }} - Quantité: {{ entrer.quantity }}
+        </li>
+      </ul>
+      
+      <h4>Sorties</h4>
+      <ul>
+        <li *ngFor="let sortie of historique.sorties">
+          Date: {{ sortie.date }} - Quantité: {{ sortie.quantity }}
+        </li>
+      </ul>
+    </div>
+  </div>
+  

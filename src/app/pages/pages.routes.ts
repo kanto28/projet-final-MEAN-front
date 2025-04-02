@@ -49,7 +49,7 @@ export default [
     // Piece
     { path: 'pieces/piece', component: PieceComponent}, //liste
     //{ path: 'pieces/prixpiece', component: PrixpieceComponent},
-    //{path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
+    {path: 'pieces/etatstockpiece', component: EtatstockpieceComponent},
     //{path: 'pieces/historiquestock', component: HistoriquestockComponent},
     {path: 'pieces/addPiece', component: AddPieceComponent},//ajout
     {path: 'pieces/detailPiece/:id', component: DetailpieceComponent},//detail

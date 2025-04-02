@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { PieceService } from '../../../services/pieces/piece.service';
 
 @Component({
   selector: 'app-etatstockpiece',
@@ -44,41 +45,38 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './etatstockpiece.component.scss'
 })
 export class EtatstockpieceComponent {
-  ajoutAction: boolean = false;
-  editAction: boolean = false;
-  submitted: boolean = false;
-  displayConfirmation: boolean = false;
+  pieces: any[] = [];  // Liste des pièces avec leur stock
+  pieceId: string = '';  // ID de la pièce pour la recherche par ID
+  stock: any = null;  // Stock d'une seule pièce si besoin
+  historique: any = null;  // Historique des entrées et sorties pour une pièce spécifique
 
-  products = [
-    { id: '01', name: 'Toyota', price: 20000, category: 'SUV', reviews: 4, status: 'Available' },
-    { id: '02', name: 'Ford', price: 25000, category: 'Truck', reviews: 5, status: 'Sold Out' },
-    { id: '03', name: 'BMW', price: 30000, category: 'Sedan', reviews: 4.5, status: 'Available' }
-  ];
-  ovrirNouveauAction() {
-    this.submitted = false;
-    this.ajoutAction = true;
+  constructor(private pieceService: PieceService) { }
+
+  ngOnInit(): void {
+    this.getStock();  // Appeler la méthode pour récupérer le stock des pièces
   }
 
-  hideDialog() {
-    this.ajoutAction = false;
-    this.submitted = false;
+  // Récupérer l'état du stock pour toutes les pièces
+  getStock(): void {
+    this.pieceService.getStock().subscribe(
+      (data) => {
+        this.pieces = data;  // Stock des pièces
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération du stock', error);
+      }
+    );
   }
 
-  ovrirEditAction() {
-    this.submitted = false;
-    this.editAction = true;
+  // Récupérer l'historique des entrées et sorties pour une seule pièce
+  getHistorique(pieceId: string): void {
+    this.pieceService.getHistorique(pieceId).subscribe(
+      (data) => {
+        this.historique = data;  // Historique des entrées et sorties
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération de l\'historique', error);
+      }
+    );
   }
-
-  hideEditAction() {
-    this.editAction = false;
-    this.submitted = false;
-  }
-
-  openConfirmation() {
-    this.displayConfirmation = true;
-}
-
-closeConfirmation() {
-  this.displayConfirmation = false;
-}
 }
