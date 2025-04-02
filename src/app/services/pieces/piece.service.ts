@@ -72,7 +72,23 @@ addPieceEntry(pieceId: string, entryData: { quantity: number, userId: string }):
   return this.http.post(`${this.apiUrl}/pieces/${pieceId}/entrer`, entryData);
 }
 
+// removePieceEntry(pieceId: string, data: { quantity: number; userId: string }) {
+//   return this.http.post(`${this.apiUrl}/pieces/${pieceId}/sortie`, data);
+// }
 
-
-
+ // Ajoutez cette méthode
+ private getHeaders(): HttpHeaders {
+  const token = localStorage.getItem('token');
+  return new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
 }
+
+removePieceEntry(pieceId: string, data: { quantity: number; userId: string }): Observable<any> {
+  return this.http.post(`${this.apiUrl}/pieces/${pieceId}/sortie`, data, {
+    headers: this.getHeaders() // Utilisation de la méthode
+  });
+}
+}
+

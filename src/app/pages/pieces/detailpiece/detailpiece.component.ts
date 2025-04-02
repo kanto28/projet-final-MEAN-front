@@ -68,15 +68,26 @@ export class DetailpieceComponent {
   priceFormError: string | null = null;
 
   // detailpiece.component.ts
-showEntryForm = false;
-newEntry = {
-  quantity: null as number | null,
-  userId: '' // Vous pourriez pré-remplir avec l'ID de l'utilisateur connecté
-};
-entryFormError: string | null = null;
+  showEntryForm = false;
+  newEntry = {
+    quantity: null as number | null,
+    userId: '' // Vous pourriez pré-remplir avec l'ID de l'utilisateur connecté
+  };
+  entryFormError: string | null = null;
 
-successMessage: string | null = null;
-errorMessage: string | null = null;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+
+  //sortie
+  showExitForm = false;
+  newExit = {
+    quantity: null as number | null,
+    userId: ''
+  };
+  exitFormError: string | null = null;
+  exitSuccessMessage: string | null = null;
+  exitErrorMessage: string | null = null;
+
 
 
   constructor(
@@ -151,7 +162,6 @@ errorMessage: string | null = null;
   }
 
   //entre de stock
-  // detailpiece.component.ts
 toggleEntryForm() {
   this.showEntryForm = !this.showEntryForm;
   this.entryFormError = null;
@@ -197,6 +207,108 @@ addEntry() {
   });
 }
 
+toggleExitForm() {
+  this.showExitForm = !this.showExitForm;
+  this.exitFormError = null;
+}
+
+// Méthode pour enregistrer une sortie de stock
+// addExit() {
+//   if (!this.newExit.quantity || this.newExit.quantity <= 0) {
+//     this.exitErrorMessage = 'La quantité doit être supérieure à 0';
+//     return;
+//   }
+
+//   const pieceId = this.route.snapshot.paramMap.get('id');
+//   if (!pieceId) return;
+
+//   const userId = this.authService.getUserId(); 
+//   if (!userId) {
+//     this.exitErrorMessage = "Erreur : ID utilisateur introuvable.";
+//     return;
+//   }
+
+//   // 🛠️ Vérification des données avant l'envoi
+//   console.log("Données envoyées :", { quantity: this.newExit.quantity, userId: userId });
+
+//   this.pieceService.removePieceEntry(pieceId, {
+//     quantity: this.newExit.quantity,
+//     userId: userId
+//   }).subscribe({
+//     next: () => {
+//       this.exitSuccessMessage = "Sortie de stock enregistrée avec succès !";
+//       this.exitErrorMessage = null;
+//       this.loadPiece(pieceId);
+//       this.showExitForm = false;
+//       this.newExit = { quantity: null, userId: '' };
+
+//       // Effacer le message après 3 secondes
+//       setTimeout(() => { this.exitSuccessMessage = null; }, 3000);
+//     },
+//     error: (err) => {
+//       console.error("Erreur API :", err);
+//       this.exitErrorMessage = err.error?.message || "Erreur lors de l'enregistrement";
+//       this.exitSuccessMessage = null;
+
+//       // Effacer le message après 3 secondes
+//       setTimeout(() => { this.exitErrorMessage = null; }, 3000);
+//     }
+//   });
+// }
+
+
+addExit() {
+  if (!this.newExit.quantity || this.newExit.quantity <= 0) {
+    this.exitErrorMessage = 'La quantité doit être supérieure à 0';
+    return;
+  }
+
+  const pieceId = this.route.snapshot.paramMap.get('id');
+  if (!pieceId) {
+    this.exitErrorMessage = 'ID de pièce manquant';
+    return;
+  }
+
+  const userId = this.authService.getUserId();
+  if (!userId) {
+    this.exitErrorMessage = 'Utilisateur non authentifié';
+    return;
+  }
+
+  this.pieceService.removePieceEntry(pieceId, {
+    quantity: this.newExit.quantity,
+    userId: userId
+  }).subscribe({
+    next: () => {
+      this.exitSuccessMessage = 'Sortie enregistrée avec succès!';
+      this.loadPiece(pieceId);
+      this.resetExitForm();
+    },
+    error: (err) => {
+      this.handleExitError(err);
+    }
+  });
+}
+
+private resetExitForm() {
+  this.showExitForm = false;
+  this.newExit = { quantity: null, userId: '' };
+  setTimeout(() => this.exitSuccessMessage = null, 3000);
+}
+
+private handleExitError(err: any) {
+  console.error('Erreur sortie:', err);
+  
+  if (err.status === 400) {
+    this.exitErrorMessage = err.error?.erreur || 'Erreur de validation';
+  } else if (err.status === 401) {
+    this.exitErrorMessage = 'Authentification requise';
+  } else {
+    this.exitErrorMessage = 'Erreur serveur';
+  }
+  
+  setTimeout(() => this.exitErrorMessage = null, 3000);
+}
 
 
 }

@@ -105,32 +105,48 @@
                 </button>
 
                 <!-- Formulaire Entrée (masqué par défaut) -->
-                <div *ngIf="showEntryForm" class="p-3 surface-card border-round border-1 surface-border" >
-                    <div class="field mb-3">
-                        <label class="block text-sm font-medium mb-1">Quantité</label>
-                        <input
-                            type="number"
-                            [(ngModel)]="newEntry.quantity"
-                            min="1"
-                            pInputText
-                            class="w-full"
-                            placeholder="Nombre d'unités"
-                        >
-                    </div>
-                    
-                    <button 
-                        class="p-button p-button-success p-button-sm w-full"
-                        (click)="addEntry()"
-                        [disabled]="!newEntry.quantity || newEntry.quantity <= 0"
-                    >
-                        Confirmer <i class="pi pi-check ml-1"></i>
-                    </button>
-                </div>
+                <div *ngIf="showEntryForm" class="p-4 surface-card border-round-lg border-1 surface-border shadow-4" 
+                style="background: var(--surface-card); border-color: var(--surface-border)">
+               <div class="field mb-4">
+                   <label class="block text-sm font-medium mb-2" for="quantity-input">Quantité</label>
+                   <input
+                       id="quantity-input"
+                       type="number"
+                       [(ngModel)]="newEntry.quantity"
+                       min="1"
+                       pInputText
+                       class="w-full p-2"
+                       placeholder="Nombre d'unités"
+                   >
+               </div>
+               
+               <button 
+                   pButton
+                   label="Confirmer"
+                   icon="pi pi-check"
+                   iconPos="right"
+                   class="w-full"
+                   [disabled]="!newEntry.quantity || newEntry.quantity <= 0"
+                   (click)="addEntry()"
+               ></button>
+           </div>
 
+           <div class="mb-4">
+            <div class="flex flex-col gap-3">
                 <!-- Bouton Sortie -->
-                <button class="p-button p-button-danger p-button-sm w-full">
-                    Enregistrer une sortie <i class="pi pi-minus ml-1"></i>
-                </button>
+                <button (click)="toggleExitForm()" >Sortie de Stock</button>
+                <div *ngIf="showExitForm">
+                    <label>Quantité :</label>
+                    <input type="number" [(ngModel)]="newExit.quantity" min="1">
+                  
+                    <button (click)="addExit()" >Enregistrer</button>
+                  
+                    <p *ngIf="exitErrorMessage" class="error">{{ exitErrorMessage }}</p>
+                    <p *ngIf="exitSuccessMessage" class="success">{{ exitSuccessMessage }}</p>
+                  </div>
+                </div>
+            </div>
+                  
             </div>
         </div>
     </div>
