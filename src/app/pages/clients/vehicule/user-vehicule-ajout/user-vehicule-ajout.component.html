@@ -1,19 +1,21 @@
-<!-- 
+
 <div class="card">
     <div class="header">
       <h2>Ajouter un nouveau véhicule</h2>
-      <a href="liste-vehicules.html" class="back-link">← Retour à la liste</a>
+      <!-- <a href="liste-vehicules.html" class="back-link">← Retour à la liste</a> -->
     </div>
   
-    <form class="vehicle-form">
+    <form (ngSubmit)="onSubmit()" #vehiculeForm="ngForm" class="vehicle-form">
       <div class="form-row">
         <div class="form-group">
           <label for="matricule">Matricule*</label>
           <input 
             type="text" 
             id="matricule" 
-            placeholder="AB-123-CD"
-            value="AB-123-CD" 
+            [(ngModel)]="vehiculeData.matricule"
+             name="matricule"
+             class="form-control"
+            placeholder="Ex: 12345AB"
             required>
           <div class="hint">Format: XX-999-XX</div>
         </div>
@@ -22,132 +24,41 @@
           <label for="annee">Année*</label>
           <input 
             type="text" 
-            id="annee" 
-            maxlength="4"
-            placeholder="2023"
-            value="2023" 
-            required>
+            id="annees"
+            [(ngModel)]="vehiculeData.annees" 
+            name="annees"
+            class="form-control"
+            placeholder="Ex: 2004"
+            required/>
         </div>
+        
       </div>
   
       <div class="form-row">
-        <div class="form-group">
-          <label for="marque">Marque*</label>
-          <select id="marque" required>
-            <option value="">Sélectionnez une marque</option>
-            <option value="peugeot" selected>Peugeot</option> 
-            <option value="renault">Renault</option>
-            <option value="citroen">Citroën</option>
-          </select>
-        </div>
   
-        <div class="form-group">
-          <label for="modele">Modèle*</label>
-          <select id="modele" required>
-            <option value="">Sélectionnez un modèle</option>
-            <option value="308" selected>308</option> 
-            <option value="3008">3008</option>
-            <option value="208">208</option>
-          </select>
-        </div>
-      </div>
-  
-      <div class="form-row">
-        <div class="form-group">
-          <label for="energie">Énergie*</label>
-          <select id="energie" required>
-            <option value="">Sélectionnez une énergie</option>
-            <option value="essence" selected>Essence</option>
-            <option value="diesel">Diesel</option>
-            <option value="electrique">Électrique</option>
-          </select>
-        </div>
-  
-        <div class="form-group">
-          <label for="moteur">Moteur*</label>
-          <input 
-            type="text" 
-            id="moteur" 
-            placeholder="1.2L PureTech 130"
-            value="1.2L PureTech 130" 
-            required>
-        </div>
-      </div>
-  
-      <div class="form-group full-width">
-        <label for="transmission">Transmission*</label>
-        <div class="radio-group">
-          <label>
-            <input type="radio" name="transmission" value="manuelle" checked>
-            <span>Manuelle</span>
-          </label>
-          <label>
-            <input type="radio" name="transmission" value="automatique">
-            <span>Automatique</span>
-          </label>
-        </div>
-      </div>
-  
-      <div class="form-actions">
-        <button type="reset" class="secondary-btn">Annuler</button>
-        <button type="submit" class="primary-btn">Enregistrer le véhicule</button>
-      </div>
-    </form>
-  </div>
-   -->
-
-   <div class="container">
-    <h2>Ajouter un véhicule</h2>
-  
-    <form (ngSubmit)="onSubmit()" #vehiculeForm="ngForm">
-      <!-- Matricule -->
-      <div class="form-group">
-        <label for="matricule">Matricule</label>
-        <input
-          type="text"
-          id="matricule"
-          [(ngModel)]="vehiculeData.matricule"
-          name="matricule"
-          required
-          class="form-control"
-          placeholder="Ex: 12345AB"
-        />
-      </div>
-  
-      <!-- Année -->
-      <div class="form-group">
-        <label for="annees">Année</label>
-        <input
-          type="text"
-          id="annees"
-          [(ngModel)]="vehiculeData.annees"
-          name="annees"
-          required
-          class="form-control"
-          placeholder="Ex: 2004"
-        />
-      </div>
-  
-      <!-- Modèle -->
+        <!-- Modèle -->
       <div class="form-group">
         <label for="model">Modèle</label>
-        <select
-          id="model"
-          [(ngModel)]="vehiculeData.model"
-          name="model"
-          required
-          class="form-control"
-          *ngIf="models.length > 0"
-        >
-          <option value="" disabled>Sélectionnez un modèle</option>
-          <option *ngFor="let model of models" [value]="model.id || model._id">
-            {{ model.name }}
-          </option>
-        </select>
+          <select
+            id="model"
+            [(ngModel)]="vehiculeData.model"
+            name="model"
+            required
+            class="form-control"
+            *ngIf="models.length > 0"
+          >
+            <option value="" disabled>Sélectionnez un modèle</option>
+            <option *ngFor="let model of models" [value]="model.id || model._id">
+              {{ model.name }}
+            </option>
+          </select>
         <div *ngIf="models.length === 0" class="text-muted">Chargement des modèles...</div>
       </div>
+
+      </div>
   
-      <!-- Energie -->
+      <div class="form-row">
+        <!-- Energie -->
       <div class="form-group">
         <label for="energie">Energie</label>
         <select
@@ -166,7 +77,7 @@
         <div *ngIf="energies.length === 0" class="text-muted">Chargement des énergies...</div>
       </div>
   
-      <!-- Moteur -->
+         <!-- Moteur -->
       <div class="form-group">
         <label for="moteur">Moteur</label>
         <select
@@ -184,34 +95,35 @@
         </select>
         <div *ngIf="moteurs.length === 0" class="text-muted">Chargement des moteurs...</div>
       </div>
-  
-      <!-- Transmission -->
-      <div class="form-group">
-        <label for="transmission">Transmission</label>
-        <select
-          id="transmission"
-          [(ngModel)]="vehiculeData.transmission"
-          name="transmission"
-          required
-          class="form-control"
-          *ngIf="transmissions.length > 0"
-        >
-          <option value="" disabled>Sélectionnez une transmission</option>
-          <option *ngFor="let transmission of transmissions" [value]="transmission.id || transmission._id">
-            {{ transmission.name }}
-          </option>
-        </select>
-        <div *ngIf="transmissions.length === 0" class="text-muted">Chargement des transmissions...</div>
       </div>
   
-      <!-- Bouton Soumettre -->
-      <button
-        type="submit"
-        [disabled]="!vehiculeForm.form.valid"
-        class="btn btn-primary"
+     <!-- Transmission -->
+     <div class="form-group">
+      <label for="transmission">Transmission</label>
+      <select
+        id="transmission"
+        [(ngModel)]="vehiculeData.transmission"
+        name="transmission"
+        required
+        class="form-control"
+        *ngIf="transmissions.length > 0"
       >
-        Ajouter le véhicule
-      </button>
+        <option value="" disabled>Sélectionnez une transmission</option>
+        <option *ngFor="let transmission of transmissions" [value]="transmission.id || transmission._id">
+          {{ transmission.name }}
+        </option>
+      </select>
+      <div *ngIf="transmissions.length === 0" class="text-muted">Chargement des transmissions...</div>
+    </div>
+  
+      <div class="form-actions">
+        <button type="reset" class="secondary-btn">Annuler</button>
+        <button type="submit"
+        [disabled]="!vehiculeForm.form.valid"
+        class="btn btn-primary">Enregistrer le véhicule</button>
+      </div>
     </form>
   </div>
   
+
+   -

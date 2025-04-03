@@ -68,3 +68,41 @@ select, input {
     margin-right: 15px;
     font-weight: normal;
 }
+
+.prestations-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  
+  .form-check {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .form-check:last-child {
+    border-bottom: none;
+  }
+  
+  .badge {
+    font-size: 0.85em;
+  }
+
+  /* ajoutrendezvou.component.css */
+.prestation-card {
+    transition: all 0.3s ease;
+  }
+  
+  .prestation-card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .form-check-input {
+    margin-top: 0.3rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }

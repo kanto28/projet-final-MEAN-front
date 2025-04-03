@@ -1,98 +1,76 @@
-<!-- 
-<div class="card">
-    <div class="header">
-        <h2>Nouveau Rendez-vous</h2>
-        <a href="liste.html" class="btn btn-secondary">Retour</a>
+<div class="container mt-4">
+  <h2>Sélectionnez votre véhicule</h2>
+
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
     </div>
+  </div>
 
-    <div class="form-group">
-        <label for="vehicule">Véhicule</label>
-        <select id="vehicule">
-            <option value="">Sélectionnez un véhicule</option>
-            <option selected>AB-123-CD (Peugeot 308)</option>
-            <option>EF-456-GH (Renault Clio)</option>
-            <option>IJ-789-KL (Citroën C4)</option>
-        </select>
+    <!-- À l'intérieur de votre formulaire principal -->
+<form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
+  
+    <!-- Sélection du véhicule (existant) -->
+    <div class="mb-3">
+      <label class="form-label">Véhicule</label>
+      <select formControlName="vehicule" class="form-select">
+        <option value="" disabled>Sélectionnez un véhicule</option>
+        <option *ngFor="let v of vehicules" [value]="v._id">
+          {{ v.matricule }} - {{ v.model?.nom }} ({{ v.annees }})
+        </option>
+      </select>
     </div>
-
-    <div class="form-group">
-        <label for="date">Date et heure</label>
-        <input type="datetime-local" id="date" value="2024-06-18T10:00">
-    </div>
-
-    <div class="form-group">
-        <label>Prestations</label>
-        <div class="checkbox-group">
-            <label><input type="checkbox" checked> Vidange (50€)</label>
-            <label><input type="checkbox"> Révision complète (120€)</label>
-            <label><input type="checkbox"> Pneumatiques (30€/pneu)</label>
-            <label><input type="checkbox"> Diagnostic (60€)</label>
-        </div>
-    </div>
-
-    <button class="btn">Demander un devis</button>
-
-    <div class="devis-card">
-        <h3>Devis estimé</h3>
-        <p><strong>Total:</strong> 50€ (Vidange)</p>
-        <button class="btn">Confirmer le RDV</button>
-    </div>
-</div> -->
-
-<!-- create-rendezvous.component.html -->
-<div class="container">
-    <h2>Créer un nouveau rendez-vous</h2>
-    
-    <form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label>Véhicule</label>
-        <input type="text" formControlName="vehicule" class="form-control">
+  
+    <!-- Champ Mvola - Nouveau -->
+    <div class="mb-3">
+      <label class="form-label">Numéro Mvola</label>
+      <input 
+        type="tel"
+        formControlName="Mvola"
+        class="form-control"
+        placeholder="0321234567"
+        [class.is-invalid]="rendezVousForm.get('Mvola')?.invalid && (rendezVousForm.get('Mvola')?.dirty || rendezVousForm.get('Mvola')?.touched)">
+  
+      <!-- Messages d'erreur -->
+      <div *ngIf="rendezVousForm.get('Mvola')?.hasError('required') && (rendezVousForm.get('Mvola')?.dirty || rendezVousForm.get('Mvola')?.touched)" 
+           class="invalid-feedback">
+        Le numéro Mvola est obligatoire
       </div>
-      
-      <div class="form-group">
-        <label>Utilisateur</label>
-        <input type="text" formControlName="user" class="form-control">
+      <div *ngIf="rendezVousForm.get('Mvola')?.hasError('pattern') && (rendezVousForm.get('Mvola')?.dirty || rendezVousForm.get('Mvola')?.touched)" 
+           class="invalid-feedback">
+        Format invalide (doit commencer par 032-039 et contenir 10 chiffres)
       </div>
-      
-      <div class="form-group">
-        <label>Numéro Mvola</label>
-        <input type="text" formControlName="Mvola" class="form-control">
-      </div>
-      
-      <h3>Détails des prestations</h3>
-      <div formArrayName="details">
-        <div *ngFor="let detail of details.controls; let i = index" [formGroupName]="i" class="detail-group">
-          <div class="form-group">
-            <label>Prestation</label>
-            <input type="text" formControlName="prestation" class="form-control">
-            <button type="button" (click)="removeDetail(i)" class="btn btn-danger">Supprimer</button>
-          </div>
+    </div>
+
+    <!-- Après le champ Mvola -->
+
+    <div class="prestations-container">
+        <div *ngFor="let prestation of prestationsDisponibles" class="form-check mb-2">
+          <input class="form-check-input" 
+                 type="checkbox"
+                 [checked]="isPrestationSelected(prestation._id)"
+                 (change)="onCheckboxChange($event, prestation._id)"
+                 [id]="'presta-'+prestation._id">
+          
+          <label class="form-check-label" [for]="'presta-'+prestation._id">
+            {{ prestation.name }}
+            <span class="badge bg-primary ms-2">
+              {{ prestation.currentPrice | currency:'Ar':'symbol':'1.0-0' }}
+            </span>
+          </label>
+          
+          <small class="d-block text-muted">{{ prestation.description }}</small>
         </div>
       </div>
-      
-      <button type="button" (click)="addDetail()" class="btn btn-secondary">Ajouter une prestation</button>
-      <button type="submit" class="btn btn-primary">Calculer le devis</button>
-    </form>
-    
-    <div *ngIf="showDevis" class="devis-section">
-      <h3>Devis</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Description</th>
-            <th>Prix</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of devis">
-            <td>{{ item.prestation ? 'Prestation' : 'Pièce' }}</td>
-            <td>{{ item.prestation || item.piece }}</td>
-            <td>{{ item.prixPrestation || item.prixPiece }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <h4>Total: {{ prixTotal }}</h4>
-      <button (click)="confirmRendezVous()" class="btn btn-success">Confirmer le rendez-vous</button>
+  
+  <!-- Avant le bouton de soumission -->
+  
+    <button type="submit" class="btn btn-primary" [disabled]="rendezVousForm.invalid">
+      Confirmer
+    </button>
+  </form>
+
+    <div *ngIf="vehicules.length === 0" class="alert alert-info">
+      Aucun véhicule enregistré. Veuillez d'abord ajouter un véhicule.
     </div>
   </div>

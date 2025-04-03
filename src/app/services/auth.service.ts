@@ -65,4 +65,13 @@ export class AuthService {
   getUsername(): string | null {
     return localStorage.getItem('username');
   }
+
+  getCurrentUser(): any {
+    return {
+      _id: localStorage.getItem('userId'),
+      role: localStorage.getItem('role'),
+      username: localStorage.getItem('username')
+    };
+}
+
 }

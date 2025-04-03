@@ -30,7 +30,11 @@ export class VehiculeuserService {
   }
 
   // Nouvelle méthode pour récupérer les véhicules d'un utilisateur
+  // getVehiculesByUser(userId: string): Observable<any> {
+  //   return this.http.get(`${this.apiUrl}/vehicules/user/${userId}`);
+  // }
+
   getVehiculesByUser(userId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/vehicules/user/${userId}`);
+    return this.http.get(`${this.apiUrl}/vehicules/user/${userId}?populate=model,energie,moteur,transmission`);
   }
 }

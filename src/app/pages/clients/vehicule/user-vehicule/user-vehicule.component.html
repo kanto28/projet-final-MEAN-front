@@ -1,94 +1,37 @@
-<!-- <div class="card">
-    <div class="header">
-      <h2>Mes véhicules</h2>
-      <button class="add-button">
-        <span>+</span> Ajouter un véhicule
-      </button>
-    </div>
-  
-    <table class="vehicle-table">
-      <thead>
-        <tr>
-          <th>Matricule</th>
-          <th>Année</th>
-          <th>Modèle</th>
-          <th>Énergie</th>
-          <th>Moteur</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>AB-123-CD</td>
-          <td>2022</td>
-          <td><span class="tag info">Peugeot 308</span></td>
-          <td><span class="tag warning">Essence</span></td>
-          <td>1.2L PureTech 130</td>
-          <td>
-            <button class="action-btn detail">Détails</button>
-            <button class="action-btn delete">Supprimer</button>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>EF-456-GH</td>
-          <td>2020</td>
-          <td><span class="tag info">Renault Clio</span></td>
-          <td><span class="tag warning">Diesel</span></td>
-          <td>1.5L dCi</td>
-          <td>
-            <button class="action-btn detail">Détails</button>
-            <button class="action-btn delete">Supprimer</button>
-          </td>
-        </tr>
-        
-        <tr>
-          <td>IJ-789-KL</td>
-          <td>2023</td>
-          <td><span class="tag info">Citroën C4</span></td>
-          <td><span class="tag warning">Électrique</span></td>
-          <td>100kW</td>
-          <td>
-            <button class="action-btn detail">Détails</button>
-            <button class="action-btn delete">Supprimer</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    
-  </div> -->
+<div class="container">
+  <h2>Mes véhicules</h2>
 
-  <div class="container">
-    <h2>Mes véhicules</h2>
-  
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Chargement...</span>
-      </div>
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
     </div>
-  
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-  
-    <div *ngIf="!isLoading && vehicules.length === 0" class="alert alert-info">
-      Aucun véhicule enregistré.
-    </div>
-  
-    <div *ngIf="vehicules.length > 0" class="row">
-      <div *ngFor="let vehicule of vehicules" class="col-md-4 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ vehicule.vehicule?.matricule || 'Non spécifié' }}</h5>
-            <p >
-              Modèle: {{ vehicule.vehicule?.model?.name || 'Non spécifié' }}<br>
-              Année: {{ vehicule.vehicule?.annees || 'Non spécifié' }}<br>
-              Energie: {{ vehicule.vehicule?.energie?.name || 'Non spécifié' }}
-            </p>
-            <a class="btn btn-primary">Détails</a>
-          </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && vehicules.length === 0" class="alert alert-info">
+    Aucun véhicule enregistré.
+  </div>
+
+  <div *ngIf="vehicules.length > 0" class="row">
+    <div *ngFor="let vehicule of vehicules" class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ vehicule.vehicule?.matricule || 'Non spécifié' }}</h5>
+          
+          <p>
+            <i class="pi pi-car"></i> Modèle: {{ vehicule.vehicule?.model?.name || 'Non spécifié' }}
+          </p>
+          <p>
+            <i class="pi pi-calendar"></i> Année: {{ vehicule.vehicule?.annees || 'Non spécifié' }}
+          </p>
+          <p>
+            <i class="pi pi-bolt"></i> Energie: {{ vehicule.vehicule?.energie?.name || 'Non spécifié' }}
+          </p>
         </div>
       </div>
     </div>
   </div>
+</div>

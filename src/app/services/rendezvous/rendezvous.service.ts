@@ -22,4 +22,6 @@ export class RendezvousService {
   getRendezVousDetails(id: string) {
     return this.http.get(`${this.apiUrl}/rendezvous/${id}`);
   }
+
+  
 }
