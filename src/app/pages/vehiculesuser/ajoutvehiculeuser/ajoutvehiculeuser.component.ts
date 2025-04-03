@@ -17,6 +17,12 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { VehiculeuserService } from '../../../services/vehicule/vehiculeuser.service';
+import { Router } from '@angular/router';
+import { EnergieService } from '../../../services/crud/energie/energie.service';
+import { ModelService } from '../../../services/crud/model/model.service';
+import { MoteurService } from '../../../services/crud/moteur/moteur.service';
+import { TransmissionService } from '../../../services/crud/transmission/transmission.service';
 
 @Component({
   selector: 'app-ajoutvehiculeuser',
@@ -46,36 +52,79 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './ajoutvehiculeuser.component.scss'
 })
 export class AjoutvehiculeuserComponent {
-// Données fictives pour les utilisateurs et les modèles
-users = [
-  { id: 1, name: 'Utilisateur 1' },
-  { id: 2, name: 'Utilisateur 2' }
-];
+  vehiculeData = {
+    matricule: '',
+    annees: '',
+    model: '',
+    energie: '',
+    moteur: '',
+    transmission: '',
+    user: '', // L'ID de l'utilisateur connecté
+  };
 
-models = [
-  { id: 1, name: 'Model A' },
-  { id: 2, name: 'Model B' }
-];
+  models = []; // Liste des modèles
+  energies = []; // Liste des énergies
+  moteurs = []; // Liste des moteurs
+  transmissions = []; // Liste des transmissions
 
-selectedUser = this.users[0];
-selectedModel = this.models[0];
+  constructor(private vehiculeUserService: VehiculeuserService, 
+    private router: Router, 
+    private modelService: ModelService,
+    private energieService: EnergieService,
+    private moteurService: MoteurService,
+    private transmissionService: TransmissionService) {}
 
-// Variables de saisie
-matricule = '';
-annees = '';
-energie = 'Electric';
-moteur = 'V8';
-transmission = 'Automatique';
+  ngOnInit() {
+    // Charger les listes de modèles, énergies, moteurs, et transmissions
+    this.loadModels();
+    this.loadEnergies();
+    this.loadMoteurs();
+    this.loadTransmissions();
 
-onSubmit() {
-  console.log('Véhicule ajouté:', {
-    matricule: this.matricule,
-    annees: this.annees,
-    model: this.selectedModel.name,
-    energie: this.energie,
-    moteur: this.moteur,
-    transmission: this.transmission,
-    user: this.selectedUser.name
-  });
-}
+    // Récupérer l'utilisateur connecté
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      this.vehiculeData.user = userId;
+    }
+  }
+
+  // Méthodes pour charger les données des services
+  loadModels() {
+    this.modelService.getModels().subscribe((data) => {
+      this.models = data;
+    });
+  }
+
+  loadEnergies() {
+    this.energieService.getEnergies().subscribe((data) => {
+      this.energies = data;
+    });
+  }
+
+  loadMoteurs() {
+    this.moteurService.getMoteurs().subscribe((data) => {
+      this.moteurs = data;
+    });
+  }
+
+  loadTransmissions() {
+    this.transmissionService.getTransmissions().subscribe((data) => {
+      this.transmissions = data;
+    });
+  }
+
+  // Méthode pour envoyer le formulaire
+  onSubmit() {
+    this.vehiculeUserService.createVehicule(this.vehiculeData).subscribe(
+      (response) => {
+        console.log('Véhicule créé avec succès:', response);
+        // Redirige ou affiche un message de succès
+        this.router.navigate(['/success']); // Par exemple
+      },
+      (error) => {
+        console.error('Erreur lors de la création du véhicule:', error);
+        // Affiche un message d'erreur si nécessaire
+      }
+    );
+  }
 }
