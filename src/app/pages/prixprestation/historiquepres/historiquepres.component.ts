@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -17,6 +17,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { PrxprestationService } from '../../../services/prixprestaion/prxprestation.service';
 
 @Component({
   selector: 'app-historiquepres',
@@ -45,20 +46,34 @@ import { ToolbarModule } from 'primeng/toolbar';
   templateUrl: './historiquepres.component.html',
   styleUrl: './historiquepres.component.scss'
 })
-export class HistoriquepresComponent {
-  prestation = {
-    _id: '1',
-    name: 'Lavage Intérieur'
-  };
+export class HistoriquepresComponent implements OnInit{
+  prestationsData: any[] = [];
+  isLoading = true;
+  errorMessage = '';
 
-  priceHistory = [
-    { prix: 22.99, dates: new Date('2023-01-10'), status: false },
-    { prix: 24.50, dates: new Date('2023-03-15'), status: true },
-    { prix: 25.99, dates: new Date('2023-05-20'), status: true }
-  ];
+  constructor(private prixPrestationService: PrxprestationService) {}
 
-  goBack() {
-    console.log('Retour à la liste');
-    // Normalement navigation vers la liste
+  ngOnInit(): void {
+    this.loadPrestationsWithPrices();
+  }
+
+  loadPrestationsWithPrices(): void {
+    this.prixPrestationService.getPrestationsWithLastPrice().subscribe({
+      next: (data: any) => {
+        this.prestationsData = data;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des données';
+        this.isLoading = false;
+        console.error(err);
+      }
+    });
+  }
+
+  // Méthode helper pour formater la date
+  formatDate(dateString: string): string {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString();
   }
 }

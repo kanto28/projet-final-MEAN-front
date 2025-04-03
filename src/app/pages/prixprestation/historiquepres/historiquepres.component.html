@@ -5,7 +5,7 @@
 </p-toolbar>
 
 <div class="card p-6 bg-white shadow-md rounded-lg dark:bg-gray-800">
-  <h2 class="text-lg font-semibold text-gray-800 dark:text-white">{{ prestation.name }}</h2>
+  <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Nom presatation</h2>
 
   <div class="overflow-x-auto mt-4">
     <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-sm dark:bg-gray-700 dark:border-gray-600">
@@ -17,24 +17,60 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let price of priceHistory" class="border-b dark:border-gray-500">
-          <td class="px-4 py-2 text-gray-600 dark:text-gray-300">{{ price.dates | date:'dd/MM/yyyy' }}</td>
-          <td class="px-4 py-2 text-gray-600 dark:text-gray-300">{{ price.prix }}</td>
-          <td class="px-4 py-2">
-            <span class="px-2 py-1 rounded text-white font-medium"
-              [ngClass]="{'bg-green-500': price.status, 'bg-red-500': !price.status}">
-              {{ price.status ? 'Actif' : 'Inactif' }}
-            </span>
-          </td>
+        <tr class="border-b dark:border-gray-500">
+          <td class="px-4 py-2 text-gray-600 dark:text-gray-300">date</td>
+          <td class="px-4 py-2 text-gray-600 dark:text-gray-300">prix</td>
+         
         </tr>
       </tbody>
     </table>
   </div>
 
-  <button 
+  <!-- <button 
     class="mt-4 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition duration-300" 
     (click)="goBack()"
   >
     Retour
-  </button>
+  </button> -->
 </div>
+
+
+<!-- <div class="container mt-4">
+  <h2>Liste des Prestations avec Derniers Prix</h2>
+
+  <div *ngIf="isLoading" class="text-center my-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p>Chargement des données...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="!isLoading && prestationsData.length === 0" class="alert alert-info">
+    Aucune donnée disponible.
+  </div>
+
+  <table *ngIf="!isLoading && prestationsData.length > 0" class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th>Prestation</th>
+        <th>Type Véhicule</th>
+        <th>Dernier Prix</th>
+        <th>Date</th>
+        <th>Créée par</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of prestationsData">
+        <td>{{ item.prestation?.name || 'N/A' }}</td>
+        <td>{{ item.prestation?.typeVehicule?.name || 'N/A' }}</td>
+        <td>{{ item.dernierPrix?.prix ? (item.dernierPrix.prix | currency:'EUR':'symbol') : 'N/A' }}</td>
+        <td>{{ formatDate(item.dernierPrix?.dates) }}</td>
+        <td>{{ item.prestation?.user?.username || item.prestation?.user?.email || 'N/A' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div> -->

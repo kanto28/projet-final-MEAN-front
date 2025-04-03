@@ -1,4 +1,4 @@
-
+<!-- 
 <div class="card">
     <div class="header">
         <h2>Nouveau Rendez-vous</h2>
@@ -37,4 +37,62 @@
         <p><strong>Total:</strong> 50€ (Vidange)</p>
         <button class="btn">Confirmer le RDV</button>
     </div>
-</div>
+</div> -->
+
+<!-- create-rendezvous.component.html -->
+<div class="container">
+    <h2>Créer un nouveau rendez-vous</h2>
+    
+    <form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Véhicule</label>
+        <input type="text" formControlName="vehicule" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label>Utilisateur</label>
+        <input type="text" formControlName="user" class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label>Numéro Mvola</label>
+        <input type="text" formControlName="Mvola" class="form-control">
+      </div>
+      
+      <h3>Détails des prestations</h3>
+      <div formArrayName="details">
+        <div *ngFor="let detail of details.controls; let i = index" [formGroupName]="i" class="detail-group">
+          <div class="form-group">
+            <label>Prestation</label>
+            <input type="text" formControlName="prestation" class="form-control">
+            <button type="button" (click)="removeDetail(i)" class="btn btn-danger">Supprimer</button>
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" (click)="addDetail()" class="btn btn-secondary">Ajouter une prestation</button>
+      <button type="submit" class="btn btn-primary">Calculer le devis</button>
+    </form>
+    
+    <div *ngIf="showDevis" class="devis-section">
+      <h3>Devis</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of devis">
+            <td>{{ item.prestation ? 'Prestation' : 'Pièce' }}</td>
+            <td>{{ item.prestation || item.piece }}</td>
+            <td>{{ item.prixPrestation || item.prixPiece }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>Total: {{ prixTotal }}</h4>
+      <button (click)="confirmRendezVous()" class="btn btn-success">Confirmer le rendez-vous</button>
+    </div>
+  </div>
