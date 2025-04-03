@@ -1,4 +1,4 @@
-<p-toolbar styleClass="mb-6">
+<!-- <p-toolbar styleClass="mb-6">
   <ng-template #start>
     <div class="font-semibold text-xl">Nouvelle Prestation</div>
   </ng-template>
@@ -64,5 +64,79 @@
       Créer la prestation
     </button>
     
+  </form>
+</div> -->
+
+<!-- create-prestation.component.html -->
+<div class="container mt-5">
+  <h2 class="mb-4">Nouvelle Prestation</h2>
+  
+  <form [formGroup]="prestationForm" (ngSubmit)="onSubmit()">
+    <!-- Nom -->
+    <div class="mb-3">
+      <label for="name" class="form-label">Nom</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="name" 
+        formControlName="name"
+        [class.is-invalid]="prestationForm.get('name')?.invalid && prestationForm.get('name')?.touched">
+      <div *ngIf="prestationForm.get('name')?.errors?.['required'] && prestationForm.get('name')?.touched" 
+           class="invalid-feedback">
+        Le nom est obligatoire
+      </div>
+      <div *ngIf="prestationForm.get('name')?.errors?.['minlength'] && prestationForm.get('name')?.touched" 
+           class="invalid-feedback">
+        Minimum 3 caractères
+      </div>
+    </div>
+
+    <!-- Durée -->
+    <div class="mb-3">
+      <label for="duree" class="form-label">Durée (minutes)</label>
+      <input 
+        type="number" 
+        class="form-control" 
+        id="duree" 
+        formControlName="duree"
+        [class.is-invalid]="prestationForm.get('duree')?.invalid && prestationForm.get('duree')?.touched">
+      <div *ngIf="prestationForm.get('duree')?.errors?.['required'] && prestationForm.get('duree')?.touched" 
+           class="invalid-feedback">
+        La durée est obligatoire
+      </div>
+      <div *ngIf="prestationForm.get('duree')?.errors?.['min'] && prestationForm.get('duree')?.touched" 
+           class="invalid-feedback">
+        Minimum 1 minute
+      </div>
+    </div>
+
+    <!-- Type Véhicule -->
+    <div class="mb-3">
+      <label for="typeVehicule" class="form-label">Type de Véhicule</label>
+      <select 
+        class="form-select" 
+        id="typeVehicule" 
+        formControlName="typeVehicule"
+        [class.is-invalid]="prestationForm.get('typeVehicule')?.invalid && prestationForm.get('typeVehicule')?.touched">
+        <option value="" disabled selected>Choisissez un type</option>
+        <option *ngFor="let type of vehicleTypes" [value]="type._id">{{ type.name }}</option>
+      </select>
+      <div *ngIf="prestationForm.get('typeVehicule')?.invalid && prestationForm.get('typeVehicule')?.touched" 
+           class="invalid-feedback">
+        Sélection obligatoire
+      </div>
+    </div>
+
+    <!-- Bouton Submit -->
+    <button 
+      type="submit" 
+      class="btn btn-primary mt-3"
+      [disabled]="prestationForm.invalid || isLoading">
+      <span *ngIf="!isLoading">Créer</span>
+      <span *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Création...
+      </span>
+    </button>
   </form>
 </div>

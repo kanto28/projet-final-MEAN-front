@@ -1,4 +1,4 @@
-<p-toolbar styleClass="mb-6">
+<!-- <p-toolbar styleClass="mb-6">
     <ng-template #start>
       <div class="font-semibold text-xl">Liste des Prestations</div>
     </ng-template>
@@ -47,4 +47,54 @@
       </ng-template>
     </p-table>
   </div>
+   -->
+
+   <div class="container mt-4">
+    <h2>Liste des Prestations</h2>
   
+    <div *ngIf="isLoading" class="text-center my-4">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+      <p>Chargement des prestations...</p>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="!isLoading && prestations.length === 0" class="alert alert-info">
+      Aucune prestation disponible.
+    </div>
+  
+    <table *ngIf="!isLoading && prestations.length > 0" class="table table-striped mt-3">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Durée (min)</th>
+          <th>Type de Véhicule</th>
+          <th>Créée par</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let prestation of prestations">
+          <td>{{ prestation.name }}</td>
+          <td>{{ prestation.duree }}</td>
+         <!-- listepres.component.html -->
+<!-- <td>
+  {{ (prestation.typeVehicule && typeof prestation.typeVehicule === 'object' ? prestation.typeVehicule.name : 'Non spécifié') || 'Non spécifié' }}
+</td>
+<td>
+  {{ (prestation.user && typeof prestation.user === 'object' ? 
+      (prestation.user.username || prestation.user.username) : 
+      'Utilisateur inconnu') || 'Utilisateur inconnu' }}
+</td> -->
+          <td>
+            <button class="btn btn-sm btn-primary me-2">Modifier</button>
+            <button class="btn btn-sm btn-danger">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

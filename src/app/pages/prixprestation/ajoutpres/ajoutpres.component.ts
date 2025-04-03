@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
@@ -17,6 +18,10 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { AuthService } from '../../../services/auth.service';
+import { PrestationService } from '../../../services/crud/prestation/prestation.service';
+import { TypeVehiculeService } from '../../../services/crud/typeVehicule/type-vehicule.service';
+import { PrxprestationService } from '../../../services/prixprestaion/prxprestation.service';
 
 @Component({
   selector: 'app-ajoutpres',
@@ -45,24 +50,64 @@ import { ToolbarModule } from 'primeng/toolbar';
   templateUrl: './ajoutpres.component.html',
   styleUrl: './ajoutpres.component.scss'
 })
-export class AjoutpresComponent {
-  prestation = {
-    name: '',
-    duree: null,
-    typeVehicule: ''
-  };
-
-  initialPrice: number = 0;
-
-  vehicleTypes = [
-    { _id: '1', name: 'Voiture' },
-    { _id: '2', name: 'SUV' },
-    { _id: '3', name: 'Camionnette' }
-  ];
-
-  onSubmit() {
-    console.log('Prestation à créer:', this.prestation);
-    console.log('Prix initial:', this.initialPrice);
-    // Ici vous auriez normalement un appel HTTP vers votre backend
-  }
+export class AjoutpresComponent  implements OnInit{
+    prestationForm: FormGroup;
+    vehicleTypes: any[] = [];
+    isLoading = false;
+  
+    constructor(
+      private fb: FormBuilder,
+      private prestationService: PrxprestationService,
+      private typeVehiculeService: TypeVehiculeService,
+      private authService: AuthService,
+      private router: Router
+    ) {
+      this.prestationForm = this.fb.group({
+        name: ['', [Validators.required, Validators.minLength(3)]],
+        duree: ['', [Validators.required, Validators.min(1)]],
+        typeVehicule: ['', Validators.required]
+      });
+    }
+  
+    ngOnInit(): void {
+      this.loadVehicleTypes();
+    }
+  
+    loadVehicleTypes(): void {
+      // Utilisez votre service existant
+      this.typeVehiculeService.getTypeVehicules().subscribe({
+        next: (types) => {
+          this.vehicleTypes = types;
+        },
+        error: (err) => {
+          console.error('Erreur chargement types véhicules:', err);
+         
+        }
+      });
+    }
+  
+    onSubmit(): void {
+      if (this.prestationForm.invalid || this.isLoading) return;
+    
+      this.isLoading = true;
+      const userId = this.authService.getUserId(); // Supposons que ça retourne directement l'ID sous forme de string
+    
+      const prestationData = {
+        name: this.prestationForm.value.name,
+        duree: this.prestationForm.value.duree,
+        typeVehicule: this.prestationForm.value.typeVehicule,
+        user: this.authService.getUserId() // Utilisez directement la variable userId au lieu de currentUser.id
+        
+      };
+    
+      this.prestationService.createPrestation(prestationData).subscribe({
+        next: (response) => {
+          this.router.navigate(['/prestations']);
+        },
+        error: (err) => {
+          console.error('Erreur création prestation:', err);
+          this.isLoading = false;
+        }
+      });
+    }
 }
