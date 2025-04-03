@@ -1,0 +1,128 @@
+<div class="card">
+    <div class="header">
+        <h2>Gestion des Prix de Rendez-vous</h2>
+        <button class="btn" onclick="openAddModal()">+ Nouveau Prix</button>
+    </div>
+
+    <div class="search-box">
+        <input type="date" id="searchDate" value="2024-06-15">
+        <button class="btn" onclick="searchPrice()">Rechercher</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Prix (€)</th>
+                <th>Date d'application</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Prix 1 (actif) -->
+            <tr>
+                <td>50.00</td>
+                <td>01/06/2024</td>
+                <td><span class="tag tag-success">Actif</span></td>
+                <td>
+                    <button onclick="openEditModal('price1')">Modifier</button>
+                    <button onclick="disablePrice('price1')">Désactiver</button>
+                </td>
+            </tr>
+            
+            <!-- Prix 2 (futur) -->
+            <tr>
+                <td>55.00</td>
+                <td>01/07/2024</td>
+                <td><span class="tag tag-warning">À venir</span></td>
+                <td>
+                    <button onclick="openEditModal('price2')">Modifier</button>
+                    <button onclick="disablePrice('price2')">Annuler</button>
+                </td>
+            </tr>
+            
+            <!-- Prix 3 (inactif) -->
+            <tr>
+                <td>45.00</td>
+                <td>01/01/2024</td>
+                <td><span class="tag tag-danger">Inactif</span></td>
+                <td>
+                    <button onclick="openEditModal('price3')">Modifier</button>
+                    <button onclick="activatePrice('price3')">Activer</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="current-price" style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+        <h3>Prix Actuel</h3>
+        <p><strong>50.00 €</strong> (applicable depuis le 01/06/2024)</p>
+    </div>
+
+    <div class="next-price" style="margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+        <h3>Prochain Prix Programmés</h3>
+        <p><strong>55.00 €</strong> à partir du 01/07/2024</p>
+    </div>
+</div>
+
+<!-- Modal Ajout/Modification -->
+<div id="priceModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Nouveau Prix de Rendez-vous</h3>
+        <div class="form-group">
+            <label for="priceValue">Prix (€)</label>
+            <input type="number" id="priceValue" step="0.01" min="0" value="50.00">
+        </div>
+        <div class="form-group">
+            <label for="priceDate">Date d'application</label>
+            <input type="date" id="priceDate" value="2024-07-01">
+        </div>
+        <div class="form-actions">
+            <button class="btn" onclick="closeModal()">Annuler</button>
+            <button class="btn" onclick="savePrice()">Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fonctions modales
+    function openAddModal() {
+        document.getElementById('modalTitle').textContent = 'Nouveau Prix de Rendez-vous';
+        document.getElementById('priceValue').value = '';
+        document.getElementById('priceDate').value = '';
+        document.getElementById('priceModal').style.display = 'flex';
+    }
+
+    function openEditModal(priceId) {
+        document.getElementById('modalTitle').textContent = 'Modifier Prix';
+        // Ici vous pourriez pré-remplir avec les données du prix sélectionné
+        document.getElementById('priceModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('priceModal').style.display = 'none';
+    }
+
+    function savePrice() {
+        alert('Prix enregistré avec succès !');
+        closeModal();
+    }
+
+    function disablePrice(priceId) {
+        if (confirm('Voulez-vous vraiment désactiver ce prix ?')) {
+            alert('Prix désactivé !');
+        }
+    }
+
+    function activatePrice(priceId) {
+        if (confirm('Voulez-vous activer ce prix ?')) {
+            alert('Prix activé !');
+        }
+    }
+
+    function searchPrice() {
+        const date = document.getElementById('searchDate').value;
+        alert('Recherche du prix applicable pour le ' + date);
+        // Ici vous feriez normalement une requête AJAX
+    }
+</script>

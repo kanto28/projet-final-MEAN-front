@@ -1,36 +1,79 @@
-<div>
-    <h2>État du stock des pièces</h2>
-  
-    <!-- Liste des pièces avec leur stock -->
-    <div *ngIf="pieces.length > 0">
-      <ul>
-        <li *ngFor="let piece of pieces">
-          {{ piece.piece.nom }} : {{ piece.stock }} en stock
-          <button (click)="getHistorique(piece.piece._id)">Voir l'historique</button>
-        </li>
-      </ul>
-    </div>
-    <div *ngIf="pieces.length === 0">
-      <p>Aucune pièce disponible.</p>
-    </div>
-  
-    <!-- Affichage de l'historique des entrées et sorties d'une pièce -->
-    <div *ngIf="historique">
-      <h3>Historique de la pièce {{ historique.pieceId }}</h3>
-      
-      <h4>Entrées</h4>
-      <ul>
-        <li *ngFor="let entrer of historique.entrer">
-          Date: {{ entrer.date }} - Quantité: {{ entrer.quantity }}
-        </li>
-      </ul>
-      
-      <h4>Sorties</h4>
-      <ul>
-        <li *ngFor="let sortie of historique.sorties">
-          Date: {{ sortie.date }} - Quantité: {{ sortie.quantity }}
-        </li>
-      </ul>
-    </div>
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+      <div class="flex justify-between items-center mb-6">
+          <div class="font-semibold text-xl">Etat du stock de Pieces</div>
+      </div>
+  </ng-template>
+
+</p-toolbar>
+
+
+<div class="card">
+  <h2 class="text-lg font-semibold mb-3">État du stock des pièces</h2>
+
+  <!-- Liste des pièces avec leur stock -->
+  <div *ngIf="pieces.length > 0">
+    <p-table [value]="pieces" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]" class="w-full">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nom</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-piece>
+        <tr>
+          <td>{{ piece.piece.nom }}</td>
+          <td>{{ piece.stock }} en stock</td>
+          <td class="px-4 py-2">
+            <button pButton type="button" icon="pi pi-eye" class="p-button-sm p-button-text p-button-info"
+              (click)="navigateToDetail(piece.piece._id)" 
+              [disabled]="!piece.piece._id"
+              pTooltip="Voir le détail" tooltipPosition="top">
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
+  <div *ngIf="pieces.length === 0" class="text-gray-500 text-center mt-3">
+    <p>Aucune pièce disponible.</p>
+  </div>
+</div>
+
+<!-- Affichage de l'historique des entrées et sorties d'une pièce -->
+<!-- <div class="card mt-4" *ngIf="historique">
+  <h3 class="text-lg font-semibold mb-2">Historique de la pièce {{ historique.pieceId }}</h3>
   
+  <h4 class="font-medium mt-2">Entrées</h4>
+  <p-table [value]="historique.entrer" class="w-full">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date</th>
+        <th>Quantité</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entrer>
+      <tr>
+        <td>{{ entrer.dates }}</td>
+        <td>{{ entrer.quantity }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  
+  <h4 class="font-medium mt-2">Sorties</h4>
+  <p-table [value]="historique.sorties" class="w-full">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date</th>
+        <th>Quantité</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-sortie>
+      <tr>
+        <td>{{ sortie.dates }}</td>
+        <td>{{ sortie.quantity }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div> -->

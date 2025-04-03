@@ -18,6 +18,8 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PieceService } from '../../../services/pieces/piece.service';
+import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-etatstockpiece',
@@ -42,7 +44,8 @@ import { PieceService } from '../../../services/pieces/piece.service';
     ConfirmDialogModule
   ],
   templateUrl: './etatstockpiece.component.html',
-  styleUrl: './etatstockpiece.component.scss'
+  styleUrl: './etatstockpiece.component.scss',
+  providers: [MessageService] // Ajout du service pour les notifications
 })
 export class EtatstockpieceComponent {
   pieces: any[] = [];  // Liste des pièces avec leur stock
@@ -50,7 +53,7 @@ export class EtatstockpieceComponent {
   stock: any = null;  // Stock d'une seule pièce si besoin
   historique: any = null;  // Historique des entrées et sorties pour une pièce spécifique
 
-  constructor(private pieceService: PieceService) { }
+  constructor(private pieceService: PieceService,private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.getStock();  // Appeler la méthode pour récupérer le stock des pièces
@@ -79,4 +82,29 @@ export class EtatstockpieceComponent {
       }
     );
   }
+
+  navigateToDetail(pieceId: string) {
+    if (!pieceId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'ID de pièce manquant'
+      });
+      return;
+    }
+  
+    // Utilisez le chemin complet avec le préfixe 'pages'
+    this.router.navigate(['/pages/pieces/detailPiece', pieceId])
+      .then(success => {
+        if (!success) {
+          console.error('Échec de navigation - Vérifiez :');
+          console.log('1. La configuration des routes');
+          console.log('2. Que le composant DetailpieceComponent est bien déclaré');
+          
+          // Solution de repli - recharge la page
+          window.location.href = `/pages/pieces/detailPiece/${pieceId}`;
+        }
+      });
+  }
+    
 }

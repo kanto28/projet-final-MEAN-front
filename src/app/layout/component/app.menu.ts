@@ -42,9 +42,22 @@ export class AppMenu {
                 items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] }]
             });
         }
-        this.model.push({
-                label: 'Accueil meca',
-                items: [{ label: 'test', icon: 'pi pi-fw pi-home', routerLink: ['/pages/test'] }]
+        this.model.push(
+            {
+                label: 'Rendez-vous',
+                items: [
+                    {
+                        label: 'RDV',
+                        icon: 'pi pi-fw pi-pencil',
+                        items: [
+                            { label: 'Validation Rdv', icon: 'pi pi-fw pi-home', routerLink: ['/pages/rdv/validationrdv'] },
+                            { label: 'planning', icon: 'pi pi-fw pi-home', routerLink: ['/pages/rdv/planningmec'] },
+                            { label: 'mecanicien dispo', icon: 'pi pi-fw pi-home', routerLink: ['/pages/rdv/listemecdispo'] },
+                            { label: 'prix rdv', icon: 'pi pi-fw pi-home', routerLink: ['/pages/rdv/prixrdv'] }
+                        ]
+                    }
+                    
+                ]
             },
             {
                 label: 'Gestion du Garage',

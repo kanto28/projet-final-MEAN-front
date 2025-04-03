@@ -88,6 +88,9 @@ export class DetailpieceComponent {
   exitSuccessMessage: string | null = null;
   exitErrorMessage: string | null = null;
 
+  pieceId: string = '';  // ID de la pièce
+  mouvements: any[] = [];  // Historique des mouvements (entrées et sorties)
+
 
 
   constructor(
@@ -213,50 +216,6 @@ toggleExitForm() {
 }
 
 // Méthode pour enregistrer une sortie de stock
-// addExit() {
-//   if (!this.newExit.quantity || this.newExit.quantity <= 0) {
-//     this.exitErrorMessage = 'La quantité doit être supérieure à 0';
-//     return;
-//   }
-
-//   const pieceId = this.route.snapshot.paramMap.get('id');
-//   if (!pieceId) return;
-
-//   const userId = this.authService.getUserId(); 
-//   if (!userId) {
-//     this.exitErrorMessage = "Erreur : ID utilisateur introuvable.";
-//     return;
-//   }
-
-//   // 🛠️ Vérification des données avant l'envoi
-//   console.log("Données envoyées :", { quantity: this.newExit.quantity, userId: userId });
-
-//   this.pieceService.removePieceEntry(pieceId, {
-//     quantity: this.newExit.quantity,
-//     userId: userId
-//   }).subscribe({
-//     next: () => {
-//       this.exitSuccessMessage = "Sortie de stock enregistrée avec succès !";
-//       this.exitErrorMessage = null;
-//       this.loadPiece(pieceId);
-//       this.showExitForm = false;
-//       this.newExit = { quantity: null, userId: '' };
-
-//       // Effacer le message après 3 secondes
-//       setTimeout(() => { this.exitSuccessMessage = null; }, 3000);
-//     },
-//     error: (err) => {
-//       console.error("Erreur API :", err);
-//       this.exitErrorMessage = err.error?.message || "Erreur lors de l'enregistrement";
-//       this.exitSuccessMessage = null;
-
-//       // Effacer le message après 3 secondes
-//       setTimeout(() => { this.exitErrorMessage = null; }, 3000);
-//     }
-//   });
-// }
-
-
 addExit() {
   if (!this.newExit.quantity || this.newExit.quantity <= 0) {
     this.exitErrorMessage = 'La quantité doit être supérieure à 0';

@@ -1,0 +1,52 @@
+<div class="card">
+    <div class="header">
+        <h2>Mécaniciens Disponibles</h2>
+    </div>
+
+    <div class="search-form">
+        <div class="form-group">
+            <label for="date">Date</label>
+            <input type="date" id="date" value="2024-06-15">
+        </div>
+        <div class="form-group">
+            <label for="heure">Heure</label>
+            <input type="time" id="heure" value="09:00">
+        </div>
+        <div class="form-group">
+            <label for="prestation">Prestation</label>
+            <select id="prestation">
+                <option value="">Toutes prestations</option>
+                <option selected>Vidange</option>
+                <option>Révision complète</option>
+                <option>Diagnostic</option>
+            </select>
+        </div>
+        <button class="btn">Rechercher</button>
+    </div>
+
+    <div class="mecanicien-list">
+        <div class="mecanicien-card">
+            <div class="mecanicien-info">
+                <h3>Thomas Legrand</h3>
+                <p>Expert moteur - 5 ans d'expérience</p>
+            </div>
+            <span class="tag tag-success">Disponible</span>
+        </div>
+
+        <div class="mecanicien-card">
+            <div class="mecanicien-info">
+                <h3>Sophie Petit</h3>
+                <p>Spécialiste électronique - 3 ans d'expérience</p>
+            </div>
+            <span class="tag tag-success">Disponible</span>
+        </div>
+
+        <div class="mecanicien-card">
+            <div class="mecanicien-info">
+                <h3>Marc Dubois</h3>
+                <p>Carrossier - 7 ans d'expérience</p>
+            </div>
+            <span class="tag">Occupé (jusqu'à 11:00)</span>
+        </div>
+    </div>
+</div>

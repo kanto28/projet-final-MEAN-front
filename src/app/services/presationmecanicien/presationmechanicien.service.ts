@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +17,25 @@ export class PresationmechanicienService {
     return this.http.post(`${this.apiUrl}/prestations-mecanicien`, body);
   }
 
-  // Fonction pour récupérer les prestations d'un mécanicien pour une prestation spécifique
+
+  // Récupérer les prestations mécanicien pour une prestation spécifique
   getPrestationsByPrestationId(prestationId: string): Observable<any> {
-    const url = `${this.apiUrl}/prestation/${prestationId}`;  // Construire l'URL
-    return this.http.get(url);  // Effectuer la requête GET
+    return this.http.get(`${this.apiUrl}/prestations-mecanicien/prestation/${prestationId}`);
   }
+
+  //récupérer les prestations d'un mécanicien spécifique
+  getPrestationsByUserId(userId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/prestations-mecanicien/user/${userId}`);
+  }
+ // Récupère tous les utilisateurs avec le rôle mécanicien
+// presationmechanicien.service.ts
+getMecaniciens(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/mecaniciens`).pipe(
+    catchError(error => {
+      console.error('Erreur détaillée:', error);
+      return throwError(() => new Error('Erreur lors de la récupération des mécaniciens'));
+    })
+  );
+}
+  
 }

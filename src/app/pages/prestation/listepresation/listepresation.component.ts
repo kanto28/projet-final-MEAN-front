@@ -17,6 +17,8 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { PrestationService } from '../../../services/crud/prestation/prestation.service';
+import { PresationmechanicienService } from '../../../services/presationmecanicien/presationmechanicien.service';
 
 @Component({
   selector: 'app-listepresation',
@@ -46,20 +48,67 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './listepresation.component.scss'
 })
 export class ListepresationComponent {
-  prestations = [
-    { nomMecanicien: 'John Doe', prestation: 'Réparation moteur', date: '01/02/2025', statut: 'En cours' },
-    { nomMecanicien: 'Jane Smith', prestation: 'Changement de pneu', date: '03/02/2025', statut: 'Terminé' },
-    { nomMecanicien: 'Alex Dupont', prestation: 'Vidange', date: '05/02/2025', statut: 'En cours' },
-    { nomMecanicien: 'Sarah Connor', prestation: 'Révision complète', date: '07/02/2025', statut: 'Terminé' },
-    { nomMecanicien: 'Jean Michel', prestation: 'Diagnostic électronique', date: '10/02/2025', statut: 'En attente' },
-    { nomMecanicien: 'Paul Atreides', prestation: 'Changement de batterie', date: '15/02/2025', statut: 'En cours' },
-  ];
+  prestations: any[] = [];
+  selectedPrestationId: string = '';
+  prestationsMecanicien: any[] = [];
+  loading = false;
 
-getStatusColor(statut: string): string {
-  switch (statut) {
-    case 'En cours': return 'badge-en-cours';
-    case 'Terminé': return 'badge-termine';
-    default: return 'badge-autre';
-}
-}
+  constructor(private prestatioMecanicienService: PresationmechanicienService, private prestationService: PrestationService ) {}
+
+  ngOnInit(): void {
+    // Charger toutes les prestations au démarrage
+    this.loading = true;
+    this.prestationService.getAllPrestations().subscribe(
+      (data) => {
+        this.prestations = data; // Stocker les prestations récupérées
+        this.loading = false;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des prestations:', error);
+        this.loading = false;
+      }
+    );
+  }
+
+  // Méthode pour récupérer les prestations des mécaniciens associées à une prestation sélectionnée
+  // onPrestationSelect(prestationId: string | number): void {
+  //   if (!prestationId) {
+  //     console.error("ID de prestation invalide");
+  //     return;
+  //   }
+  
+  //   this.loading = true;
+  //   this.prestatioMecanicienService.getPrestationsByPrestationId(prestationId.toString()).subscribe(
+  //     (data) => {
+  //       this.prestationsMecanicien = data;
+  //       this.loading = false;
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors de la récupération des prestations des mécaniciens:', error);
+  //       this.loading = false;
+  //     }
+  //   );
+  // }
+  
+  onPrestationSelect(prestation: any): void {
+    console.log('Données reçues:', prestation); // Inspectez la structure
+    if (!prestation?._id) {
+      console.error("Prestation invalide :", prestation);
+      return;
+    }
+  
+    this.loading = true;
+    this.prestatioMecanicienService.getPrestationsByPrestationId(prestation._id)
+      .subscribe({
+        next: (data) => {
+          this.prestationsMecanicien = data;
+          this.loading = false;
+        },
+        error: (err) => {
+          console.error('Erreur:', err);
+          this.loading = false;
+        }
+      });
+  }
+  
 }

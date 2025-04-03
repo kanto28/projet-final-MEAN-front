@@ -20,21 +20,22 @@ import { AuthService } from '../../services/auth.service';
                 <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                     <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                         <div class="text-center mb-8">
-                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">LOGIN</div>
-                            <span class="text-muted-color font-medium">Sign in to continue</span>
+                            <img src="assets/car-repair.png" alt="Logo Garage" class="mb-8 w-16 shrink-0 mx-auto">
+                            <div class="text-surface-900 dark:text-surface-0 text-3xl font-medium mb-4">CONNEXION</div>
+                            <span class="text-muted-color font-medium">Identifiez-vous pour continuer</span>
                         </div>
                         <form (ngSubmit)="onSubmit()">
                             <div>
                                 <label for="email" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                                <input pInputText id="email" name="email" type="email" placeholder="Email" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" required/>
+                                <input pInputText id="email" name="email" type="email" placeholder="Votre email" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" required/>
 
                                 <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Mot de passe</label>
-                                <p-password id="password" name="password" [(ngModel)]="password" placeholder="Mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" required></p-password>
+                                <p-password id="password" name="password" [(ngModel)]="password" placeholder="Votre mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" required></p-password>
 
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                     <div class="flex items-center">
-                                        <p-checkbox [(ngModel)]="checked" id="rememberme1" name="rememberme1" binary class="mr-2"></p-checkbox>
-                                        <label for="rememberme1">Remember me</label>
+                                        <!-- <p-checkbox [(ngModel)]="checked" id="rememberme1" name="rememberme1" binary class="mr-2"></p-checkbox>
+                                        <label for="rememberme1">Remember me</label> -->
                                     </div>
                                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
                                 </div>

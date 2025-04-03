@@ -1,0 +1,129 @@
+<div class="card">
+    <div class="header">
+        <h2>Validation des Rendez-vous</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date RDV</th>
+                <th>Client</th>
+                <th>Véhicule</th>
+                <th>Prestations</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- RDV 1 -->
+            <tr>
+                <td>15/06/2024 09:30</td>
+                <td>Jean Dupont</td>
+                <td>AB-123-CD (Peugeot 308)</td>
+                <td>Vidange, Pneumatiques</td>
+                <td><span class="tag tag-warning">En attente</span></td>
+                <td>
+                    <button class="btn btn-validate" onclick="openValidationModal('rdv1')">Valider</button>
+                    <button class="btn btn-refuse" onclick="openRefusalModal('rdv1')">Refuser</button>
+                </td>
+            </tr>
+            
+            <!-- RDV 2 -->
+            <tr>
+                <td>18/06/2024 14:00</td>
+                <td>Marie Martin</td>
+                <td>EF-456-GH (Renault Clio)</td>
+                <td>Révision complète</td>
+                <td><span class="tag tag-warning">En attente</span></td>
+                <td>
+                    <button class="btn btn-validate" onclick="openValidationModal('rdv2')">Valider</button>
+                    <button class="btn btn-refuse" onclick="openRefusalModal('rdv2')">Refuser</button>
+                </td>
+            </tr>
+            
+            <!-- RDV 3 (déjà validé) -->
+            <tr>
+                <td>20/06/2024 10:15</td>
+                <td>Paul Durand</td>
+                <td>IJ-789-KL (Citroën C4)</td>
+                <td>Diagnostic</td>
+                <td><span class="tag tag-success">Validé</span></td>
+                <td>
+                    <button class="btn" disabled>Déjà traité</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal de Validation -->
+<div id="validationModal" class="modal">
+    <div class="modal-content">
+        <h3>Valider le Rendez-vous</h3>
+        <div class="form-group">
+            <label for="mecanicien">Mécanicien assigné</label>
+            <select id="mecanicien">
+                <option value="">Sélectionnez un mécanicien</option>
+                <option>Thomas Legrand (Expert moteur)</option>
+                <option>Sophie Petit (Spécialiste électronique)</option>
+                <option>Marc Dubois (Carrossier)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="dateDebut">Date de début</label>
+            <input type="datetime-local" id="dateDebut" value="2024-06-15T09:30">
+        </div>
+        <div class="form-group">
+            <label for="dateFin">Date de fin</label>
+            <input type="datetime-local" id="dateFin" value="2024-06-15T11:00">
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button class="btn" onclick="closeModal('validationModal')">Annuler</button>
+            <button class="btn btn-validate" onclick="validateRDV()">Confirmer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Refus -->
+<div id="refusalModal" class="modal">
+    <div class="modal-content">
+        <h3>Refuser le Rendez-vous</h3>
+        <div class="form-group">
+            <label for="raison">Raison du refus</label>
+            <select id="raison">
+                <option value="">Sélectionnez une raison</option>
+                <option>Créneau indisponible</option>
+                <option>Matériel manquant</option>
+                <option>Demande spéciale non réalisable</option>
+            </select>
+        </div>
+        <div style="text-align: right; margin-top: 20px;">
+            <button class="btn" onclick="closeModal('refusalModal')">Annuler</button>
+            <button class="btn btn-refuse" onclick="refuseRDV()">Confirmer le refus</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openValidationModal(rdvId) {
+        document.getElementById('validationModal').style.display = 'flex';
+    }
+
+    function openRefusalModal(rdvId) {
+        document.getElementById('refusalModal').style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    function validateRDV() {
+        alert('Rendez-vous validé avec succès !');
+        closeModal('validationModal');
+    }
+
+    function refuseRDV() {
+        alert('Rendez-vous refusé avec succès !');
+        closeModal('refusalModal');
+    }
+</script>

@@ -38,6 +38,10 @@ import { UserVehiculeAjoutComponent } from './clients/vehicule/user-vehicule-ajo
 import { ListerendezvouComponent } from './clients/rendezvous/listerendezvou/listerendezvou.component';
 import { AjoutrendezvouComponent } from './clients/rendezvous/ajoutrendezvou/ajoutrendezvou.component';
 import { DetailrendezvouComponent } from './clients/rendezvous/detailrendezvou/detailrendezvou.component';
+import { ValidationrdvComponent } from './rdv/validationrdv/validationrdv.component';
+import { PlanningmecComponent } from './rdv/planningmec/planningmec.component';
+import { ListemecdispoComponent } from './rdv/listemecdispo/listemecdispo.component';
+import { PrixrdvComponent } from './rdv/prixrdv/prixrdv.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -93,6 +97,13 @@ export default [
       {path: 'clients/rendezvous/listerendezvou', component: ListerendezvouComponent},
       {path: 'clients/rendezvous/ajoutrendezvou', component: AjoutrendezvouComponent},
       {path: 'clients/rendezvous/detailrendevous', component: DetailrendezvouComponent},
+
+
+ //rendez-vous manager
+ {path: 'rdv/validationrdv', component: ValidationrdvComponent},
+ {path: 'rdv/planningmec', component: PlanningmecComponent},
+ {path: 'rdv/listemecdispo', component: ListemecdispoComponent},
+ {path: 'rdv/prixrdv', component: PrixrdvComponent},
 
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;
