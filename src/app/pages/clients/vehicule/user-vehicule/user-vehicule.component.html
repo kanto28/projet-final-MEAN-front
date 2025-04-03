@@ -1,4 +1,4 @@
-<div class="card">
+<!-- <div class="card">
     <div class="header">
       <h2>Mes véhicules</h2>
       <button class="add-button">
@@ -18,7 +18,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Véhicule 1 -->
         <tr>
           <td>AB-123-CD</td>
           <td>2022</td>
@@ -31,7 +30,6 @@
           </td>
         </tr>
         
-        <!-- Véhicule 2 -->
         <tr>
           <td>EF-456-GH</td>
           <td>2020</td>
@@ -44,7 +42,6 @@
           </td>
         </tr>
         
-        <!-- Véhicule 3 -->
         <tr>
           <td>IJ-789-KL</td>
           <td>2023</td>
@@ -59,14 +56,39 @@
       </tbody>
     </table>
   
-    <!-- Version vide -->
-    <!--
-    <div class="empty-state">
-      <div class="car-icon">🚗</div>
-      <p>Aucun véhicule enregistré</p>
-      <button class="add-button">
-        <span>+</span> Ajouter un véhicule
-      </button>
+    
+  </div> -->
+
+  <div class="container">
+    <h2>Mes véhicules</h2>
+  
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
     </div>
-    -->
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <div *ngIf="!isLoading && vehicules.length === 0" class="alert alert-info">
+      Aucun véhicule enregistré.
+    </div>
+  
+    <div *ngIf="vehicules.length > 0" class="row">
+      <div *ngFor="let vehicule of vehicules" class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ vehicule.vehicule?.matricule || 'Non spécifié' }}</h5>
+            <p >
+              Modèle: {{ vehicule.vehicule?.model?.name || 'Non spécifié' }}<br>
+              Année: {{ vehicule.vehicule?.annees || 'Non spécifié' }}<br>
+              Energie: {{ vehicule.vehicule?.energie?.name || 'Non spécifié' }}
+            </p>
+            <a class="btn btn-primary">Détails</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
