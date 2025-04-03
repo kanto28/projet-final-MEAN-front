@@ -17,6 +17,11 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { VehiculeService } from '../../../services/vehicule/vehicule.service';
+import { EnergieService } from '../../../services/crud/energie/energie.service';
+import { ModelService } from '../../../services/crud/model/model.service';
+import { MoteurService } from '../../../services/crud/moteur/moteur.service';
+import { TransmissionService } from '../../../services/crud/transmission/transmission.service';
 
 @Component({
   selector: 'app-ajoutvehicule',
@@ -47,29 +52,56 @@ import { ToolbarModule } from 'primeng/toolbar';
 })
 export class AjoutvehiculeComponent {
   matricule: string = '';
-  annee: number | null = null;
-  modele: string = '';
+  annees: string = '';
+  model: string = '';
   energie: string = '';
+  moteur: string = '';
+  transmission: string = '';
 
-  modeles = [
-    { value: 'Toyota', label: 'Toyota Corolla' },
-    { value: 'Honda', label: 'Honda Civic' }
-  ];
+  models: any[] = [];
+  energies: any[] = [];
+  moteurs: any[] = [];
+  transmissions: any[] = [];
 
-  energies = [
-    { value: 'Essence', label: 'Essence' },
-    { value: 'Diesel', label: 'Diesel' },
-    { value: 'Électrique', label: 'Électrique' }
-  ];
+  constructor(
+    private vehiculeService: VehiculeService,
+    private modelService: ModelService,
+    private energieService: EnergieService,
+    private moteurService: MoteurService,
+    private transmissionService: TransmissionService
+  ) {}
 
-  addVehicle() {
-    console.log('Véhicule ajouté :', { matricule: this.matricule, annee: this.annee, modele: this.modele, energie: this.energie });
+  // Chargement des options au démarrage du composant
+  ngOnInit() {
+    this.modelService.getModels().subscribe(models => {
+      this.models = models;
+    });
+
+    this.energieService.getEnergies().subscribe(energies => {
+      this.energies = energies;
+    });
+
+    this.moteurService.getMoteurs().subscribe(moteurs => {
+      this.moteurs = moteurs;
+    });
+
+    this.transmissionService.getTransmissions().subscribe(transmissions => {
+      this.transmissions = transmissions;
+    });
   }
 
-  cancel() {
-    this.matricule = '';
-    this.annee = null;
-    this.modele = '';
-    this.energie = '';
+  // Fonction pour soumettre le formulaire
+  onSubmit() {
+    this.vehiculeService.createVehicule(this.matricule, this.annees, this.model, this.energie, this.moteur, this.transmission)
+      .subscribe({
+        next: (response) => {
+          console.log('Véhicule créé avec succès', response);
+          // Rediriger ou afficher un message de succès
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création du véhicule', error);
+          // Afficher un message d'erreur
+        }
+      });
   }
 }

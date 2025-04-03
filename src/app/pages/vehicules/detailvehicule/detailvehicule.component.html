@@ -1,4 +1,4 @@
-<p-toolbar styleClass="mb-6">
+<!-- <p-toolbar styleClass="mb-6">
   <ng-template #start>
     <div class="font-semibold text-xl">Détails du Véhicule</div>
   </ng-template>
@@ -56,5 +56,25 @@
       class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition duration-300">
       <i class="pi pi-trash"></i> Supprimer
     </button>
+  </div>
+</div> -->
+
+<div class="vehicule-container">
+  <h2>Rechercher un véhicule</h2>
+
+  <input type="text" [(ngModel)]="matricule" placeholder="Entrer le matricule" />
+  <button (click)="chercherVehicule()">Rechercher</button>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div *ngIf="vehicule" class="vehicule-details">
+    <h3>Détails du véhicule</h3>
+    <p><strong>Matricule:</strong> {{ vehicule.matricule }}</p>
+    <p><strong>Année:</strong> {{ vehicule.annees }}</p>
+    <p><strong>Modèle:</strong> {{ vehicule.model.name }}</p>
+    <p><strong>Énergie:</strong> {{ vehicule.energie.name }}</p>
+    <p><strong>Moteur:</strong> {{ vehicule.moteur.name }}</p>
+    <p><strong>Transmission:</strong> {{ vehicule.transmission.name }}</p>
+    <p><strong>Status:</strong> {{ vehicule.status ? 'Actif' : 'Inactif' }}</p>
   </div>
 </div>

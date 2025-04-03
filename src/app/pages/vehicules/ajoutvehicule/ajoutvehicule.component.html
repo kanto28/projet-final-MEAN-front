@@ -1,4 +1,4 @@
-<p-toolbar styleClass="mb-6">
+<!-- <p-toolbar styleClass="mb-6">
   <ng-template #start>
     <div class="font-semibold text-xl">Ajouter un véhicule</div>
   </ng-template>
@@ -50,5 +50,55 @@
         <i class="pi pi-times"></i> Annuler
       </button>
     </div>
+  </form>
+</div> -->
+
+
+<div class="container">
+  <h2>Ajouter un nouveau véhicule</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="matricule">Matricule</label>
+      <input type="text" id="matricule" [(ngModel)]="matricule" name="matricule" required />
+    </div>
+    
+    <div>
+      <label for="annees">Année</label>
+      <input type="text" id="annees" [(ngModel)]="annees" name="annees" required />
+    </div>
+    
+    <div>
+      <label for="model">Modèle</label>
+      <select id="model" [(ngModel)]="model" name="model" required>
+        <option value="">Sélectionner un modèle</option>
+        <option *ngFor="let model of models" [value]="model._id">{{ model.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="energie">Énergie</label>
+      <select id="energie" [(ngModel)]="energie" name="energie" required>
+        <option value="">Sélectionner une énergie</option>
+        <option *ngFor="let energie of energies" [value]="energie._id">{{ energie.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="moteur">Moteur</label>
+      <select id="moteur" [(ngModel)]="moteur" name="moteur" required>
+        <option value="">Sélectionner un moteur</option>
+        <option *ngFor="let moteur of moteurs" [value]="moteur._id">{{ moteur.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="transmission">Transmission</label>
+      <select id="transmission" [(ngModel)]="transmission" name="transmission" required>
+        <option value="">Sélectionner une transmission</option>
+        <option *ngFor="let transmission of transmissions" [value]="transmission._id">{{ transmission.name }}</option>
+      </select>
+    </div>
+
+    <button type="submit">Ajouter le véhicule</button>
   </form>
 </div>

@@ -18,6 +18,7 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { VehiculeService } from '../../../services/vehicule/vehicule.service';
 
 @Component({
   selector: 'app-detailvehicule',
@@ -47,23 +48,28 @@ import { ToolbarModule } from 'primeng/toolbar';
   styleUrl: './detailvehicule.component.scss'
 })
 export class DetailvehiculeComponent {
-  vehicle = {
-    matricule: '123-XYZ',
-    annee: 2022,
-    modele: 'Toyota Corolla',
-    energie: 'Essence',
-    moteur: '1.8L Hybrid',
-    transmission: 'Automatique',
-    status: true
-  };
+  matricule: string = '';
+  vehicule: any = null;
+  errorMessage: string = '';
+  token: string = 'TON_TOKEN_ICI'; // Remplace par ton vrai token (à récupérer dynamiquement)
 
-  editVehicle() {
-    console.log('Modifier le véhicule :', this.vehicle);
-  }
+  constructor(private vehiculeService: VehiculeService) {}
 
-  deleteVehicle() {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce véhicule ?')) {
-      console.log('Véhicule supprimé !');
+  chercherVehicule() {
+    if (!this.matricule) {
+      this.errorMessage = "Veuillez entrer un matricule.";
+      return;
     }
+
+    this.vehiculeService.getVehiculeByMatricule(this.matricule, this.token).subscribe({
+      next: (data) => {
+        this.vehicule = data;
+        this.errorMessage = '';
+      },
+      error: (err) => {
+        this.vehicule = null;
+        this.errorMessage = err.error.erreur || "Erreur lors de la récupération du véhicule.";
+      }
+    });
   }
 }

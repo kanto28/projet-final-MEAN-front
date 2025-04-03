@@ -1,4 +1,4 @@
-<p-toolbar styleClass="mb-6">
+<!-- <p-toolbar styleClass="mb-6">
   <ng-template #start>
     <div class="font-semibold text-xl">Modifier un Véhicule</div>
   </ng-template>
@@ -68,4 +68,73 @@
       </button>
     </div>
   </form>
+</div> -->
+
+
+<div class="vehicule-edit-container">
+  <h2>Modifier un véhicule</h2>
+
+  <!-- Recherche par matricule -->
+  <div>
+    <input type="text" [(ngModel)]="matricule" placeholder="Entrer le matricule" />
+    <button (click)="searchVehicule()">Rechercher</button>
+  </div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- Formulaire de modification (affiché si un véhicule a été trouvé) -->
+  <div *ngIf="vehicule">
+    <h3>Modifier les informations</h3>
+    <!-- Afficher le matricule en lecture seule -->
+    <div>
+      <label>Matricule :</label>
+      <input type="text" [(ngModel)]="vehicule.matricule" disabled />
+    </div>
+    <!-- Modification de l'année -->
+    <div>
+      <label>Année :</label>
+      <input type="text" [(ngModel)]="vehicule.annees" />
+    </div>
+    <!-- Sélection du modèle -->
+    <div>
+      <label>Modèle :</label>
+      <select [(ngModel)]="vehicule.model" name="model" required>
+        <option value="">Sélectionner un modèle</option>
+        <option *ngFor="let m of models" [value]="m._id">{{ m.name }}</option>
+      </select>
+    </div>
+    <!-- Sélection de l'énergie -->
+    <div>
+      <label>Énergie :</label>
+      <select [(ngModel)]="vehicule.energie" name="energie" required>
+        <option value="">Sélectionner une énergie</option>
+        <option *ngFor="let e of energies" [value]="e._id">{{ e.name }}</option>
+      </select>
+    </div>
+    <!-- Sélection du moteur -->
+    <div>
+      <label>Moteur :</label>
+      <select [(ngModel)]="vehicule.moteur" name="moteur" required>
+        <option value="">Sélectionner un moteur</option>
+        <option *ngFor="let mot of moteurs" [value]="mot._id">{{ mot.name }}</option>
+      </select>
+    </div>
+    <!-- Sélection de la transmission -->
+    <div>
+      <label>Transmission :</label>
+      <select [(ngModel)]="vehicule.transmission" name="transmission" required>
+        <option value="">Sélectionner une transmission</option>
+        <option *ngFor="let t of transmissions" [value]="t._id">{{ t.name }}</option>
+      </select>
+    </div>
+    <!-- Sélection du status -->
+    <div>
+      <label>Status :</label>
+      <select [(ngModel)]="vehicule.status" name="status" required>
+        <option [value]="true">Actif</option>
+        <option [value]="false">Inactif</option>
+      </select>
+    </div>
+    <button (click)="updateVehicule()">Mettre à jour</button>
+    <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+  </div>
 </div>
