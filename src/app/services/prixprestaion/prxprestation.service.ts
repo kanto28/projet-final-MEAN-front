@@ -12,10 +12,6 @@ export class PrxprestationService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-   // Fonction pour créer un nouveau véhicule
-  //  createPrestation(prestationData: any) {
-  //   return this.http.post(`${this.apiUrl}/prestations`, prestationData);
-  // }
 
   // Fonction pour créer une prestation avec des headers
   createPrestation(prestationData: any): Observable<any> {
@@ -45,23 +41,7 @@ export class PrxprestationService {
     return this.http.get<any[]>(`${this.apiUrl}/prestation/dernier-prix`);
   }
 
-  // getLastPrice(prestationId: string): Observable<{ prix: number } | null> {
-  //   const token = localStorage.getItem('token'); 
-  //   if (!token) {
-  //     throw new Error('Token d\'authentification manquant');
-  //   }
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   return this.http.get<any[]>(`${this.apiUrl}/prestation/dernier-prix`, {
-  //     params: {
-  //       prestation: prestationId,
-  //       status: 'true',
-  //       $sort: '-dates', // Tri décroissant par date
-  //       $limit: '1'      // Seulement le premier résultat
-  //     }
-  //   }).pipe(
-  //     map(response => response[0] || null)
-  //   );
-  // }
+  
   getDernierPrix(prestationId: string): Observable<any> {
     const user = this.authService.getCurrentUser();
     

@@ -233,4 +233,77 @@ getPrestationControl(prestationId: string): FormControl {
   detailsArray.push(newCtrl);
   return newCtrl;
 }
+
+
+// goToDevis() {
+//   const data = {
+//     vehiculeId: this.rendezVousForm.value.vehicule,
+//     prestationIds: this.selectedPrestations.map((p: any) => p._id)
+//   };
+//   this.router.navigate(['/devis'], { state: { data } });
+// }
+
+
+// goToDevis() {
+//   console.log('Bouton cliqué!'); // Vérifiez si ce message apparaît dans la console
+  
+//   // Vérifiez l'état du formulaire
+//   console.log('Form valid:', this.rendezVousForm.valid);
+//   console.log('Prestations sélectionnées:', this.selectedPrestations);
+  
+//   // Vérifiez les données avant navigation
+//   const data = {
+//     vehiculeId: this.rendezVousForm.value.vehicule,
+//     prestationIds: this.selectedPrestations.map((p: any) => p._id)
+//   };
+//   console.log('Données à envoyer:', data);
+
+//   // Testez la navigation simple d'abord
+//   this.router.navigate(['/client/rendezvou/devis']).then(success => {
+//     console.log('Navigation réussie?', success);
+//   }).catch(err => {
+//     console.error('Erreur de navigation:', err);
+//   });
+// }
+
+
+canGenerateDevis(): boolean {
+  const vehiculeSelected = !!this.rendezVousForm.get('vehicule')?.value;
+  const hasPrestations = this.selectedPrestations.length > 0;
+  return vehiculeSelected && hasPrestations;
+}
+
+async goToDevis() {
+  if (!this.canGenerateDevis()) {
+    alert('Veuillez compléter les informations requises');
+    return;
+  }
+
+  const vehiculeId = this.rendezVousForm.get('vehicule')?.value;
+  const prestationIds = this.selectedPrestations.map((p: any) => p._id);
+
+  console.log('Données VALIDES à envoyer:', { vehiculeId, prestationIds });
+
+  try {
+    const success = await this.router.navigate(
+      ['/client/rendezvou/devis'], 
+      {
+        state: {
+          vehiculeId,
+          prestationIds,
+          mvola: this.rendezVousForm.get('Mvola')?.value
+        }
+      }
+    );
+
+    if (!success) {
+      alert('La navigation a échoué - Vérifiez la route configurée');
+    }
+  } catch (error) {
+    console.error('Erreur de navigation:', error);
+    alert('Erreur lors de la redirection');
+  }
+}
+
+
 }

@@ -23,5 +23,15 @@ export class RendezvousService {
     return this.http.get(`${this.apiUrl}/rendezvous/${id}`);
   }
 
+  getDevis(details: any[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/devis`, { details });
+  }
+
+  generateDevis(details: { prestation: string }[]) {
+    return this.http.post<{
+      devis: any[],
+      prixTotal: number
+    }>(`${this.apiUrl}/devis`, { details });
+  }
   
 }

@@ -1,0 +1,18 @@
+// devis.component.scss
+.container {
+    max-width: 800px;
+  }
+  
+  .form-select {
+    height: calc(2.5em + .75rem + 2px);
+  }
+  
+  .btn-outline-danger {
+    &:hover {
+      color: white;
+    }
+  }
+  
+  .list-group-item {
+    padding: 1rem 1.25rem;
+  }

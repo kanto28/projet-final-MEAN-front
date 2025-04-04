@@ -42,6 +42,7 @@ import { ValidationrdvComponent } from './rdv/validationrdv/validationrdv.compon
 import { PlanningmecComponent } from './rdv/planningmec/planningmec.component';
 import { ListemecdispoComponent } from './rdv/listemecdispo/listemecdispo.component';
 import { PrixrdvComponent } from './rdv/prixrdv/prixrdv.component';
+import { DevisComponent } from './clients/rendezvous/devis/devis.component';
 
 export default [
     { path: 'empty', component: Empty },
@@ -97,6 +98,7 @@ export default [
       {path: 'clients/rendezvous/listerendezvou', component: ListerendezvouComponent},
       {path: 'clients/rendezvous/ajoutrendezvou', component: AjoutrendezvouComponent},
       {path: 'clients/rendezvous/detailrendevous', component: DetailrendezvouComponent},
+      {path: 'clients/rendezvous/devis', component: DevisComponent},
 
 
  //rendez-vous manager

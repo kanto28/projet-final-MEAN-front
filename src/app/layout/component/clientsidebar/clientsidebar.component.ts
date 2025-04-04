@@ -61,7 +61,7 @@ export class ClientSidebar {
                         {label: 'Liste RDV',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/clients/rendezvous/listerendezvou']},
                          {label: 'Ajout RDV',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/clients/rendezvous/ajoutrendezvou']},
                          { label: 'Detail RDV', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/clients/rendezvous/detailrendevous']},
-                        // {label: 'Historique mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prixprestation/historiquepres']},
+                        {label: 'Devis',icon: 'pi pi-fw pi-download',routerLink: ['/pages/clients/rendezvous/devis']},
                         // {label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prixprestation/statutpres']}
                     ]
                 },
