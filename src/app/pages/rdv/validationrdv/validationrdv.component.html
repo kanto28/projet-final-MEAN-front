@@ -1,4 +1,4 @@
-<div class="card">
+<!-- <div class="card">
     <div class="header">
         <h2>Validation des Rendez-vous</h2>
     </div>
@@ -15,7 +15,6 @@
             </tr>
         </thead>
         <tbody>
-            <!-- RDV 1 -->
             <tr>
                 <td>15/06/2024 09:30</td>
                 <td>Jean Dupont</td>
@@ -28,7 +27,6 @@
                 </td>
             </tr>
             
-            <!-- RDV 2 -->
             <tr>
                 <td>18/06/2024 14:00</td>
                 <td>Marie Martin</td>
@@ -40,8 +38,6 @@
                     <button class="btn btn-refuse" onclick="openRefusalModal('rdv2')">Refuser</button>
                 </td>
             </tr>
-            
-            <!-- RDV 3 (déjà validé) -->
             <tr>
                 <td>20/06/2024 10:15</td>
                 <td>Paul Durand</td>
@@ -55,8 +51,6 @@
         </tbody>
     </table>
 </div>
-
-<!-- Modal de Validation -->
 <div id="validationModal" class="modal">
     <div class="modal-content">
         <h3>Valider le Rendez-vous</h3>
@@ -84,7 +78,6 @@
     </div>
 </div>
 
-<!-- Modal de Refus -->
 <div id="refusalModal" class="modal">
     <div class="modal-content">
         <h3>Refuser le Rendez-vous</h3>
@@ -126,4 +119,54 @@
         alert('Rendez-vous refusé avec succès !');
         closeModal('refusalModal');
     }
-</script>
+</script> -->
+
+<div class="container">
+    <form (ngSubmit)="onSubmit()" class="form">
+      <h2>Validation de rendez-vous</h2>
+  
+      <div class="form-group">
+        <label>ID Rendez-vous</label>
+        <input type="text" [(ngModel)]="validationData.rendez" name="rendez" required>
+      </div>
+  
+      <div class="form-group">
+        <label>ID Manager</label>
+        <input type="text" [(ngModel)]="validationData.user" name="user" required>
+      </div>
+  
+      <div *ngFor="let planning of validationData.plannings; let i = index" class="planning">
+        <h3>Planning {{ i + 1 }}</h3>
+        
+        <div class="form-group">
+          <label>ID Détails Rendez-vous</label>
+          <input type="text" [(ngModel)]="planning.detailleRendez" [name]="'detaille_' + i" required>
+        </div>
+  
+        <div class="form-group">
+          <label>ID Mécanicien</label>
+          <input type="text" [(ngModel)]="planning.user_mecanicien" [name]="'mecanicien_' + i" required>
+        </div>
+  
+        <div class="form-group">
+          <label>Date début</label>
+          <input type="datetime-local" [(ngModel)]="planning.dates_debut" [name]="'debut_' + i" required>
+        </div>
+  
+        <div class="form-group">
+          <label>Date fin</label>
+          <input type="datetime-local" [(ngModel)]="planning.dates_fin" [name]="'fin_' + i" required>
+        </div>
+  
+        <button type="button" (click)="removePlanning(i)" class="remove-btn">Supprimer</button>
+      </div>
+  
+      <div class="actions">
+        <button type="button" (click)="addPlanning()" class="add-btn">Ajouter Planning</button>
+        <button type="submit" class="submit-btn">Valider</button>
+      </div>
+  
+      <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+      <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    </form>
+  </div>

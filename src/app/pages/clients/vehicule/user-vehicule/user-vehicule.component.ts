@@ -72,6 +72,12 @@ export class UserVehiculeComponent implements OnInit{
       (response) => {
         this.vehicules = response;
         this.isLoading = false;
+        console.log('Véhicules reçus :', response);
+        this.vehicules = response;
+        this.isLoading = false;
+        console.log('Premier véhicule:', response[0]);
+        console.log('Contenu du champ vehicule:', response[0].vehicule);
+
       },
       (error) => {
         this.errorMessage = error.error?.erreur || 'Erreur lors du chargement des véhicules';

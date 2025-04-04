@@ -13,7 +13,7 @@ import { InscriptionService } from '../../../services/inscription.service';
 
 @Component({
   selector: 'app-validation',
-  imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, CommonModule],
+  imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, CommonModule],
   templateUrl: './validation.component.html',
   styleUrl: './validation.component.scss',
   providers: [MessageService]

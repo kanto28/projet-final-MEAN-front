@@ -1,36 +1,42 @@
-<div class="container mt-4">
-  <h2>Sélectionnez votre véhicule</h2>
+<p-toolbar styleClass="mb-6">
+  <ng-template #start>
+      <h3>Ajouter RDV</h3>
+  </ng-template>
+</p-toolbar>
 
-  <div *ngIf="isLoading" class="text-center py-5">
+<div class="container mt-5">
+
+  <!-- Spinner de chargement -->
+  <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Chargement...</span>
     </div>
   </div>
 
-    <!-- À l'intérieur de votre formulaire principal -->
-<form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()">
-  
-    <!-- Sélection du véhicule (existant) -->
-    <div class="mb-3">
+  <!-- Formulaire Principal -->
+  <form [formGroup]="rendezVousForm" (ngSubmit)="onSubmit()" class="card p-4 shadow-lg rounded-lg bg-white">
+
+    <!-- Sélection du véhicule -->
+    <div class="mb-4">
       <label class="form-label">Véhicule</label>
-      <select formControlName="vehicule" class="form-select">
+      <select formControlName="vehicule" class="form-select form-select-lg">
         <option value="" disabled>Sélectionnez un véhicule</option>
         <option *ngFor="let v of vehicules" [value]="v._id">
           {{ v.matricule }} - {{ v.model?.nom }} ({{ v.annees }})
         </option>
       </select>
     </div>
-  
-    <!-- Champ Mvola - Nouveau -->
-    <div class="mb-3">
+
+    <!-- Numéro Mvola -->
+    <div class="mb-4">
       <label class="form-label">Numéro Mvola</label>
       <input 
         type="tel"
         formControlName="Mvola"
-        class="form-control"
+        class="form-control form-control-lg"
         placeholder="0321234567"
         [class.is-invalid]="rendezVousForm.get('Mvola')?.invalid && (rendezVousForm.get('Mvola')?.dirty || rendezVousForm.get('Mvola')?.touched)">
-  
+
       <!-- Messages d'erreur -->
       <div *ngIf="rendezVousForm.get('Mvola')?.hasError('required') && (rendezVousForm.get('Mvola')?.dirty || rendezVousForm.get('Mvola')?.touched)" 
            class="invalid-feedback">
@@ -42,38 +48,37 @@
       </div>
     </div>
 
-    <!-- Après le champ Mvola -->
+    <!-- Prestations Disponibles -->
+    <div class="prestations-container mb-4">
+      <h5 class="text-muted mb-3">Sélectionnez les prestations</h5>
+      <div *ngFor="let prestation of prestationsDisponibles" class="form-check mb-3">
+        <input class="form-check-input" 
+               type="checkbox"
+               [checked]="isPrestationSelected(prestation._id)"
+               (change)="onCheckboxChange($event, prestation._id)"
+               [id]="'presta-'+prestation._id">
 
-    <div class="prestations-container">
-        <div *ngFor="let prestation of prestationsDisponibles" class="form-check mb-2">
-          <input class="form-check-input" 
-                 type="checkbox"
-                 [checked]="isPrestationSelected(prestation._id)"
-                 (change)="onCheckboxChange($event, prestation._id)"
-                 [id]="'presta-'+prestation._id">
-          
-          <label class="form-check-label" [for]="'presta-'+prestation._id">
-            {{ prestation.name }}
-            <span class="badge bg-primary ms-2">
-              {{ prestation.currentPrice | currency:'Ar':'symbol':'1.0-0' }}
-            </span>
-          </label>
-          
-          <small class="d-block text-muted">{{ prestation.description }}</small>
-        </div>
+        <label class="form-check-label d-flex justify-content-between align-items-center" [for]="'presta-'+prestation._id">
+          <span>{{ prestation.name }}</span>
+          <span class="badge bg-primary">
+            {{ prestation.currentPrice | currency:'Ar':'symbol':'1.0-0' }}
+          </span>
+        </label>
+        
+        <small class="d-block text-muted mt-1">{{ prestation.description }}</small>
       </div>
-  
-  <!-- Avant le bouton de soumission -->
-  
-    <button type="submit" class="btn btn-primary" [disabled]="rendezVousForm.invalid">
-      Confirmer
-    </button>
-  </form>
-  
-
-    <div *ngIf="vehicules.length === 0" class="alert alert-info">
-      Aucun véhicule enregistré. Veuillez d'abord ajouter un véhicule.
     </div>
-  </div>
-
   
+    <!-- Bouton de soumission -->
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="rendezVousForm.invalid">
+        Confirmer
+      </button>
+    </div>
+  </form>
+
+  <!-- Message d'absence de véhicule -->
+  <div *ngIf="vehicules.length === 0" class="alert alert-info mt-4">
+    Aucun véhicule enregistré. Veuillez d'abord ajouter un véhicule.
+  </div>
+</div>
