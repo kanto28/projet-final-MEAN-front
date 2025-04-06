@@ -8,11 +8,14 @@ import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../layout/component/app.floatingconfigurator';
 import { AuthService } from '../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator, CommonModule, ToastModule],
     template: `
         <app-floating-configurator />
         <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
@@ -25,17 +28,20 @@ import { AuthService } from '../../services/auth.service';
                             <span class="text-muted-color font-medium">Identifiez-vous pour continuer</span>
                         </div>
                         <form (ngSubmit)="onSubmit()">
+
+                            <!-- Message d erreur -->
+                            <p-toast position="top-center" ></p-toast>
+
                             <div>
                                 <label for="email" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
-                                <input pInputText id="email" name="email" type="email" placeholder="Votre email" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" required/>
+                                <input pInputText [(ngModel)]="email" (ngModelChange)="onInputChange()" id="email" name="email" type="email" placeholder="Votre email" class="w-full md:w-[30rem] mb-8" [(ngModel)]="email" required/>
 
                                 <label for="password" class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Mot de passe</label>
-                                <p-password id="password" name="password" [(ngModel)]="password" placeholder="Votre mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" required></p-password>
+                                <p-password [(ngModel)]="password" (ngModelChange)="onInputChange()" id="password" name="password" [(ngModel)]="password" placeholder="Votre mot de passe" [toggleMask]="true" styleClass="mb-4" [fluid]="true" [feedback]="false" required></p-password>
 
                                 <div class="flex items-center justify-between mt-2 mb-8 gap-8">
                                     <div class="flex items-center">
-                                        <!-- <p-checkbox [(ngModel)]="checked" id="rememberme1" name="rememberme1" binary class="mr-2"></p-checkbox>
-                                        <label for="rememberme1">Remember me</label> -->
+                                       
                                     </div>
                                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
                                 </div>
@@ -47,14 +53,17 @@ import { AuthService } from '../../services/auth.service';
                 </div>
             </div>
         </div>
-    `
+    `,
+    providers: [MessageService] // Ajoute le service MessageService ici
 })
 export class Login {
     email: string = '';
     password: string = '';
     checked: boolean = false;
+    errorMessage: string = '';
+
   
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
   
     onSubmit() {
         const loginData = {
@@ -71,8 +80,24 @@ export class Login {
           },
           error: (err) => {
             console.error('Erreur de connexion', err);
-            alert(err.error.erreur || 'Une erreur est survenue');
+            // Extraire le message d'erreur
+            this.errorMessage = err.error.erreur || err.error.message || 'Une erreur est survenue';
+            
+            // Utiliser MessageService pour afficher l'erreur dans un toast
+            this.messageService.add({
+                severity: 'error', // Type de message (erreur)
+                summary: 'Erreur de connexion', // Titre du message
+                detail: this.errorMessage, // Détails du message
+                life: 5000,
+            });
+            
           }
         });
       }
+
+      //Effacer le message d’erreur quand on commence à taper
+      onInputChange() {
+        this.errorMessage = '';
+      }
+      
 }
