@@ -19,56 +19,60 @@ import { InscriptionService } from '../../../services/inscription.service';
   providers: [MessageService]
 })
 export class ValidationComponent {
-  email: string = '';
-  securityCode: string = '';
-  isLoading: boolean = false;
-  errorMessage: string = '';
+  // email: string = '';
+  // securityCode: string = '';
+  // isLoading: boolean = false;
+  // errorMessage: string = '';
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private inscriptionService: InscriptionService,
-    private messageService: MessageService
-  ) {}
+  // constructor(
+  //   private route: ActivatedRoute,
+  //   private router: Router,
+  //   private inscriptionService: InscriptionService,
+  //   private messageService: MessageService
+  // ) {}
 
-  ngOnInit() {
-    // Récupère l'email depuis le state de navigation
-    const navigation = this.router.getCurrentNavigation();
-    this.email = navigation?.extras.state?.['email'] || '';
-    
-    if (!this.email) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Attention',
-        detail: 'Email non fourni, veuillez recommencer l\'inscription'
-      });
-      this.router.navigate(['/register']);
-    }
-  }
+  // ngOnInit() {
+  //   // Récupère l'email depuis le state de navigation
+  //   const navigation = this.router.getCurrentNavigation();
+  //   if (navigation?.extras.state?.['email']) {
+  //     this.email = navigation.extras.state['email'];
+  //   } else {
+  //     // Si l'email est absent, redirige vers la page d'inscription
+  //     this.messageService.add({
+  //       severity: 'warn',
+  //       summary: 'Attention',
+  //       detail: 'Email non fourni, veuillez recommencer l\'inscription'
+  //     });
+  //     this.router.navigate(['/register']);
+  //   }
+  // }
 
-  onSubmit() {
-    this.isLoading = true;
-    
-    this.inscriptionService.validateCode({
-      email: this.email,
-      securityCode: this.securityCode
-    }).subscribe({
-      next: (response) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Succès',
-          detail: response.message
-        });
-        this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur',
-          detail: error.error?.erreur || 'Erreur lors de la validation'
-        });
-      }
-    });
-  }
+  // onSubmit() {
+  //   this.isLoading = true;
+
+  //   // Appel du service pour valider le code de sécurité
+  //   this.inscriptionService.validateCode({
+  //     email: this.email,
+  //     securityCode: this.securityCode
+  //   }).subscribe({
+  //     next: (response) => {
+  //       this.isLoading = false;
+  //       this.messageService.add({
+  //         severity: 'success',
+  //         summary: 'Succès',
+  //         detail: response.message || 'Validation réussie!'
+  //       });
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: (error) => {
+  //       this.isLoading = false;
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Erreur',
+  //         detail: error.error?.erreur || 'Erreur lors de la validation'
+  //       });
+  //     }
+  //   });
+  // }
+  
 }

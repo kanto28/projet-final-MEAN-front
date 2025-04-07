@@ -44,6 +44,7 @@ import { MessageService } from 'primeng/api';
                                        
                                     </div>
                                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/register">Pas encore de compte?</span>
+                                    <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary" routerLink="/auth/validate">Validation</span>
                                 </div>
                                 <p-button label="Se connecter" styleClass="w-full" type="submit" ></p-button>
                             </div>

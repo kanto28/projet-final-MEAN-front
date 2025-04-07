@@ -36,67 +36,54 @@ export class RegisterComponent {
     private messageService: MessageService
   ) { }
 
-  // onSubmit() {
-  //   this.isLoading = true;
-  //   this.errorMessage = '';
-
-  //   // Utilisez le service au lieu de http.post directement
-  //   this.inscriptionService.registerUser(this.userData)
-  //     .subscribe({
-  //       next: (response: any) => {
-  //         this.isLoading = false;
-  //         this.messageService.add({
-  //           severity: 'success',
-  //           summary: 'Succès',
-  //           detail: response.message || 'Inscription réussie!'
-  //         });
-          
-  //         this.router.navigate(['/validation'], { 
-  //           state: { email: this.userData.email } 
-  //         });
-  //       },
-  //       error: (error) => {
-  //         this.isLoading = false;
-  //         this.errorMessage = error.error?.erreur || error.error?.error || 'Une erreur est survenue lors de l\'inscription';
-  //         this.messageService.add({
-  //           severity: 'error',
-  //           summary: 'Erreur',
-  //           detail: this.errorMessage
-  //         });
-  //       }
-  //     });
-  // }
+ 
 
   onSubmit() {
     this.isLoading = true;
     this.errorMessage = '';
     console.log('Données du formulaire avant envoi:', this.userData);
-  
+    
     this.inscriptionService.registerUser(this.userData)
       .subscribe({
         next: (response: any) => {
           console.log('Réponse complète du backend:', response);
           this.isLoading = false;
+          
+          // Si la réponse du backend est celle attendue, redirige vers la page de validation
+          if (response?.message === 'Inscription réussie !') {
+            // this.router.navigate(['/auth/validate'], { 
+            //   state: { 
+            //     email: this.userData.email,
+            //     // D'autres données peuvent être ajoutées ici si nécessaire
+            //   } 
+            // });
+            this.router.navigate(['/auth/validate'], { 
+              state: { 
+                email: this.userData.email
+              } 
+            }).then(() => {
+              console.log('Navigation réussie vers /auth/validate');
+            }).catch(err => {
+              console.error('Erreur lors de la navigation:', err);
+            });
+            
+          }
+          
+          // Afficher un message de succès
           this.messageService.add({
             severity: 'success',
             summary: 'Succès',
             detail: response.message || 'Inscription réussie!'
           });
-          this.router.navigate(['/validate'], { 
-            state: { 
-              email: this.userData.email,
-              // Ajoutez d'autres données si nécessaire
-            } 
-          });
         },
         error: (error) => {
           console.error('Erreur détaillée:', error);
-          console.log('Status:', error.status);
-          console.log('Message:', error.message);
-          console.log('Erreur complète:', JSON.stringify(error, null, 2));
           
+          // Gérer l'affichage des erreurs
           this.isLoading = false;
           this.errorMessage = error.error?.erreur || error.error?.error || 'Une erreur est survenue lors de l\'inscription';
+          
+          // Afficher un message d'erreur
           this.messageService.add({
             severity: 'error',
             summary: 'Erreur',
@@ -105,4 +92,5 @@ export class RegisterComponent {
         }
       });
   }
+  
 }

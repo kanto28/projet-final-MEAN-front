@@ -11,5 +11,5 @@ export default [
     { path: 'error', component: Error },
     { path: 'login', component: Login },
     { path: 'register', component: RegisterComponent },
-    { path: 'validate', component: ValidationComponent }
+    { path: 'validation', component: ValidationComponent }
 ] as Routes;
