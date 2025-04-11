@@ -65,7 +65,6 @@ export class MarqueComponent implements OnInit{
   showMessage: boolean = false;
 
   errorMessage: string = '';
-  
 
   constructor(
     private marqueService: MarqueService,
@@ -260,5 +259,5 @@ export class MarqueComponent implements OnInit{
     this.displayConfirmation = false;
     this.marqueToDelete = null;
   }
-
+  
 }

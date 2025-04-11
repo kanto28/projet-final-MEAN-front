@@ -22,7 +22,8 @@
 
 <div class="card">
 
-    <p-table [value]="marques" responsiveLayout="scroll" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,15,20]">
+    <p-table [value]="marques" responsiveLayout="scroll" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,15,20]"
+    styleClass="p-datatable-hoverable-rows" selectionMode="single">
         <ng-template #caption>
             <div class="flex items-center justify-between">
                 <h5 class="m-0">Liste des Marques</h5>
@@ -43,10 +44,10 @@
                 <td>
                     <p-button label="Edit" icon="pi pi-pencil" severity="info" 
                               [style]="{ width: 'auto', marginRight: '8px' }" 
-                              (click)="openEditMarqueDialog(marque)" [disabled]="loading" />
+                              (click)="openEditMarqueDialog(marque)" [disabled]="loading" styleClass="p-button-sm p-button-outlined bg-blue-50 hover:bg-blue-100"/>
                     <p-button label="Delete" icon="pi pi-trash" severity="danger" 
                               [style]="{ width: 'auto' }" 
-                              (click)="openConfirmation(marque)" [disabled]="loading" />
+                              (click)="openConfirmation(marque)" [disabled]="loading" styleClass="p-button-sm bg-blue-100 text-blue-800 hover:bg-blue-200" />
                 </td>
             </tr>
         </ng-template>
@@ -56,6 +57,7 @@
             </tr>
         </ng-template>
     </p-table>
+</div>
 
     <!-- Modal de suppression -->
     <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true" [closable]="!loading">
@@ -72,7 +74,6 @@
         </ng-template>
     </p-dialog>
 
-</div>
 
 <!-- Modal d'ajout -->
 <p-dialog [(visible)]="ajoutMarque" [style]="{ width: '450px' }" header="Ajout de la Marque" [modal]="true" [closable]="!loading">
@@ -81,7 +82,7 @@
             <div>
                 <label for="marqueName" class="block font-bold mb-3">Nom</label>
                 <input type="text" id="marqueName" pInputText [(ngModel)]="marqueName" name="marqueName" 
-                       placeholder="Nom de la Marque" required [disabled]="loading" />
+                       placeholder="Nom de la Marque" required [disabled]="loading" style="width: 100%" size="30" />
             </div>
         </div>
     </ng-template>
@@ -99,7 +100,7 @@
             <div>
                 <label for="name" class="block font-bold mb-3">Nom</label>
                 <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedMarque.name" 
-                       required autofocus [disabled]="loading" />
+                       required autofocus [disabled]="loading"  style="width: 100%" size="30"/>
             </div>
         </div>
     </ng-template>
