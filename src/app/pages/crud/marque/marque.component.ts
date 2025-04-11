@@ -19,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MarqueService } from '../../../services/crud/marque/marque.service';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-marque',
@@ -44,7 +45,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     ProgressBarModule
   ],
   templateUrl: './marque.component.html',
-  styleUrl: './marque.component.scss'
+  styleUrl: './marque.component.scss',
+  providers: [MessageService] 
 })
 export class MarqueComponent implements OnInit{
 
@@ -53,6 +55,7 @@ export class MarqueComponent implements OnInit{
   selectedMarque: any = null;
   editMarqueDialog: boolean = false;
   marqueToDelete: any = null;
+
   ajoutMarque: boolean = false;
   submitted: boolean = false;
   displayConfirmation: boolean = false;
@@ -61,9 +64,13 @@ export class MarqueComponent implements OnInit{
   messageType: 'success' | 'error' | '' = '';
   showMessage: boolean = false;
 
+  errorMessage: string = '';
+  
+
   constructor(
     private marqueService: MarqueService,
     private cdRef: ChangeDetectorRef,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit(): void {
@@ -98,47 +105,75 @@ export class MarqueComponent implements OnInit{
     });
   }
 
-  // Créer une nouvelle Marque
-  onCreateMarque() {
-    if (!this.marqueName.trim()) {
-      this.showAlert('error', 'Le nom de la marque est requis');
-      return;
-    }
-
-    this.loading = true;
+   // Créer une marque
+   onCreateMarque() {
     this.marqueService.createMarque(this.marqueName).subscribe({
-      next: (response) => {
-        this.marques.push(response);
-        this.marqueName = '';
-        this.ajoutMarque = false;
-        this.showAlert('success', 'Marque créée avec succès');
-        this.loadMarque();
+      next: (marque) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Marque créée avec succès',
+          life: 3000
+        });
+        this.ajoutMarque = false; // Ferme le formulaire d'ajout
+        this.marqueName = ''; // Reset le champ
+        this.loadMarque(); // Recharge la liste des marques
       },
-      error: (error) => {
-        console.error(error);
-        this.showAlert('error', 'Erreur lors de la création de la marque');
-        this.loading = false;
+      error: (err) => {
+        this.errorMessage = err.error?.erreur || 'Erreur inconnue';
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: this.errorMessage,
+          life: 5000
+        });
       }
     });
   }
 
+
+
   // Mettre à jour une Marque existante
   onUpdateMarque() {
+    // Validation
     if (!this.selectedMarque?.name?.trim()) {
-      this.showAlert('error', 'Le nom de la marque est requis');
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Le nom de la marque est requis',
+        life: 5000
+      });
       return;
     }
 
     this.loading = true;
+    
     this.marqueService.updateMarque(this.selectedMarque._id, this.selectedMarque.name).subscribe({
-      next: (response) => {
-        this.showAlert('success', 'Marque mise à jour avec succès');
-        this.loadMarque();
+      next: (updatedMarque) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Marque mise à jour avec succès',
+          life: 3000
+        });
+        
+        // Fermeture du dialogue d'édition
         this.editMarqueDialog = false;
+        
+        // Réinitialisation
+        this.selectedMarque = null;
+        this.loading = false;
+        
+        // Rechargement de la liste
+        this.loadMarque();
       },
-      error: (error) => {
-        console.error(error);
-        this.showAlert('error', 'Erreur lors de la mise à jour de la marque');
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: err.error?.erreur || 'Erreur lors de la mise à jour',
+          life: 5000
+        });
         this.loading = false;
       }
     });
@@ -146,16 +181,46 @@ export class MarqueComponent implements OnInit{
 
   // Supprimer une Marque existante
   onDeleteMarque() {
+    if (!this.marqueToDelete?._id) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Aucune marque sélectionnée',
+        life: 5000
+      });
+      return;
+    }
+
     this.loading = true;
+
     this.marqueService.deleteMarque(this.marqueToDelete._id).subscribe({
-      next: (response) => {
-        this.showAlert('success', 'Marque supprimée avec succès');
-        this.loadMarque();
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Marque supprimée avec succès',
+          life: 3000
+        });
+        
+        // 1. Fermer la boîte de confirmation
         this.displayConfirmation = false;
+        
+        // 2. Réinitialiser la sélection
+        this.marqueToDelete = null;
+        
+        // 3. Recharger la liste
+        this.loadMarque();
+        
+        // 4. Désactiver le loading
+        this.loading = false;
       },
-      error: (error) => {
-        console.error(error);
-        this.showAlert('error', 'Erreur lors de la suppression de la marque');
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: err.error?.erreur || 'Erreur lors de la suppression',
+          life: 5000
+        });
         this.loading = false;
       }
     });
@@ -195,4 +260,5 @@ export class MarqueComponent implements OnInit{
     this.displayConfirmation = false;
     this.marqueToDelete = null;
   }
+
 }

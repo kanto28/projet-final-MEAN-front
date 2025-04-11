@@ -18,48 +18,48 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         console.log("Réponse du backend:", response);
-        sessionStorage.setItem('token', response.message);
-        sessionStorage.setItem('role', response.role);
-        sessionStorage.setItem('username', response.username);
-        sessionStorage.setItem('userId', response.id);
+        localStorage.setItem('token', response.message);
+        localStorage.setItem('role', response.role);
+        localStorage.setItem('username', response.username);
+        localStorage.setItem('userId', response.id);
       })
     );
   }
 
   getUserId(): string {
-    return sessionStorage.getItem('userId') || '';
+    return localStorage.getItem('userId') || '';
   }
 
   isLoggedIn(): boolean {
-    return !!sessionStorage.getItem('token');
+    return !!localStorage.getItem('token');
   }
 
   logout(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('role');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     this.router.navigate(['/auth/login']);
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem('token');
+    return localStorage.getItem('token');
   }
 
   getUserRole(): string {
-    const role = sessionStorage.getItem('role')?.toLowerCase();
+    const role = localStorage.getItem('role')?.toLowerCase();
     return role === 'manager' ? 'Manager' : 'Client';
   }
 
   getUsername(): string | null {
-    return sessionStorage.getItem('username');
+    return localStorage.getItem('username');
   }
 
   getCurrentUser(): any {
     return {
-      _id: sessionStorage.getItem('userId'),
-      role: sessionStorage.getItem('role'),
-      username: sessionStorage.getItem('username')
+      _id: localStorage.getItem('userId'),
+      role: localStorage.getItem('role'),
+      username: localStorage.getItem('username')
     };
   }
 

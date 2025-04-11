@@ -1,44 +1,34 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environnements/environnement';
+import { Marque } from '../../../models/marque.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarqueService {
 
- private apiUrl = 'http://localhost:5001/api/marque/marques';
+  private apiUrl = `${environment.apiBaseUrl}/marque/marques`;
       
-        constructor(private http: HttpClient) { }
-      
-        //créer une nouvelle marque
-        createMarque(name: string): Observable<any> {
-          const token = localStorage.getItem('token'); 
-          const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-          return this.http.post(this.apiUrl, { name }, { headers });
-        }
-        
-      
-        // Récupérer toutes les marque
-       getMarques(): Observable<any> {
-         const token = localStorage.getItem('token'); 
-         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-         return this.http.get<any>(this.apiUrl, { headers });
-       }
-      
-        // Mettre à jour une marque existante
-      updateMarque(id: string, name: string): Observable<any> {
-        const token = localStorage.getItem('token'); 
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-        const url = `${this.apiUrl}/${id}`; 
-        return this.http.put(url, { name }, { headers });
-      }
-      
-      // Supprimer une marque existante
-      deleteMarque(id: string): Observable<any> {
-        const token = localStorage.getItem('token'); 
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-        const url = `${this.apiUrl}/${id}`; 
-        return this.http.delete(url, { headers });
-      }
+    constructor(private http: HttpClient) { }
+
+      // --- Méthodes CRUD simplifiées ---
+    createMarque(name: string): Observable<Marque> {
+      return this.http.post<Marque>(this.apiUrl, { name });
+    }
+
+    getMarques(): Observable<Marque[]> {
+      return this.http.get<Marque[]>(this.apiUrl);
+    }
+
+    updateMarque(id: string, name: string): Observable<Marque> {
+      return this.http.put<Marque>(`${this.apiUrl}/${id}`, { name });
+    }
+
+    deleteMarque(id: string): Observable<void> {
+      return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    }
+
+     
 }
