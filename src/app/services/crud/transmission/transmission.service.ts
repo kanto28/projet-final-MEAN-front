@@ -1,44 +1,35 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environnements/environnement';
+import { Transmission } from '../../../models/transmission.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransmissionService {
 
-  private apiUrl = 'http://localhost:5001/api/transmission/transmissions';
-     
-       constructor(private http: HttpClient) { }
-     
-       //créer une nouvelle transmission
-       createTransmission(name: string): Observable<any> {
-         const token = localStorage.getItem('token'); 
-         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-         return this.http.post(this.apiUrl, { name }, { headers });
-       }
-       
-     
-       // Récupérer toutes les transmission
-      getTransmissions(): Observable<any> {
-        const token = localStorage.getItem('token'); 
-        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-        return this.http.get<any>(this.apiUrl, { headers });
-      }
-     
-       // Mettre à jour une transmission existante
-     updateTransmission(id: string, name: string): Observable<any> {
-       const token = localStorage.getItem('token'); 
-       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-       const url = `${this.apiUrl}/${id}`; 
-       return this.http.put(url, { name }, { headers });
-     }
-     
-     // Supprimer une transmission existante
-     deleteTransmission(id: string): Observable<any> {
-       const token = localStorage.getItem('token'); 
-       const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-       const url = `${this.apiUrl}/${id}`; 
-       return this.http.delete(url, { headers });
-     }
+  private apiUrl = `${environment.apiBaseUrl}/transmission/transmissions`;
+
+  constructor(private http: HttpClient) { }
+
+  // Créer une nouvelle transmission
+  createTransmission(name: string): Observable<Transmission> {
+    return this.http.post<Transmission>(this.apiUrl, { name });
+  }
+
+  // Récupérer toutes les transmissions
+  getTransmissions(): Observable<Transmission[]> {
+    return this.http.get<Transmission[]>(this.apiUrl);
+  }
+
+  // Mettre à jour une transmission existante
+  updateTransmission(id: string, name: string): Observable<Transmission> {
+    return this.http.put<Transmission>(`${this.apiUrl}/${id}`, { name });
+  }
+
+  // Supprimer une transmission existante
+  deleteTransmission(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

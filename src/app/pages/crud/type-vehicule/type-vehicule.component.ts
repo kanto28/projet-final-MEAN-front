@@ -105,7 +105,7 @@ export class TypeVehiculeComponent implements OnInit{
     }
 
     this.loading = true;
-    this.typeVehiculeService.createMoteur(this.typeVehiculeName).subscribe({
+    this.typeVehiculeService.createTypeVehicule(this.typeVehiculeName).subscribe({
       next: (response) => {
         this.showAlert('success', 'Type de véhicule créé avec succès');
         this.typeVehiculeName = '';

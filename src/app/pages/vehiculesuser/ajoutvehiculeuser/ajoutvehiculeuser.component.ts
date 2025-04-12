@@ -91,25 +91,25 @@ export class AjoutvehiculeuserComponent {
   // Méthodes pour charger les données des services
   loadModels() {
     this.modelService.getModels().subscribe((data) => {
-      this.models = data;
+      //this.models = data;
     });
   }
 
   loadEnergies() {
     this.energieService.getEnergies().subscribe((data) => {
-      this.energies = data;
+      // this.energies = data;
     });
   }
 
   loadMoteurs() {
     this.moteurService.getMoteurs().subscribe((data) => {
-      this.moteurs = data;
+      //this.moteurs = data;
     });
   }
 
   loadTransmissions() {
     this.transmissionService.getTransmissions().subscribe((data) => {
-      this.transmissions = data;
+      //this.transmissions = data;
     });
   }
 

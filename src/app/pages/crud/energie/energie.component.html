@@ -1,41 +1,35 @@
+<p-toast position="top-center"></p-toast>
+
+<!-- Loader -->
+<div *ngIf="loading" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+    <div class="flex flex-col items-center gap-4 p-6 bg-white rounded-lg shadow-lg">
+        <div class="loader-spinner">
+            <div class="spinner-border animate-spin inline-block w-12 h-12 border-4 border-blue-500 rounded-full" 
+                 style="border-top-color: transparent;"></div>
+        </div>
+        <p class="text-gray-700 font-medium">Traitement en cours...</p>
+    </div>
+</div>
+
+<!-- Toolbar -->
 <p-toolbar styleClass="mb-6">
     <ng-template #start>
-        <p-button label="Ajout Energie" icon="pi pi-plus" severity="secondary" class="mr-2" 
+        <p-button label="Ajout Énergie" icon="pi pi-plus" severity="secondary" class="mr-2" 
                  (onClick)="ovrirNouveauEnergie()" [disabled]="loading" />
     </ng-template>
-
-    <!-- <ng-template #end>
-        <p-button label="Export" icon="pi pi-upload" severity="secondary" [disabled]="loading"/>
-    </ng-template> -->
 </p-toolbar>
 
+<!-- Table -->
 <div class="card">
-    <!-- Messages d'alerte -->
-    <div *ngIf="showMessage" class="p-4 mb-4" 
-         [ngClass]="{
-           'bg-green-100 border border-green-400 text-green-700': messageType === 'success',
-           'bg-red-100 border border-red-400 text-red-700': messageType === 'error'
-         }" 
-         role="alert">
-        <div class="flex justify-between items-center">
-            <span class="block sm:inline">{{message}}</span>
-            <button (click)="showMessage = false" class="ml-2">
-                <span class="pi pi-times"></span>
-            </button>
-        </div>
-    </div>
+    <p-table [value]="energies" responsiveLayout="scroll" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,15,20]"
+        styleClass="p-datatable-hoverable-rows" selectionMode="single">
 
-    <!-- Indicateur de chargement -->
-    <p-progressBar *ngIf="loading" mode="indeterminate" styleClass="mb-4"></p-progressBar>
-
-    <p-table [value]="energies" responsiveLayout="scroll" [loading]="loading">
         <ng-template #caption>
             <div class="flex items-center justify-between">
-                <h5 class="m-0">Liste des Energies</h5>
+                <h5 class="m-0">Liste des Énergies</h5>
             </div>
             <br>
         </ng-template>
-        <br>
 
         <ng-template #header>
             <tr>
@@ -43,47 +37,55 @@
                 <th>Action</th>
             </tr>
         </ng-template>
+
         <ng-template pTemplate="body" let-energie>
             <tr>
                 <td>{{ energie.name }}</td>
                 <td>
                     <p-button label="Edit" icon="pi pi-pencil" severity="info" 
                               [style]="{ width: 'auto', marginRight: '8px' }" 
-                              (click)="openEditEnergieDialog(energie)" [disabled]="loading" />
+                              (click)="openEditEnergieDialog(energie)" [disabled]="loading" 
+                              styleClass="p-button-sm p-button-outlined bg-blue-50 hover:bg-blue-100"/>
+                    
                     <p-button label="Delete" icon="pi pi-trash" severity="danger" 
                               [style]="{ width: 'auto' }" 
-                              (click)="openConfirmation(energie)" [disabled]="loading" />
+                              (click)="openConfirmation(energie)" [disabled]="loading" 
+                              styleClass="p-button-sm bg-blue-100 text-blue-800 hover:bg-blue-200" />
                 </td>
             </tr>
         </ng-template>
+
         <ng-template #emptymessage>
             <tr>
                 <td colspan="2" class="text-center">Aucune énergie trouvée</td>
             </tr>
         </ng-template>
     </p-table>
-
-    <!-- Modal de suppression -->
-    <p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true" [closable]="!loading">
-        <div class="flex items-center justify-center">
-            <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"></i>
-            <span>Êtes-vous sûr de vouloir supprimer cette énergie ?</span>
-        </div>
-        <ng-template #footer>
-            <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" [disabled]="loading" />
-            <p-button label="Oui" icon="pi pi-check" (click)="onDeleteEnergie()" severity="danger" outlined autofocus [loading]="loading" />
-        </ng-template>
-    </p-dialog>
 </div>
 
+<!-- Modal de suppression -->
+<p-dialog header="Confirmation" [(visible)]="displayConfirmation" [style]="{ width: '350px' }" [modal]="true" [closable]="!loading">
+    <div class="flex items-center justify-center">
+        <i class="pi pi-exclamation-triangle mr-4" style="font-size: 2rem"></i>
+        <span>
+            Êtes-vous sûr de vouloir supprimer l'énergie 
+            <strong class="text-red-500">{{ energieToDelete?.name }}</strong> ?
+        </span>
+    </div>
+    <ng-template #footer>
+        <p-button label="Non" icon="pi pi-times" (click)="closeConfirmation()" text severity="secondary" [disabled]="loading" />
+        <p-button label="Oui" icon="pi pi-check" (click)="onDeleteEnergie()" severity="danger" outlined autofocus [loading]="loading" />
+    </ng-template>
+</p-dialog>
+
 <!-- Modal d'ajout -->
-<p-dialog [(visible)]="ajoutEnergie" [style]="{ width: '450px' }" header="Ajout de l'Énergie" [modal]="true" [closable]="!loading">
+<p-dialog [(visible)]="ajoutEnergie" [style]="{ width: '450px' }" header="Ajout d'une Énergie" [modal]="true" [closable]="!loading">
     <ng-template #content>
         <div class="flex flex-col gap-6">
             <div>
                 <label for="energieName" class="block font-bold mb-3">Nom</label>
                 <input type="text" id="energieName" pInputText [(ngModel)]="energieName" name="energieName" 
-                       placeholder="Nom de l'énergie" required [disabled]="loading" />
+                       placeholder="Nom de l'énergie" required [disabled]="loading" style="width: 100%" size="30" />
             </div>
         </div>
     </ng-template>
@@ -101,7 +103,7 @@
             <div>
                 <label for="name" class="block font-bold mb-3">Nom</label>
                 <input type="text" pInputText id="name" name="name" [(ngModel)]="selectedEnergie.name" 
-                       required autofocus [disabled]="loading" />
+                       required autofocus [disabled]="loading" style="width: 100%" size="30"/>
             </div>
         </div>
     </ng-template>
