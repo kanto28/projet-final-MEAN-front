@@ -1,57 +1,47 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environnements/environnement';
+import { Model } from '../../../models/model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModelService {
   
+  private apiUrl = `${environment.apiBaseUrl}/model/models`;
 
-  private apiUrl = 'http://localhost:5001/api/model/models';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  // --- Méthodes CRUD simplifiées ---
 
   // Créer un modèle
-  createModel(name: string, marque: string, typeVehicule: string): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    return this.http.post(this.apiUrl, { name, marque, typeVehicule }, { headers });
+  createModel(name: string, marque: string, typeVehicule: string): Observable<Model> {
+    return this.http.post<any>(this.apiUrl, { name, marque, typeVehicule });
   }
 
   // Récupérer tous les modèles
-  getModels(): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    return this.http.get<any>(this.apiUrl, { headers });
+  getModels(): Observable<Model[]> {
+    return this.http.get<any[]>(this.apiUrl);
   }
-  
 
-  // update un modèle
+  // Mettre à jour un modèle
   updateModel(id: string, model: any): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    const url = `${this.apiUrl}/${id}`; 
-    return this.http.put(url, model, { headers });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, model);
   }
 
   // Supprimer un modèle
-  deleteModel(id: string): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    const url = `${this.apiUrl}/${id}`; 
-    return this.http.delete(url, { headers });
+  deleteModel(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  getMarques(): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    return this.http.get<any>('http://localhost:5001/api/marque/marques', { headers });
+  // Récupérer toutes les marques
+  getMarques(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/marque/marques`);
   }
-  
-  getTypeVehicules(): Observable<any> {
-    const token = localStorage.getItem('token'); 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); 
-    return this.http.get<any>('http://localhost:5001/api/type-vehicule/typevehicules', { headers });
+
+  // Récupérer tous les types de véhicule
+  getTypeVehicules(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/type-vehicule/typevehicules`);
   }
 }
