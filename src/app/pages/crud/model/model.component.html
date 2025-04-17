@@ -92,13 +92,27 @@
       </div>
       <div>
         <label for="marque" class="block font-bold mb-3">Marque</label>
-        <p-select [options]="marques" [(ngModel)]="selectedMarque" optionLabel="name" optionValue="_id"
-                  placeholder="Sélectionnez une marque" [disabled]="loading"></p-select>
+        <p-select [options]="marques"
+          [(ngModel)]="selectedMarque"
+          optionLabel="name"
+          optionValue="_id"
+          appendTo="body"
+          placeholder="Sélectionnez une marque"
+          [disabled]="loading">
+        </p-select>
+
       </div>
       <div>
         <label for="typeVehicule" class="block font-bold mb-3">Type de véhicule</label>
-        <p-select [options]="typeVehicules" [(ngModel)]="selectedTypeVehicule" optionLabel="name" optionValue="_id"
-                  placeholder="Sélectionnez un type" [disabled]="loading"></p-select>
+        <p-select [options]="typeVehicules"
+          [(ngModel)]="selectedTypeVehicule"
+          optionLabel="name"
+          optionValue="_id"
+          appendTo="body"
+          placeholder="Sélectionnez un type"
+          [disabled]="loading">
+        </p-select>
+
       </div>
     </div>
   </ng-template>
@@ -121,12 +135,12 @@
       <div>
         <label class="block font-bold mb-3">Marque</label>
         <p-select [options]="marques" [(ngModel)]="selectedModel.marque._id" optionLabel="name" optionValue="_id"
-                  [disabled]="loading"></p-select>
+                  [disabled]="loading" appendTo="body"></p-select>
       </div>
       <div>
         <label class="block font-bold mb-3">Type de véhicule</label>
         <p-select [options]="typeVehicules" [(ngModel)]="selectedModel.typeVehicule._id" optionLabel="name" optionValue="_id"
-                  [disabled]="loading"></p-select>
+                  [disabled]="loading" appendTo="body"></p-select>
       </div>
     </div>
   </ng-template>
