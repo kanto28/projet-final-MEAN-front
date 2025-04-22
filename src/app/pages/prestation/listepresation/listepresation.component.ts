@@ -58,7 +58,7 @@ export class ListepresationComponent {
   ngOnInit(): void {
     // Charger toutes les prestations au démarrage
     this.loading = true;
-    this.prestationService.getAllPrestations().subscribe(
+    this.prestationService.getPrestations().subscribe(
       (data) => {
         this.prestations = data; // Stocker les prestations récupérées
         this.loading = false;

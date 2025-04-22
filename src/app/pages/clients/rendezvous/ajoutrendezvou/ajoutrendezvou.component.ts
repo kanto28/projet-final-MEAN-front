@@ -114,7 +114,7 @@ export class AjoutrendezvouComponent implements OnInit{
   loadPrestations(): void {
    
       // Chargement simple pour les clients
-      this.prestationService.getAllPrestations().subscribe({
+      this.prestationService.getPrestations().subscribe({
         next: (prestations) => {
           this.prestationsDisponibles = prestations.map(p => ({
             ...p,

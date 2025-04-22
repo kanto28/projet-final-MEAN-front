@@ -14,10 +14,9 @@ export class PrestationService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  // Créer une prestation
+  // Créer une prestation (l'utilisateur est injecté automatiquement via le token)
   createPrestation(data: { name: string; duree: number; typeVehicule: string }): Observable<Prestation> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    return this.http.post<Prestation>(this.apiUrl, { ...data, user: user._id });
+    return this.http.post<Prestation>(this.apiUrl, data);
   }
 
   // Créer une prestation avec prix (Manager uniquement)
@@ -26,23 +25,7 @@ export class PrestationService {
     return this.http.post<Prestation>(url, data);
   }
 
-  // Mettre à jour une prestation
-  updatePrestation(id: string, data: { name: string; duree: number; typeVehicule: string }): Observable<Prestation> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    return this.http.put<Prestation>(`${this.apiUrl}/${id}`, { ...data, user: user._id });
-  }
-
-  // Supprimer une prestation
-  deletePrestation(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
   // Récupérer toutes les prestations
-  getAllPrestations(): Observable<Prestation[]> {
-    return this.http.get<Prestation[]>(this.apiUrl);
-  }
-
-  // Récupérer les prestations (doublon possible avec getAllPrestations, à fusionner si même logique)
   getPrestations(): Observable<Prestation[]> {
     return this.http.get<Prestation[]>(this.apiUrl);
   }
@@ -51,4 +34,15 @@ export class PrestationService {
   getPrestationsByVehicleType(typeVehiculeId: string): Observable<Prestation[]> {
     return this.http.get<Prestation[]>(`${this.apiUrl}/type/${typeVehiculeId}`);
   }
+
+  // Mettre à jour une prestation
+  updatePrestation(id: string, data: { name: string; duree: number; typeVehicule: string }): Observable<Prestation> {
+    return this.http.put<Prestation>(`${this.apiUrl}/${id}`, data);
+  }
+
+  // Supprimer une prestation
+  deletePrestation(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+  
 }

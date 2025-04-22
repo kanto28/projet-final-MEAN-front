@@ -51,35 +51,25 @@ import { AuthService } from '../../../services/auth.service';
     ConfirmDialogModule
   ],
   templateUrl: './prestation.component.html',
-  styleUrl: './prestation.component.scss'
+  styleUrl: './prestation.component.scss',
+  providers: [MessageService]
 })
 export class PrestationComponent implements OnInit {
-  // Ajoutez cette méthode dans votre classe PrestationComponent
-resetForm(): void {
-  this.prestationName = '';
-  this.prestationDuree = 0;
-  this.selectedTypeVehicule = '';
-  this.selectedPrestation = {
-    _id: '',
-    name: '',
-    duree: 0,
-    typeVehicule: ''
-  };
-}
  // Propriétés pour les données
  prestations: Prestation[] = [];
  typeVehicules: any[] = [];
- 
+
  // Propriétés pour les modales
  ajoutPrestation = false;
  editPrestationDialog = false;
  displayConfirmation = false;
- 
+ prestationToDelete: any = null;
+
  // Données des formulaires
  prestationName = '';
  prestationDuree = 0;
  selectedTypeVehicule = '';
- 
+
  selectedPrestation: Prestation = {
    _id: '',
    name: '',
@@ -90,7 +80,7 @@ resetForm(): void {
  // États
  loading = false;
  loadingTypes = false;
- 
+
  // Messages
  message = '';
  messageType: 'success' | 'error' | '' = '';
@@ -107,21 +97,22 @@ resetForm(): void {
    this.loadPrestations();
  }
 
- // Méthodes pour charger les données
+ // 🔄 Recharge la liste des prestations
  loadPrestations(): void {
    this.loading = true;
-   this.prestationService.getAllPrestations().subscribe({
+   this.prestationService.getPrestations().subscribe({
      next: (data) => {
        this.prestations = data;
        this.loading = false;
      },
-     error: (err) => {
+     error: () => {
        this.showAlert('error', 'Erreur lors du chargement des prestations');
        this.loading = false;
      }
    });
  }
 
+ // 🔄 Recharge les types de véhicules
  loadTypeVehicules(): void {
    this.loadingTypes = true;
    this.typeVehiculeService.getTypeVehicules().subscribe({
@@ -129,125 +120,95 @@ resetForm(): void {
        this.typeVehicules = response;
        this.loadingTypes = false;
      },
-     error: (err) => {
+     error: () => {
        this.showAlert('error', 'Erreur lors du chargement des types de véhicules');
        this.loadingTypes = false;
      }
    });
  }
 
- // Méthodes pour gérer les modales
+ // ✅ Affiche la modale d'ajout
  openAddPrestationDialog(): void {
-   this.prestationName = '';
-   this.prestationDuree = 0;
-   this.selectedTypeVehicule = '';
+   this.resetForm();
    this.ajoutPrestation = true;
  }
 
+ // ✅ Affiche la modale d'édition
  openEditPrestationDialog(prestation: Prestation): void {
    this.selectedPrestation = { ...prestation };
    this.editPrestationDialog = true;
  }
 
+ // ✅ Affiche la modale de confirmation de suppression
  openConfirmation(prestation: Prestation): void {
    this.selectedPrestation = { ...prestation };
    this.displayConfirmation = true;
  }
 
+ // ❌ Ferme la modale d’ajout
  hideDialog(): void {
    this.ajoutPrestation = false;
  }
 
+ // ✅ Crée une prestation (sans user ici, le backend le récupère via token)
+ onCreatePrestation(): void {
+   if (!this.prestationName || !this.prestationDuree || !this.selectedTypeVehicule) {
+     this.showAlert('error', 'Veuillez remplir tous les champs');
+     return;
+   }
 
+   this.loading = true;
 
-// onCreatePrestation(): void {
-//   this.loading = true;
-  
-//   const prestationData = {
-//     name: this.prestationName,
-//     duree: this.prestationDuree,
-//     typeVehicule: this.selectedTypeVehicule
-//   };
+   const prestationData = {
+     name: this.prestationName,
+     duree: this.prestationDuree,
+     typeVehicule: this.selectedTypeVehicule
+   };
 
-//   this.prestationService.createPrestation(prestationData).subscribe({
-//     next: () => {
-//       this.showAlert('success', 'Prestation créée avec succès');
-//       this.loadPrestations();
-//       this.ajoutPrestation = false;
-//     },
-//     error: (err) => {
-//       this.showAlert('error', err.error?.message || 'Erreur lors de la création');
-//       this.loading = false;
-//     }
-//   });
-// }
+   this.prestationService.createPrestation(prestationData).subscribe({
+     next: () => {
+       this.showAlert('success', 'Prestation créée avec succès');
+       this.loadPrestations();
+       this.ajoutPrestation = false;
+       this.resetForm();
+     },
+     error: (err) => {
+       const errorMessage = err.error?.message || err.message || 'Erreur lors de la création';
+       this.showAlert('error', errorMessage);
+       this.loading = false;
+     }
+   });
+ }
 
-onCreatePrestation(): void {
-  // Récupérer l'ID de l'utilisateur connecté
-  const userId = this.authService.getUserId();
-  
-  if (!userId) {
-    this.showAlert('error', 'Utilisateur non identifié. Veuillez vous reconnecter.');
-    return;
-  }
+ // ✅ Met à jour une prestation
+ onUpdatePrestation(): void {
+   if (!this.selectedPrestation._id) return;
 
-  // Validation des données
-  if (!this.prestationName || !this.prestationDuree || !this.selectedTypeVehicule) {
-    this.showAlert('error', 'Veuillez remplir tous les champs');
-    return;
-  }
+   this.loading = true;
 
-  this.loading = true;
-  
-  const prestationData = {
-    name: this.prestationName,
-    duree: this.prestationDuree,
-    typeVehicule: this.selectedTypeVehicule,
-    user: userId // Ajout de l'utilisateur créateur
-  };
+   const prestationData = {
+     name: this.selectedPrestation.name,
+     duree: this.selectedPrestation.duree,
+     typeVehicule: this.selectedPrestation.typeVehicule
+   };
 
-  this.prestationService.createPrestation(prestationData).subscribe({
-    next: () => {
-      this.showAlert('success', 'Prestation créée avec succès');
-      this.loadPrestations();
-      this.ajoutPrestation = false;
-      this.resetForm();
-    },
-    error: (err) => {
-      const errorMessage = err.error?.message || err.message || 'Erreur lors de la création';
-      this.showAlert('error', errorMessage);
-      this.loading = false;
-    }
-  });
-}
+   this.prestationService.updatePrestation(this.selectedPrestation._id, prestationData).subscribe({
+     next: () => {
+       this.showAlert('success', 'Prestation modifiée avec succès');
+       this.loadPrestations();
+       this.editPrestationDialog = false;
+     },
+     error: (err) => {
+       this.showAlert('error', err.error?.message || 'Erreur lors de la modification');
+       this.loading = false;
+     }
+   });
+ }
 
-onUpdatePrestation(): void {
-  if (!this.selectedPrestation._id) return;
-
-  this.loading = true;
-  
-  const prestationData = {
-    name: this.selectedPrestation.name,
-    duree: this.selectedPrestation.duree,
-    typeVehicule: this.selectedPrestation.typeVehicule
-  };
-
-  this.prestationService.updatePrestation(this.selectedPrestation._id, prestationData).subscribe({
-    next: () => {
-      this.showAlert('success', 'Prestation modifiée avec succès');
-      this.loadPrestations();
-      this.editPrestationDialog = false;
-    },
-    error: (err) => {
-      this.showAlert('error', err.error?.message || 'Erreur lors de la modification');
-      this.loading = false;
-    }
-  });
-}
-
+ // ✅ Supprime une prestation
  onDeletePrestation(): void {
    if (!this.selectedPrestation._id) return;
-   
+
    this.loading = true;
    this.prestationService.deletePrestation(this.selectedPrestation._id).subscribe({
      next: () => {
@@ -255,25 +216,39 @@ onUpdatePrestation(): void {
        this.loadPrestations();
        this.displayConfirmation = false;
      },
-     error: (err) => {
+     error: () => {
        this.showAlert('error', 'Erreur lors de la suppression');
        this.loading = false;
      }
    });
  }
 
- // Utilitaires
+ // 🔄 Réinitialise le formulaire
+ resetForm(): void {
+   this.prestationName = '';
+   this.prestationDuree = 0;
+   this.selectedTypeVehicule = '';
+   this.selectedPrestation = {
+     _id: '',
+     name: '',
+     duree: 0,
+     typeVehicule: ''
+   };
+ }
+
+ // 🔎 Récupère le nom du type de véhicule
  getTypeVehiculeName(typeVehiculeId: string): string {
    if (!typeVehiculeId || !this.typeVehicules.length) return 'Chargement...';
    const type = this.typeVehicules.find(t => t._id === typeVehiculeId);
    return type ? type.name : 'Type inconnu';
  }
 
+ // ✅ Affiche un message temporaire
  private showAlert(type: 'success' | 'error', message: string): void {
    this.messageType = type;
    this.message = message;
    this.showMessage = true;
-   
+
    setTimeout(() => {
      this.showMessage = false;
    }, 5000);
