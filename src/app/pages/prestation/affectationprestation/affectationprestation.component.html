@@ -1,36 +1,55 @@
-<!-- <div class="card p-4 rounded-lg shadow-md w-96 bg-white dark:bg-gray-800">
-  <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Affectation d'une Prestation</h2>
 
-  <div class="mb-4">
-      <label for="prestation" class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Prestation</label>
-      <p-select [options]="prestations" [(ngModel)]="selectedPrestation" optionLabel="label" placeholder="Sélectionner une prestation"></p-select>
+
+<div class="surface-card  shadow-3 border-round w-full mx-auto ">
+  <div class="text-center mb-4">
+    <h2 class="text-2xl font-semibold text-primary">Affectation de prestation</h2>
   </div>
 
-  <div class="mb-4">
-      <label for="mecanicien" class="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Mécanicien</label>
-      <p-select [options]="mecaniciens" [(ngModel)]="selectedMecanicien" optionLabel="label" placeholder="Sélectionner un mécanicien"></p-select>
-  </div>
+  <form (ngSubmit)="createPrestationMecanicien()" class="p-fluid">
 
-  <button pButton class="p-button p-button-success p-button-sm w-full mt-4" (click)="affecterPrestation()">
-      Affecter <i class="pi pi-check ml-2"></i>
-  </button>
-</div> -->
-<!-- prestation-mecanicien.component.html -->
-<div class="form-container">
-    <h2>Créer une prestation mécanicien</h2>
-    <form (ngSubmit)="createPrestationMecanicien()">
-      <label for="prestation">Prestation</label>
-      <select id="prestation" [(ngModel)]="prestationId" name="prestation" required>
-        <option value="" disabled>Sélectionner une prestation</option>
-        <option *ngFor="let prestation of prestations" [value]="prestation._id">
-          {{ prestation.name }}  <!-- Assurez-vous d'utiliser la propriété correcte ici -->
-        </option>
-      </select>
-  
-      <label for="user">Utilisateur (Mécanicien)</label>
-      <input type="text" id="user" [(ngModel)]="userId" name="user" required />
-  
-      <button type="submit">Créer</button>
-    </form>
-  </div>
-  
+    <!-- Sélection de la prestation -->
+    <div class="field">
+      <label for="prestation" class="text-900 font-medium mb-2">Prestationnnn</label>
+      <p-select
+        [options]="prestations"
+        optionLabel="name"
+        optionValue="_id"
+        [(ngModel)]="prestationId"
+        name="prestation"
+        placeholder="Sélectionner une prestation"
+        inputId="prestation"
+        [filter]="true"
+        class="w-full"
+        [showClear]="true"
+        required>
+      </p-select>
+    </div>
+
+    <!-- ID du mécanicien -->
+    <div class="field">
+      <label for="user" class="text-900 font-medium mb-2">ID Mécanicien</label>
+      <input
+        pInputText
+        id="user"
+        name="user"
+        [(ngModel)]="userId"
+        class="w-full"
+        placeholder="Entrer l'ID du mécanicien"
+        required />
+    </div>
+
+    <!-- Bouton de création -->
+    <div class="mt-4">
+      <button
+        pButton
+        type="submit"
+        label="Affecter"
+        class="w-full p-button-primary p-button-raised"></button>
+    </div>
+
+    <!-- Message de retour -->
+    <div *ngIf="message" class="text-green-600 text-sm mt-3 text-center">
+      {{ message }}
+    </div>
+  </form>
+</div>
