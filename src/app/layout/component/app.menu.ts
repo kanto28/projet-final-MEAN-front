@@ -76,56 +76,56 @@ export class AppMenu {
                             {label: 'Type de Vehicule',icon: 'pi pi-fw pi-truck',routerLink: ['/pages/crud/typeVehicule']}
                         ]
                     },
-                    {
-                        label: 'Gestion des Pièces',
-                        icon: 'pi pi-fw pi-box',
-                        items: [
-                            {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
-                            //{ label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
-                            {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
-                           // {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']},
-                            {label:'add piece',icon: 'pi pi-fw pi-download', routerLink:['pages/pieces/addPiece']},
-                            //{label:'detail piece',  icon: 'pi pi-fw pi-dollar', routerLink:['pages/pieces/detailPiece']},
-                           // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
-                        ]
-                    },
-                    {
-                        label: 'Prestation',
-                        icon: 'pi pi-fw pi-box',
-                        items: [
+                    // {
+                    //     label: 'Gestion des Pièces',
+                    //     icon: 'pi pi-fw pi-box',
+                    //     items: [
+                    //         {label: 'Liste Piece',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/pieces/piece']},
+                    //         //{ label: 'Prix d une piece', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/prixpiece']},
+                    //         {label: 'etat de stock(entre et sortie)',icon: 'pi pi-fw pi-download',routerLink: ['/pages/pieces/etatstockpiece']},
+                    //        // {label: 'historique stock', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/pieces/historiquestock']},
+                    //         {label:'add piece',icon: 'pi pi-fw pi-download', routerLink:['pages/pieces/addPiece']},
+                    //         //{label:'detail piece',  icon: 'pi pi-fw pi-dollar', routerLink:['pages/pieces/detailPiece']},
+                    //        // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Prestation',
+                    //     icon: 'pi pi-fw pi-box',
+                    //     items: [
                             
-                            {label: 'Liste Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/listeprestation']},
-                            {label: 'Detail Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/detailprestation']},
-                            { label: 'Affectation Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/affectationprestation']},
-                            {label: 'Prestation mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prestation/mechanicienprestation']},
-                            //{label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/prixprestation']}
-                            // {label:'add piece', routerLink:['pages/pieces/addPiece']},
-                            // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
-                            // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
-                        ]
-                    },
-                    {
-                        label: 'Gestion de Vehicule',
-                        icon: 'pi pi-fw pi-box',
-                        items: [
+                    //         {label: 'Liste Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/listeprestation']},
+                    //         {label: 'Detail Prestation',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/prestation/detailprestation']},
+                    //         { label: 'Affectation Presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/affectationprestation']},
+                    //         {label: 'Prestation mechanicien',icon: 'pi pi-fw pi-download',routerLink: ['/pages/prestation/mechanicienprestation']},
+                    //         //{label: 'Prix presation', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/prestation/prixprestation']}
+                    //         // {label:'add piece', routerLink:['pages/pieces/addPiece']},
+                    //         // {label:'detail piece', routerLink:['pages/pieces/detailPiece']},
+                    //         // {label:'dahboard stock', routerLink:['pages/pieces/dashboradStock']}
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Gestion de Vehicule',
+                    //     icon: 'pi pi-fw pi-box',
+                    //     items: [
                             
-                            {label: 'Ajout Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/ajoutvehicule']},
-                            {label: 'Detail Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/detailvehicule']},
-                            { label: 'liste Vehicule', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehicules/listevehicule']},
-                            {label: 'Modification Vehicule',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehicules/modifvehicule']}
-                        ]
-                    },
-                    {
-                        label: 'Gestion de Vehicule Utilisateur',
-                        icon: 'pi pi-fw pi-box',
-                        items: [
+                    //         {label: 'Ajout Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/ajoutvehicule']},
+                    //         {label: 'Detail Vehicule',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehicules/detailvehicule']},
+                    //         { label: 'liste Vehicule', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehicules/listevehicule']},
+                    //         {label: 'Modification Vehicule',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehicules/modifvehicule']}
+                    //     ]
+                    // },
+                    // {
+                    //     label: 'Gestion de Vehicule Utilisateur',
+                    //     icon: 'pi pi-fw pi-box',
+                    //     items: [
                             
-                            {label: 'Ajout Vehicule user',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/ajoutvehiculeuser']},
-                            {label: 'Detail Vehicule user' ,icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/detailvehiculeuser']},
-                            { label: 'liste Vehicule user', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehiculesuser/vehiculeUtilisateur']},
-                            {label: 'Modification Vehicule user',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehiculesuser/modifvehiculeuser']}
-                        ]
-                    },
+                    //         {label: 'Ajout Vehicule user',icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/ajoutvehiculeuser']},
+                    //         {label: 'Detail Vehicule user' ,icon: 'pi pi-fw pi-cog',routerLink: ['/pages/vehiculesuser/detailvehiculeuser']},
+                    //         { label: 'liste Vehicule user', icon: 'pi pi-fw pi-dollar',routerLink: ['/pages/vehiculesuser/vehiculeUtilisateur']},
+                    //         {label: 'Modification Vehicule user',icon: 'pi pi-fw pi-download',routerLink: ['/pages/vehiculesuser/modifvehiculeuser']}
+                    //     ]
+                    // },
                     {
                         label: ' Prix Prestation',
                         icon: 'pi pi-fw pi-box',
